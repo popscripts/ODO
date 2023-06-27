@@ -1,0 +1,42 @@
+{
+  "expo": {
+    "name": "odo",
+    "slug": "odo",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/app-icon-all.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash-logo-all.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#3a3a4b"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "icon": "./assets/app-icon-ios.png",
+      "supportsTablet": true,
+      "bundleIdentifier": "com.odo",
+      "splash": {
+        "image": "./assets/splash-logo-ios-mobile.png",
+        "tabletImage": "./assets/splash-logo-ios-tablet.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#3a3a4b"
+      }
+    },
+    "android": {
+      "icon": "./assets/app-icon-android-legacy.png",
+      "package": "com.odo",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/app-icon-android-adaptive-foreground.png",
+        "backgroundImage": "./assets/app-icon-android-adaptive-background.png"
+      },
+      "splash": {
+        "image": "./assets/splash-logo-android-universal.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#3a3a4b"
+      }
+    }
+  }
+}
