@@ -3,7 +3,6 @@ import { Background, TabsGradient, Wrapper } from './ScreenWrapperStyle'
 import { StatusBar } from 'expo-status-bar'
 import { colors } from '../../theme/colors'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-const image = require('../../../assets/background.png')
 
 type Props = {
     showGradient?: boolean
@@ -13,7 +12,7 @@ type Props = {
 function ScreenWrapper({ showGradient = true, children }: Props) {
     const { bottom } = useSafeAreaInsets()
     return (
-        <Background source={image} resizeMode={'stretch'}>
+        <Background>
             <Wrapper>
                 {children}
                 <StatusBar style="light" />

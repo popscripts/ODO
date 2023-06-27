@@ -6,6 +6,7 @@ import { apiLoginResponse } from '../../types/response.type'
 import { ErrorText, Heading } from '../../components/commonStyles'
 import Input from '../../components/Input/Input'
 import Button from '../../components/Button/Button'
+import { colors } from '../../theme/colors'
 
 type Error = {
     error: boolean
@@ -74,7 +75,7 @@ function LoginForm() {
                 errorText={passwordError.errorText}
                 password={true}
             />
-            <Button content={'Zaloguj się'} onPress={LogInPress} />
+            <Button content={'Zaloguj się'} onPress={LogInPress} color={colors.palette.secondary300} />
         </FormWrapper>
     )
 }

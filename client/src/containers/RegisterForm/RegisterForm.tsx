@@ -11,6 +11,7 @@ import {
 } from '../../utils/inputValidators'
 import { apiLoginResponse } from '../../types/response.type'
 import { BottomWrapper, FormWrapper } from './RegisterFormStyle'
+import { colors } from '../../theme/colors'
 
 type Error = {
     error: boolean
@@ -128,7 +129,11 @@ function RegisterForm() {
                     errorText={keyError.errorText}
                     keyboardType={'numeric'}
                 />
-                <Button content={'Zarejestruj się'} onPress={RegisterPress} />
+                <Button
+                    content={'Zarejestruj się'}
+                    onPress={RegisterPress}
+                    color={colors.palette.tertiary300}
+                />
             </BottomWrapper>
         </FormWrapper>
     )

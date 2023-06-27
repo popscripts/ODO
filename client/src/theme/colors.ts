@@ -35,7 +35,8 @@ const palette = {
     angry500: '#bd001c',
 
     overlay22: '#00000022',
-    overlay50: 'rgba(25, 16, 21, 0.5)'
+    overlay50: 'rgba(48,48,65, 0.5)',
+    overlay85: 'rgba(48,48,65, 0.85)'
 } as const
 
 export const colors = {
@@ -46,7 +47,7 @@ export const colors = {
 
     textDim: palette.neutral300,
 
-    background: palette.neutral600,
+    background: palette.neutral700,
 
     border: palette.neutral400,
 

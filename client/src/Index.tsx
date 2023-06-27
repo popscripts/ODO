@@ -4,6 +4,7 @@ import { useFonts } from '@expo-google-fonts/inter'
 import { customFontsToLoad } from './theme/typography'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import * as NavigationBar from 'expo-navigation-bar'
+import { DefaultBackground } from './components/commonStyles'
 
 export default function Index() {
     const [areFontsLoaded] = useFonts(customFontsToLoad)
@@ -11,13 +12,15 @@ export default function Index() {
     NavigationBar.setPositionAsync('absolute')
     NavigationBar.setBackgroundColorAsync('#00000001')
 
-    if (!areFontsLoaded) return null
+    if (!areFontsLoaded) return <DefaultBackground />
 
     return (
-        <SafeAreaProvider>
-            <AuthProvider>
-                <AppNavigator />
-            </AuthProvider>
-        </SafeAreaProvider>
+        <DefaultBackground>
+            <SafeAreaProvider>
+                <AuthProvider>
+                    <AppNavigator />
+                </AuthProvider>
+            </SafeAreaProvider>
+        </DefaultBackground>
     )
 }
