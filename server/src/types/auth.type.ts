@@ -11,7 +11,7 @@ export type LoginUser = {
     openDayId: number
     username: string
     password: string
-    accountType: object
+    accountType: AccountType
 }
 
 export type User = {
