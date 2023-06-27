@@ -33,7 +33,7 @@ const userDataPlaceholder = {
     TakenClassroom: []
 }
 
-const TokenContext = createContext<apiLoginResponse>({ error: 1, result: '' })
+const TokenContext = createContext<apiLoginResponse>({ error: 2, result: '' })
 const LogInContext = createContext<Function>(() => {})
 const LogOutContext = createContext<Function>(() => {})
 const RegisterContext = createContext<Function>(() => {})
@@ -66,7 +66,7 @@ export function useCredentials() {
 
 export default function AuthProvider({ children }: Children) {
     const [token, setToken] = useState<apiLoginResponse>({
-        error: 1,
+        error: 2,
         result: ''
     })
     const [userData, setUserData] = useState<User>(userDataPlaceholder)

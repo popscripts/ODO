@@ -1,21 +1,13 @@
 import React from 'react'
-import ScreenWrapper from '../components/ScreenWrapper/ScreenWrapper'
-import Button from '../components/Button/Button'
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import { ImageBackground } from 'react-native'
+import WelcomeScreenWrapper from '../containers/WelcomeScreenWrapper/WelcomeScreenWrapper'
+const background = require('../../assets/background.png')
 
-function WelcomeScreen({ navigation }: NativeStackScreenProps<any>) {
-    function openLogin() {
-        navigation.navigate('Login')
-    }
-    function openRegister() {
-        navigation.navigate('Register')
-    }
-
+function WelcomeScreen() {
     return (
-        <ScreenWrapper showGradient={false}>
-            <Button content={'Zaloguj się'} onPress={openLogin} />
-            <Button content={'Zarejestruj się'} onPress={openRegister} />
-        </ScreenWrapper>
+        <ImageBackground source={background} style={{ width: '100%', height: '100%' }}>
+            <WelcomeScreenWrapper />
+        </ImageBackground>
     )
 }
 

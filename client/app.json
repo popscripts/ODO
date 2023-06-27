@@ -7,9 +7,7 @@
     "icon": "./assets/app-icon-all.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash-logo-all.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#3a3a4b"
+      "backgroundColor": "#303041"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -19,10 +17,7 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.odo",
       "splash": {
-        "image": "./assets/splash-logo-ios-mobile.png",
-        "tabletImage": "./assets/splash-logo-ios-tablet.png",
-        "resizeMode": "contain",
-        "backgroundColor": "#3a3a4b"
+        "backgroundColor": "#303041"
       }
     },
     "android": {
@@ -33,9 +28,7 @@
         "backgroundImage": "./assets/app-icon-android-adaptive-background.png"
       },
       "splash": {
-        "image": "./assets/splash-logo-android-universal.png",
-        "resizeMode": "contain",
-        "backgroundColor": "#3a3a4b"
+        "backgroundColor": "#303041"
       }
     }
   }

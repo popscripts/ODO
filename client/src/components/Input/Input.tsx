@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
-import { TextInput, Wrapper } from './InputStyle'
+import { InputIcon, InputIconWrapper, TextInput, Wrapper } from './InputStyle'
 import { ErrorText } from '../commonStyles'
 import { colors } from '../../theme/colors'
 import { KeyboardTypeOptions } from 'react-native'
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 
 type Props = {
     text: string
@@ -23,8 +24,19 @@ function Input({
     keyboardType = 'default'
 }: Props) {
     const [focused, setFocused] = useState<boolean>(false)
+    const [showPassword, setShowPassword] = useState<boolean>(password)
+
+    function handlePassword() {
+        setShowPassword((showPassword) => !showPassword)
+    }
     return (
         <Wrapper>
+            {password && (
+                <InputIconWrapper onPress={handlePassword}>
+                    <InputIcon icon={showPassword ? faEyeSlash : faEye} size={20} />
+                </InputIconWrapper>
+            )}
+
             <TextInput
                 placeholder={placeholder}
                 value={text}
@@ -35,7 +47,7 @@ function Input({
                 error={error}
                 placeholderTextColor={colors.textDim}
                 autoCapitalize={'none'}
-                secureTextEntry={password}
+                secureTextEntry={showPassword}
                 keyboardType={keyboardType}
             />
             {errorText && <ErrorText>{errorText}</ErrorText>}

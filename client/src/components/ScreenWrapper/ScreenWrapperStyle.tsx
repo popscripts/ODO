@@ -13,7 +13,7 @@ export const Wrapper = styled(SafeAreaView)`
     background-color: ${() => colors.transparent};
 `
 
-export const Background = styled.ImageBackground`
+export const Background = styled.View`
     position: absolute;
     background-color: ${() => colors.background};
     width: 100%;
