@@ -10,6 +10,8 @@ export const validate = (validations: Array<any>) => {
             return next()
         }
 
-        return response.status(422).json({ result: errors.array()[0].msg, error: 1 })
+        return response
+            .status(422)
+            .json({ result: errors.array()[0].msg, error: 1, param: errors.array()[0].param })
     }
 }

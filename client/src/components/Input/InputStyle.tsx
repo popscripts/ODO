@@ -22,8 +22,7 @@ export const TextInput = styled.TextInput<TextInputProps>`
     padding: ${spacing.xs};
     padding-left: ${spacing.md};
     border-radius: 10px;
-    border-color: ${(props) => (props.focused ? colors.palette.primary300 : colors.palette.neutral300)};
-    border-width: 1px;
+    border: 1px ${(props) => (props.focused ? colors.palette.primary300 : colors.palette.neutral300)};
 `
 
 export const Wrapper = styled.View`
