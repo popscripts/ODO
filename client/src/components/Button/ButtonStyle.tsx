@@ -19,6 +19,6 @@ export const ButtonText = styled.Text`
     font-family: ${typography.primary.medium};
     color: ${colors.text};
     font-size: ${spacing.md};
-    margin: ${spacing.sm};
+    padding: 10px;
     text-align: center;
 `

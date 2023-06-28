@@ -1,4 +1,5 @@
 export type apiLoginResponse = {
-    error: number,
     result: string
+    error: number
+    param?: string
 }
