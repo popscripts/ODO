@@ -1,5 +1,5 @@
 import * as React from 'react'
-import Svg, { SvgProps, Path, Circle } from 'react-native-svg'
+import Svg, { Path, Circle } from 'react-native-svg'
 
 type Props = {
     color: string
