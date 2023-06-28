@@ -4,14 +4,17 @@ import MainScreen from '../screens/MainScreen'
 import { Dimensions, ViewStyle } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { colors } from '../theme/colors'
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faUser, faInfo, faHome, faList, faCutlery } from '@fortawesome/free-solid-svg-icons'
+import UserIcon from '../components/icons/UserIcon'
+import ListIcon from '../components/icons/ListIcon'
+import InfoIcon from '../components/icons/InfoIcon'
+import HomeIcon from '../components/icons/HomeIcon'
+import CutleryIcon from '../components/icons/CutleryIcon'
 
 const Tab = createMaterialTopTabNavigator()
 
 function MainNavigator() {
     const { bottom } = useSafeAreaInsets()
-    const tabWidth = (Dimensions.get('window').width * 0.9) / 5
+    const tabWidth = (Dimensions.get('screen').width * 0.9) / 5
 
     return (
         <Tab.Navigator
@@ -20,7 +23,8 @@ function MainNavigator() {
             screenOptions={{
                 tabBarShowLabel: false,
                 tabBarStyle: [$tabBar, { bottom: bottom + 10 }],
-                tabBarIndicatorStyle: [$tabBarIndicator, { marginLeft: (tabWidth - 45) / 2 }]
+                tabBarIndicatorStyle: [$tabBarIndicator, { marginLeft: (tabWidth - 50) / 2 }],
+                tabBarIconStyle: $tabBarIcon
             }}
         >
             <Tab.Screen
@@ -28,11 +32,7 @@ function MainNavigator() {
                 component={MainScreen}
                 options={{
                     tabBarIcon: ({ focused }) => (
-                        <FontAwesomeIcon
-                            icon={faUser}
-                            color={focused ? colors.palette.neutral200 : colors.palette.neutral800}
-                            size={30}
-                        />
+                        <UserIcon color={focused ? colors.palette.neutral200 : colors.palette.neutral800} />
                     )
                 }}
             ></Tab.Screen>
@@ -41,11 +41,7 @@ function MainNavigator() {
                 component={MainScreen}
                 options={{
                     tabBarIcon: ({ focused }) => (
-                        <FontAwesomeIcon
-                            icon={faInfo}
-                            color={focused ? colors.palette.neutral200 : colors.palette.neutral800}
-                            size={30}
-                        />
+                        <InfoIcon color={focused ? colors.palette.neutral200 : colors.palette.neutral800} />
                     )
                 }}
             ></Tab.Screen>
@@ -54,11 +50,7 @@ function MainNavigator() {
                 component={MainScreen}
                 options={{
                     tabBarIcon: ({ focused }) => (
-                        <FontAwesomeIcon
-                            icon={faHome}
-                            color={focused ? colors.palette.neutral200 : colors.palette.neutral800}
-                            size={30}
-                        />
+                        <HomeIcon color={focused ? colors.palette.neutral200 : colors.palette.neutral800} />
                     )
                 }}
             ></Tab.Screen>
@@ -67,11 +59,7 @@ function MainNavigator() {
                 component={MainScreen}
                 options={{
                     tabBarIcon: ({ focused }) => (
-                        <FontAwesomeIcon
-                            icon={faList}
-                            color={focused ? colors.palette.neutral200 : colors.palette.neutral800}
-                            size={30}
-                        />
+                        <ListIcon color={focused ? colors.palette.neutral200 : colors.palette.neutral800} />
                     )
                 }}
             ></Tab.Screen>
@@ -80,10 +68,8 @@ function MainNavigator() {
                 component={MainScreen}
                 options={{
                     tabBarIcon: ({ focused }) => (
-                        <FontAwesomeIcon
-                            icon={faCutlery}
+                        <CutleryIcon
                             color={focused ? colors.palette.neutral200 : colors.palette.neutral800}
-                            size={30}
                         />
                     )
                 }}
@@ -99,7 +85,7 @@ const $tabBar: ViewStyle = {
     width: '90%',
     borderTopWidth: 0,
     position: 'absolute',
-    left: '5%',
+    marginLeft: '5%',
     borderRadius: 30,
     height: 60
 }
@@ -109,5 +95,12 @@ const $tabBarIndicator: ViewStyle = {
     height: 50,
     width: 50,
     borderRadius: 25,
-    marginBottom: 5
+    marginBottom: 5,
+    elevation: 5
+}
+
+const $tabBarIcon: ViewStyle = {
+    position: 'absolute',
+    left: -15,
+    bottom: -15
 }

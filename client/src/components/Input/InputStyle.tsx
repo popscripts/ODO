@@ -31,10 +31,6 @@ export const Wrapper = styled.View`
     flex-shrink: 3;
 `
 
-export const InputIcon = styled(FontAwesomeIcon)`
-    color: ${colors.palette.neutral300};
-`
-
 export const InputIconWrapper = styled.TouchableOpacity`
     position: absolute;
     z-index: 3;
