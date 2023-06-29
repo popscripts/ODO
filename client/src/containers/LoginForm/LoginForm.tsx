@@ -7,6 +7,7 @@ import { Heading } from '../../components/commonStyles'
 import Input from '../../components/Input/Input'
 import Button from '../../components/Button/Button'
 import { colors } from '../../theme/colors'
+import { Vibration } from 'react-native'
 
 type Error = {
     error: boolean
@@ -60,15 +61,18 @@ function LoginForm() {
         setIsSubmitted(true)
 
         if (loginValidation(login).error) {
+            Vibration.vibrate(100)
             return null
         }
 
         if (passwordValidation(password).error) {
+            Vibration.vibrate(100)
             return null
         }
 
         logIn(login, password).then((res: apiLoginResponse) => {
             if (res.error) {
+                Vibration.vibrate(100)
                 setError(res?.result, res?.param)
             }
         })

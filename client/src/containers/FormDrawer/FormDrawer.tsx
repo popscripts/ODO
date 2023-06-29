@@ -7,12 +7,14 @@ import LoginForm from '../LoginForm/LoginForm'
 import RegisterForm from '../RegisterForm/RegisterForm'
 import { TouchableOpacity, UIManager, Platform, LayoutAnimation } from 'react-native'
 import { Link } from '../../components/commonStyles'
+import { useKeyboardHeight } from '../../hooks/useKeyboardHeight'
 
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
     UIManager.setLayoutAnimationEnabledExperimental(true)
 }
 
 function FormDrawer() {
+    const keyboardHeight = useKeyboardHeight()
     const { bottom } = useSafeAreaInsets()
     const [formOpened, setFormOpened] = useState('')
 
@@ -49,7 +51,7 @@ function FormDrawer() {
                     </TouchableOpacity>
                 )}
             </Wrapper>
-            {formOpened && <BottomArea />}
+            {formOpened && <BottomArea height={keyboardHeight} />}
         </>
     )
 }
