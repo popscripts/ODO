@@ -28,14 +28,6 @@ export const SafeArea = styled(SafeAreaView)`
     height: 100%;
 `
 
-export const JustifyAlignCenter = styled.View`
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-grow: 1;
-`
-
 export const Link = styled.Text`
     font-family: ${typography.primary.normal};
     font-size: ${spacing.md};

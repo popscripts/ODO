@@ -12,6 +12,7 @@ import {
 import { apiLoginResponse } from '../../types/response.type'
 import { BottomWrapper, FormWrapper } from './RegisterFormStyle'
 import { colors } from '../../theme/colors'
+import { Vibration } from 'react-native'
 
 type Error = {
     error: boolean
@@ -93,23 +94,28 @@ function RegisterForm() {
         setIsSubmitted(true)
 
         if (loginValidation(login).error) {
+            Vibration.vibrate(100)
             return null
         }
 
         if (passwordValidation(password).error) {
+            Vibration.vibrate(100)
             return null
         }
 
         if (repeatPasswordValidation(password, repeatPassword).error) {
+            Vibration.vibrate(100)
             return null
         }
 
         if (keyValidation(key).error) {
+            Vibration.vibrate(100)
             return null
         }
 
         register(parseInt(key), login, password).then((res: apiLoginResponse) => {
             if (res.error) {
+                Vibration.vibrate(100)
                 setError(res?.result, res?.param)
             }
         })
