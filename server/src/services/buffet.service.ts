@@ -111,13 +111,20 @@ export const getOrder = async (id: number): Promise<BuffetType.Order | null> => 
     })
 }
 
-export const placeOrder = async (openDayId: number, orderedById: number, dishId: number, amount: number) => {
+export const placeOrder = async (
+    openDayId: number,
+    orderedById: number,
+    dishId: number,
+    amount: number,
+    comment: string | null
+) => {
     return db.order.create({
         data: {
             openDayId,
             dishId,
             amount,
-            orderedById
+            orderedById,
+            comment
         }
     })
 }

@@ -1,5 +1,5 @@
 import { db } from '../utils/db.server'
-import { Classroom, NewClassroom } from '../types/classroom.type'
+import { Classroom } from '../types/classroom.type'
 
 export const listClassrooms = async (openDayId: number): Promise<Classroom[]> => {
     return db.classroom.findMany({
@@ -86,8 +86,13 @@ export const addClassroom = async (
     })
 }
 
-export const updateClassroom = async (id: number, updatedClassroom: NewClassroom) => {
-    const { classroom, title, description, managedById } = updatedClassroom
+export const updateClassroom = async (
+    id: number,
+    classroom: string,
+    title: string,
+    description: string,
+    managedById: number
+) => {
     return db.classroom.update({
         where: {
             id

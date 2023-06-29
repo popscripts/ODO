@@ -10,11 +10,12 @@ import { LoginUser, Token, User } from '../types/auth.type'
 import { logger } from '../config/logger'
 import { UploadedFile } from 'express-fileupload'
 import { upload } from '../utils/file.helper'
+import { Key } from '../types/key.types'
 
 export const register = async (request: Request, response: Response) => {
     try {
         const { key, username, password } = request.body
-        const keyData = await KeyService.getKey(key)
+        const keyData: Key | null = await KeyService.getKey(key)
 
         if (!keyData) {
             logger.error(`500 | keyData is undefined`)
@@ -24,7 +25,8 @@ export const register = async (request: Request, response: Response) => {
         const registerData = {
             openDayId: keyData.openDayId,
             username,
-            password
+            password,
+            accountType: AccountTypes['user']
         }
         await AuthService.register(registerData)
         return response.status(201).json(Callback.register)

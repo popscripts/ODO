@@ -19,3 +19,9 @@ export type Dish = {
     cheese: boolean
     ham: boolean
 }
+
+export type NewOrder = {
+    dish: string
+    amount: number
+    comment: string | null
+}
