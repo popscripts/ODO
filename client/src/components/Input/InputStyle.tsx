@@ -2,7 +2,6 @@ import styled from 'styled-components/native'
 import { colors } from '../../theme/colors'
 import { typography } from '../../theme/typography'
 import { spacing } from '../../theme/spacing'
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 
 type TextInputProps = {
     placeholder: string
@@ -28,10 +27,6 @@ export const TextInput = styled.TextInput<TextInputProps>`
 export const Wrapper = styled.View`
     width: 100%;
     flex-shrink: 3;
-`
-
-export const InputIcon = styled(FontAwesomeIcon)`
-    color: ${colors.palette.neutral300};
 `
 
 export const InputIconWrapper = styled.TouchableOpacity`

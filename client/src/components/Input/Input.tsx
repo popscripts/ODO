@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
-import { InputIcon, InputIconWrapper, TextInput, Wrapper } from './InputStyle'
+import { InputIconWrapper, TextInput, Wrapper } from './InputStyle'
 import { ErrorText } from '../commonStyles'
 import { colors } from '../../theme/colors'
 import { KeyboardTypeOptions } from 'react-native'
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
+import EyeIcon from '../icons/EyeIcon'
+import EyeClosedIcon from '../icons/EyeClosedIcon'
 
 type Props = {
     text: string
@@ -33,7 +34,11 @@ function Input({
         <Wrapper>
             {password && (
                 <InputIconWrapper onPress={handlePassword}>
-                    <InputIcon icon={showPassword ? faEyeSlash : faEye} size={20} />
+                    {showPassword ? (
+                        <EyeClosedIcon color={colors.palette.neutral300} size={25} />
+                    ) : (
+                        <EyeIcon color={colors.palette.neutral300} size={25} />
+                    )}
                 </InputIconWrapper>
             )}
 
