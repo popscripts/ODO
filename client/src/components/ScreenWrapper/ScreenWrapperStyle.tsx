@@ -7,10 +7,7 @@ import { spacing } from '../../theme/spacing'
 export const Wrapper = styled(SafeAreaView)`
     height: 100%;
     display: flex;
-    padding-left: ${spacing.sm};
-    padding-right: ${spacing.sm};
     align-items: center;
-    background-color: ${() => colors.transparent};
 `
 
 export const Background = styled.View`

@@ -16,6 +16,20 @@ export const Heading = styled.Text`
     font-size: ${spacing.lg};
     color: ${colors.text};
 `
+export const HeadingCenter = styled.Text`
+    font-family: ${typography.primary.bold};
+    font-size: ${spacing.lg};
+    color: ${colors.text};
+    margin: ${spacing.lg};
+    width: 100%;
+    text-align: center;
+`
+
+export const MediumText = styled.Text`
+    font-family: ${typography.primary.normal};
+    font-size: ${spacing.nm};
+    color: ${colors.text};
+`
 
 export const DefaultBackground = styled.View`
     height: 100%;
@@ -26,6 +40,10 @@ export const DefaultBackground = styled.View`
 export const SafeArea = styled(SafeAreaView)`
     width: 100%;
     height: 100%;
+`
+
+export const Scroll = styled.ScrollView`
+    width: 100%;
 `
 
 export const Link = styled.Text`
