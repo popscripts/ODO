@@ -1,9 +1,10 @@
-import { Classroom, ManagedClassroom } from './classroom.type'
+import { ManagedClassroom } from './classroom.type'
 
 export type NewUser = {
     openDayId: number
     username: string
     password: string
+    accountType: number
 }
 
 export type LoginUser = {
@@ -16,23 +17,24 @@ export type LoginUser = {
 
 export type User = {
     id: number
-    username: string
     openDayId: number
+    username: string
+    name: string | null
     accountType: AccountType
     pictureName: string | null
     ManagedClassroom: Array<ManagedClassroom>
-    ReservedClassroom: Array<Classroom>
-    TakenClassroom: Array<Classroom>
+    group: Group | null
 }
 
 export type ShortUser = {
     id: number
     username: string
+    name: string | null
 }
 
 export type AccountType = {
     id: number
-    accountType: string
+    name: string
 }
 
 export interface Token {
@@ -54,4 +56,12 @@ export type Users = {
 
 export type PictureName = {
     pictureName: string | null
+}
+
+export type Group = {
+    id: number
+    groupMemberOne: ShortUser | null
+    groupMemberTwo: ShortUser | null
+    groupSize: number | null
+    description: string | null
 }

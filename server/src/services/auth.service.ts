@@ -27,7 +27,7 @@ export const login = async (username: string): Promise<AuthType.LoginUser | null
             accountType: {
                 select: {
                     id: true,
-                    accountType: true
+                    name: true
                 }
             }
         }
@@ -53,12 +53,13 @@ export const getUser = async (id: number): Promise<AuthType.User | null> => {
         },
         select: {
             id: true,
-            username: true,
             openDayId: true,
+            username: true,
+            name: true,
             accountType: {
                 select: {
                     id: true,
-                    accountType: true
+                    name: true
                 }
             },
             pictureName: true,
@@ -70,80 +71,25 @@ export const getUser = async (id: number): Promise<AuthType.User | null> => {
                     description: true
                 }
             },
-            ReservedClassroom: {
+            group: {
                 select: {
                     id: true,
-                    openDayId: true,
-                    classroom: true,
-                    title: true,
-                    description: true,
-                    managedBy: {
+                    groupMemberOne: {
                         select: {
                             id: true,
                             username: true,
-                            pictureName: true
+                            name: true
                         }
                     },
-                    status: {
-                        select: {
-                            id: true,
-                            status: true
-                        }
-                    },
-                    reservedAt: true,
-                    reservedBy: {
+                    groupMemberTwo: {
                         select: {
                             id: true,
                             username: true,
-                            pictureName: true
+                            name: true
                         }
                     },
-                    takenBy: {
-                        select: {
-                            id: true,
-                            username: true,
-                            pictureName: true
-                        }
-                    },
-                    takenAt: true
-                }
-            },
-            TakenClassroom: {
-                select: {
-                    id: true,
-                    openDayId: true,
-                    classroom: true,
-                    title: true,
-                    description: true,
-                    managedBy: {
-                        select: {
-                            id: true,
-                            username: true,
-                            pictureName: true
-                        }
-                    },
-                    status: {
-                        select: {
-                            id: true,
-                            status: true
-                        }
-                    },
-                    reservedAt: true,
-                    reservedBy: {
-                        select: {
-                            id: true,
-                            username: true,
-                            pictureName: true
-                        }
-                    },
-                    takenBy: {
-                        select: {
-                            id: true,
-                            username: true,
-                            pictureName: true
-                        }
-                    },
-                    takenAt: true
+                    groupSize: true,
+                    description: true
                 }
             }
         }
@@ -202,7 +148,7 @@ export const restoreUser = async (id: number) => {
 export const isValidAccountType = async (accountType: string): Promise<boolean> => {
     const isValid = await db.accountType.findFirst({
         where: {
-            accountType
+            name: accountType
         }
     })
     return !!isValid

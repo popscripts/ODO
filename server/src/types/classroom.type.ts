@@ -1,5 +1,5 @@
 import { Status } from './status.type'
-import { ShortUser } from './auth.type'
+import { Group, ShortUser } from './auth.type'
 
 export type NewClassroom = {
     openDayId: number
@@ -18,8 +18,8 @@ export type Classroom = {
     managedBy: ShortUser | null
     status: Status
     reservedAt: Date | null
-    reservedBy: ShortUser | null
-    takenBy: ShortUser | null
+    reservedBy: Group | null
+    takenBy: Group | null
     takenAt: Date | null
 }
 

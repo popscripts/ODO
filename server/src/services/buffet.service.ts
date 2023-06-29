@@ -9,12 +9,15 @@ export const getOrders = async (openDayId: number): Promise<BuffetType.Order[]> 
         select: {
             id: true,
             openDayId: true,
-            order: true,
+            dish: true,
+            amount: true,
+            comment: true,
             status: true,
             orderedBy: {
                 select: {
                     id: true,
-                    username: true
+                    username: true,
+                    name: true
                 }
             },
             createdAt: true,
@@ -34,12 +37,15 @@ export const getUserOrders = async (orderedById: number): Promise<BuffetType.Ord
         select: {
             id: true,
             openDayId: true,
-            order: true,
+            dish: true,
+            amount: true,
+            comment: true,
             status: true,
             orderedBy: {
                 select: {
                     id: true,
-                    username: true
+                    username: true,
+                    name: true
                 }
             },
             createdAt: true,
@@ -60,12 +66,15 @@ export const getOrdersByStatus = async (openDayId: number, statusId: number): Pr
         select: {
             id: true,
             openDayId: true,
-            order: true,
+            dish: true,
+            amount: true,
+            comment: true,
             status: true,
             orderedBy: {
                 select: {
                     id: true,
-                    username: true
+                    username: true,
+                    name: true
                 }
             },
             createdAt: true,
@@ -85,12 +94,15 @@ export const getOrder = async (id: number): Promise<BuffetType.Order | null> => 
         select: {
             id: true,
             openDayId: true,
-            order: true,
+            dish: true,
+            amount: true,
+            comment: true,
             status: true,
             orderedBy: {
                 select: {
                     id: true,
-                    username: true
+                    username: true,
+                    name: true
                 }
             },
             createdAt: true,
@@ -99,11 +111,12 @@ export const getOrder = async (id: number): Promise<BuffetType.Order | null> => 
     })
 }
 
-export const placeOrder = async (openDayId: number, orderedById: number, order: string) => {
+export const placeOrder = async (openDayId: number, orderedById: number, dishId: number, amount: number) => {
     return db.order.create({
         data: {
             openDayId,
-            order,
+            dishId,
+            amount,
             orderedById
         }
     })
@@ -143,12 +156,15 @@ export const getUserOrdersByStatus = async (
         select: {
             id: true,
             openDayId: true,
-            order: true,
+            dish: true,
+            amount: true,
+            comment: true,
             status: true,
             orderedBy: {
                 select: {
                     id: true,
-                    username: true
+                    username: true,
+                    name: true
                 }
             },
             createdAt: true,
