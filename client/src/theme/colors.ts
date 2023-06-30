@@ -10,23 +10,23 @@ const palette = {
     neutral900: '#000000',
 
     primary100: '#ABEFDF',
-    primary200: '#40DD88',
-    primary300: '#2BD479',
+    primary200: '#2ad375',
+    primary300: '#099848',
 
     secondary100: '#DDA4FF',
-    secondary200: '#C466FD',
-    secondary300: '#A748E1',
+    secondary200: '#9e43d3',
+    secondary300: '#7723ad',
 
-    tertiary200: '#54CBFE',
-    tertiary300: '#0EA4E5',
+    tertiary200: '#28a6dc',
+    tertiary300: '#0076a8',
 
-    quaternary100: '#FFA8A8',
-    quaternary200: '#FF7878',
-    quaternary300: '#FF4C4C',
+    quaternary100: '#ef5c5c',
+    quaternary200: '#d33a3a',
+    quaternary300: '#b71818',
 
-    quinary100: '#FFD076',
-    quinary200: '#FDC968',
-    quinary300: '#EBA02E',
+    quinary100: '#ecb146',
+    quinary200: '#e08b0c',
+    quinary300: '#9d5e00',
     quinary400: '#E5AD42',
 
     accent100: '#FFDC23',
@@ -41,6 +41,7 @@ const palette = {
 
 export const colors = {
     palette,
+
     transparent: 'rgba(0, 0, 0, 0)',
 
     text: palette.neutral200,

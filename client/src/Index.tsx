@@ -5,6 +5,8 @@ import { customFontsToLoad } from './theme/typography'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import * as NavigationBar from 'expo-navigation-bar'
 import { DefaultBackground } from './components/commonStyles'
+import ClassroomProvider from './providers/ClassroomProvider'
+import ClockProvider from './providers/ClockProvider'
 
 export default function Index() {
     const [areFontsLoaded] = useFonts(customFontsToLoad)
@@ -18,7 +20,11 @@ export default function Index() {
         <DefaultBackground>
             <SafeAreaProvider>
                 <AuthProvider>
-                    <AppNavigator />
+                    <ClassroomProvider>
+                        <ClockProvider>
+                            <AppNavigator />
+                        </ClockProvider>
+                    </ClassroomProvider>
                 </AuthProvider>
             </SafeAreaProvider>
         </DefaultBackground>
