@@ -20,9 +20,11 @@ model OpenDay {
 }
 
 model AccountType {
-  id   Int    @id @default(autoincrement())
-  name String @db.VarChar(16)
-  User User[]
+  id        Int      @id @default(autoincrement())
+  name      String   @db.VarChar(16)
+  User      User[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Classroom {
@@ -31,18 +33,20 @@ model Classroom {
   openDayId    Int
   classroom    String    @db.VarChar(128)
   managedBy    User?     @relation("managed", fields: [managedById], references: [id])
-  managedById  Int?
+  managedById  Int?      @unique
   title        String    @db.VarChar(128)
   description  String    @db.VarChar(500)
   status       Status    @relation(fields: [statusId], references: [id])
   statusId     Int       @default(1)
   reservedBy   Group?    @relation(name: "reserved", fields: [reservedById], references: [id])
-  reservedById Int?
+  reservedById Int?      @unique
   reservedAt   DateTime?
   takenBy      Group?    @relation(name: "taken", fields: [takenById], references: [id])
-  takenById    Int?
+  takenById    Int?      @unique
   takenAt      DateTime?
   deleted      Boolean   @default(false)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
 }
 
 model Info {
@@ -85,6 +89,8 @@ model Order {
 model Status {
   id        Int         @id @default(autoincrement())
   name      String      @db.VarChar(16)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
   Order     Order[]
   Classroom Classroom[]
 }
@@ -95,8 +101,6 @@ model User {
   openDayId        Int
   accountType      AccountType @relation(fields: [accountTypeId], references: [id])
   accountTypeId    Int         @default(2)
-  group            Group?      @relation(fields: [groupId], references: [id])
-  groupId          Int?
   username         String      @unique @db.VarChar(64)
   password         String      @db.VarChar(255)
   name             String?     @db.VarChar(64)
@@ -105,28 +109,31 @@ model User {
   createdAt        DateTime    @default(now())
   updatedAt        DateTime    @updatedAt
   Order            Order[]     @relation("orders")
-  ManagedClassroom Classroom[] @relation("managed")
-  GroupMemberOne   Group[]     @relation("groupMemberOne")
-  GroupMemberTwo   Group[]     @relation("groupMemberTwo")
+  ManagedClassroom Classroom?  @relation("managed")
+  GroupMemberOne   Group?      @relation(name: "groupMemberOne")
+  GroupMemberTwo   Group?      @relation(name: "groupMemberTwo")
 }
 
 model Group {
-  id               Int         @id @default(autoincrement())
-  groupMemberOne   User?       @relation(name: "groupMemberOne", fields: [groupMemberOneId], references: [id])
-  groupMemberOneId Int?
-  groupMemberTwo   User?       @relation(name: "groupMemberTwo", fields: [groupMemberTwoId], references: [id])
-  groupMemberTwoId Int?
+  id               Int        @id @default(autoincrement())
+  groupMemberOne   User?      @relation(name: "groupMemberOne", fields: [groupMemberOneId], references: [id])
+  groupMemberOneId Int        @unique
+  groupMemberTwo   User?      @relation(name: "groupMemberTwo", fields: [groupMemberTwoId], references: [id])
+  groupMemberTwoId Int        @unique
   groupSize        Int?
   description      String?
-  User             User[]
-  Reserved         Classroom[] @relation("reserved")
-  Taken            Classroom[] @relation("taken")
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+  Reserved         Classroom? @relation("reserved")
+  Taken            Classroom? @relation("taken")
 }
 
 model Dish {
-  id     Int     @id @default(autoincrement())
-  name   String  @db.VarChar(64)
-  cheese Boolean @default(false)
-  ham    Boolean @default(false)
-  Order  Order[]
+  id        Int      @id @default(autoincrement())
+  name      String   @db.VarChar(64)
+  cheese    Boolean  @default(false)
+  ham       Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Order     Order[]
 }

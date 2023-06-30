@@ -4,10 +4,11 @@ import * as Error from '../libs/errors'
 import * as Callback from '../libs/callbacks'
 import * as AuthHelper from '../utils/auth.helper'
 import { setClassroomStatus } from '../utils/status.helper'
-import { Token } from '../types/auth.type'
+import { Group, Token } from '../types/auth.type'
 import { verifyToken } from '../utils/auth.helper'
 import { logger } from '../config/logger'
 import { Classroom } from '../types/classroom.type'
+import { getGroupByMemberId } from '../services/auth.service'
 
 export const listClassrooms = async (request: Request, response: Response) => {
     try {
@@ -91,7 +92,8 @@ export const changeClassroomStatus = async (request: Request, response: Response
         const { id, status } = request.body
         const token = request.cookies.JWT
         const tokenData: Token = AuthHelper.verifyToken(token, 'accessToken')
-        await setClassroomStatus(id, status, tokenData.id)
+        const group: Group | null = await getGroupByMemberId(tokenData.id)
+        await setClassroomStatus(id, status, group!.id)
         return response.status(201).json(Callback.changeStatus)
     } catch (error: any) {
         logger.error(`500 | ${error}`)

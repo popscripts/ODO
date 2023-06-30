@@ -1,4 +1,4 @@
-import { ManagedClassroom } from './classroom.type'
+import { ManagedClassroom, ShortClassroom } from './classroom.type'
 
 export type NewUser = {
     openDayId: number
@@ -12,7 +12,7 @@ export type LoginUser = {
     openDayId: number
     username: string
     password: string
-    accountType: object
+    accountType: AccountType
 }
 
 export type User = {
@@ -22,8 +22,7 @@ export type User = {
     name: string | null
     accountType: AccountType
     pictureName: string | null
-    ManagedClassroom: Array<ManagedClassroom>
-    group: Group | null
+    ManagedClassroom: ManagedClassroom | null
 }
 
 export type ShortUser = {
@@ -49,6 +48,7 @@ export interface Token {
 export type Users = {
     id: number
     username: string
+    name: string | null
     openDayId: number
     accountType: AccountType
     active: boolean
@@ -59,6 +59,16 @@ export type PictureName = {
 }
 
 export type Group = {
+    id: number
+    groupSize: number | null
+    groupMemberOne: ShortUser | null
+    groupMemberTwo: ShortUser | null
+    description: string | null
+    Reserved: ShortClassroom | null
+    Taken: ShortClassroom | null
+}
+
+export type ShortGroup = {
     id: number
     groupMemberOne: ShortUser | null
     groupMemberTwo: ShortUser | null
