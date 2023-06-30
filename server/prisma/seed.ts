@@ -1,19 +1,11 @@
 import { db } from '../src/utils/db.server'
 import { Dish } from '../src/types/buffet.type'
-
-type Status = {
-    id: number
-    name: string
-}
-
-type AccountType = {
-    id: number
-    name: string
-}
+import { Status } from '../src/types/status.type'
+import { AccountType } from '../src/types/auth.type'
 
 const seed = async () => {
     await Promise.all(
-        getStatuses().map((status) => {
+        getStatuses().map((status: Status) => {
             return db.status.create({
                 data: {
                     id: status.id,
@@ -24,7 +16,7 @@ const seed = async () => {
     )
 
     await Promise.all(
-        getAccountTypes().map((accountType) => {
+        getAccountTypes().map((accountType: AccountType) => {
             return db.accountType.create({
                 data: {
                     id: accountType.id,
@@ -60,7 +52,7 @@ const getStatuses = (): Array<Status> => {
         { id: 2, name: 'busy' },
         { id: 3, name: 'reserved' },
         { id: 4, name: 'ordered' },
-        { id: 5, name: 'in progress' },
+        { id: 5, name: 'inProgress' },
         { id: 6, name: 'done' },
         { id: 7, name: 'pickedUp' },
         { id: 8, name: 'cancelled' }

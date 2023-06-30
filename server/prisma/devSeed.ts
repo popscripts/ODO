@@ -74,8 +74,8 @@ const USERS: NewUser[] = faker.helpers.multiple(createRandomUser, {
 const createRandomClassroom = (): NewClassroom => {
     return {
         openDayId: 1,
-        classroom: faker.lorem.slug(3),
-        title: faker.lorem.slug({ min: 8, max: 10 }),
+        classroom: faker.number.int({ min: 1, max: 305 }).toString(10),
+        title: faker.lorem.slug({ min: 1, max: 4 }),
         description: faker.lorem.slug({ min: 15, max: 25 }),
         managedById: null
     }

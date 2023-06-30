@@ -6,11 +6,11 @@ import { Token } from '../types/auth.type'
 export const verifyAccountType = (...accountTypes: number[]) => {
     return (request: Request, response: Response, next: NextFunction) => {
         try {
-            const accountTypesArray = [...accountTypes]
+            const accountTypesArray: number[] = [...accountTypes]
             const token = request.cookies.JWT
-            const tokenData: Token = AuthHelper.verifyToken(token, 'accessToken')
-            const result = accountTypesArray
-                .map((allowedAccountType) => allowedAccountType === tokenData.accountType.id)
+            const { accountType }: Token = AuthHelper.verifyToken(token, 'accessToken')
+            const result: boolean = accountTypesArray
+                .map((allowedAccountType: number): boolean => allowedAccountType === accountType.id)
                 .includes(true)
             if (!result) {
                 return response.status(401).json(Error.permissionError)

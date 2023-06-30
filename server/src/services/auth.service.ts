@@ -1,10 +1,11 @@
 import { db } from '../utils/db.server'
 import { hashPassword } from '../utils/auth.helper'
 import * as AuthType from '../types/auth.type'
+import { Group } from '../types/auth.type'
 
 export const register = async (registerData: AuthType.NewUser) => {
     const { openDayId, username, password } = registerData
-    const hashedPassword = await hashPassword(password)
+    const hashedPassword: string = await hashPassword(password)
     return db.user.create({
         data: {
             openDayId,
@@ -70,27 +71,6 @@ export const getUser = async (id: number): Promise<AuthType.User | null> => {
                     title: true,
                     description: true
                 }
-            },
-            group: {
-                select: {
-                    id: true,
-                    groupMemberOne: {
-                        select: {
-                            id: true,
-                            username: true,
-                            name: true
-                        }
-                    },
-                    groupMemberTwo: {
-                        select: {
-                            id: true,
-                            username: true,
-                            name: true
-                        }
-                    },
-                    groupSize: true,
-                    description: true
-                }
             }
         }
     })
@@ -104,6 +84,7 @@ export const getUsers = async (openDayId: number): Promise<AuthType.Users[]> => 
         select: {
             id: true,
             username: true,
+            name: true,
             openDayId: true,
             accountType: true,
             active: true
@@ -172,6 +153,7 @@ export const getUsersByStatus = async (openDayId: number, status: boolean): Prom
         select: {
             id: true,
             username: true,
+            name: true,
             openDayId: true,
             accountType: true,
             active: true
@@ -207,6 +189,135 @@ export const getProfilePictureName = async (id: number): Promise<AuthType.Pictur
         },
         select: {
             pictureName: true
+        }
+    })
+}
+
+export const getGroup = async (id: number): Promise<Group | null> => {
+    return db.group.findUnique({
+        where: {
+            id
+        },
+        select: {
+            id: true,
+            groupSize: true,
+            groupMemberOne: {
+                select: {
+                    id: true,
+                    username: true,
+                    name: true
+                }
+            },
+            groupMemberTwo: {
+                select: {
+                    id: true,
+                    username: true,
+                    name: true
+                }
+            },
+            description: true,
+            Reserved: {
+                select: {
+                    id: true,
+                    openDayId: true,
+                    classroom: true,
+                    title: true,
+                    description: true,
+                    managedBy: {
+                        select: {
+                            id: true,
+                            username: true,
+                            name: true
+                        }
+                    },
+                    status: true
+                }
+            },
+            Taken: {
+                select: {
+                    id: true,
+                    openDayId: true,
+                    classroom: true,
+                    title: true,
+                    description: true,
+                    managedBy: {
+                        select: {
+                            id: true,
+                            username: true,
+                            name: true
+                        }
+                    },
+                    status: true
+                }
+            }
+        }
+    })
+}
+
+export const getGroupByMemberId = async (groupMemberId: number): Promise<Group | null> => {
+    return db.group.findFirst({
+        where: {
+            OR: [
+                {
+                    groupMemberOneId: groupMemberId
+                },
+                {
+                    groupMemberTwoId: groupMemberId
+                }
+            ]
+        },
+        select: {
+            id: true,
+            groupSize: true,
+            groupMemberOne: {
+                select: {
+                    id: true,
+                    username: true,
+                    name: true
+                }
+            },
+            groupMemberTwo: {
+                select: {
+                    id: true,
+                    username: true,
+                    name: true
+                }
+            },
+            description: true,
+            Reserved: {
+                select: {
+                    id: true,
+                    openDayId: true,
+                    classroom: true,
+                    title: true,
+                    description: true,
+                    managedBy: {
+                        select: {
+                            id: true,
+                            username: true,
+                            name: true
+                        }
+                    },
+                    status: true
+                }
+            },
+            Taken: {
+                select: {
+                    id: true,
+                    openDayId: true,
+                    classroom: true,
+                    title: true,
+                    description: true,
+                    managedBy: {
+                        select: {
+                            id: true,
+                            username: true,
+                            name: true
+                        }
+                    },
+                    status: true
+                }
+            }
         }
     })
 }
