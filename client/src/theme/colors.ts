@@ -20,13 +20,13 @@ const palette = {
     tertiary200: '#28a6dc',
     tertiary300: '#0076a8',
 
-    quaternary100: '#FFA8A8',
+    quaternary100: '#ef5c5c',
     quaternary200: '#d33a3a',
     quaternary300: '#b71818',
 
-    quinary100: '#FFD076',
-    quinary200: '#f1b036',
-    quinary300: '#be790e',
+    quinary100: '#ecb146',
+    quinary200: '#e08b0c',
+    quinary300: '#9d5e00',
     quinary400: '#E5AD42',
 
     accent100: '#FFDC23',

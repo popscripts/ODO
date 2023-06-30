@@ -9,7 +9,7 @@ export const ClassroomSectionWrapper = styled.View`
     flex-flow: row wrap;
     justify-content: center;
     align-items: center;
-    gap: ${spacing.md};
+    gap: 15px;
 `
 
 export const ClassroomSectionHeader = styled.View`

@@ -2,7 +2,6 @@ import styled from 'styled-components/native'
 import { colors } from '../../theme/colors'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { LinearGradient } from 'expo-linear-gradient'
-import { spacing } from '../../theme/spacing'
 
 export const Wrapper = styled(SafeAreaView)`
     height: 100%;

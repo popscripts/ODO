@@ -6,8 +6,6 @@ import MapClassrooms from '../containers/MapClassrooms'
 import ClassroomSection from '../components/ClassroomSection/ClassroomSection'
 import { Scroll } from '../components/commonStyles'
 import Footer from '../components/Footer/Footer'
-import MyTakenClassroomBox from '../containers/MyTakenClassroomBox/MyTakenClassroomBox'
-import MyReservedClassroomBox from '../containers/MyReservedClassroomBox/MyReservedClassroomBox'
 
 function MainScreen() {
     const classrooms = useClassrooms()
@@ -16,8 +14,6 @@ function MainScreen() {
         <ScreenWrapper>
             <Scroll>
                 <MainHeader />
-                <MyTakenClassroomBox classroom={classrooms[0]} />
-                <MyReservedClassroomBox classroom={classrooms[1]} />
                 <ClassroomSection title={'Wolne Sale'}>
                     <MapClassrooms
                         status={'free'}
