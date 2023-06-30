@@ -1,5 +1,4 @@
 import styled from 'styled-components/native'
-import { spacing } from '../../theme/spacing'
 import { LinearGradient } from 'expo-linear-gradient'
 import { colors } from '../../theme/colors'
 

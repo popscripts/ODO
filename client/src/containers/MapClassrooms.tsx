@@ -2,7 +2,6 @@ import React from 'react'
 import ClassroomBox from './ClassroomBox/ClassroomBox'
 import { Classroom } from '../types/classroom.type'
 import { colors } from '../theme/colors'
-import { Dimensions, View } from 'react-native'
 
 type Props = {
     data: Classroom[]

@@ -1,5 +1,5 @@
 import React, { useRef } from 'react'
-import { Animated, Easing, Text, View } from 'react-native'
+import { Animated, Easing } from 'react-native'
 import { AnimatedStyle, Gradient } from './TimedGradientStyle'
 
 type Props = {

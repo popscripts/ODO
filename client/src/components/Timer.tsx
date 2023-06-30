@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { MediumText } from './commonStyles'
 import { useClock } from '../providers/ClockProvider'
 import TimerDisplay from './TimerDisplay'
 

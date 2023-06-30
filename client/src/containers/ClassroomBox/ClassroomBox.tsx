@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Classroom } from '../../types/classroom.type'
 import { Heading, MediumText } from '../../components/commonStyles'
 import { ContentWrapper, Highlight, TimerWrapper, Wrapper } from './ClassroomBoxStyle'
