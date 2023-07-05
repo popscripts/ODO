@@ -29,3 +29,9 @@ export type ManagedClassroom = {
     title: string
     description: string
 }
+
+export type ParsedClassrooms = {
+    free: Classroom[]
+    reserved: Classroom[]
+    busy: Classroom[]
+}

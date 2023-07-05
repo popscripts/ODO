@@ -9,6 +9,7 @@ import ListIcon from '../components/icons/ListIcon'
 import InfoIcon from '../components/icons/InfoIcon'
 import HomeIcon from '../components/icons/HomeIcon'
 import CutleryIcon from '../components/icons/CutleryIcon'
+import PlaceholderScreen from '../screens/PlaceholderScreen'
 
 const Tab = createMaterialTopTabNavigator()
 
@@ -29,7 +30,7 @@ function MainNavigator() {
         >
             <Tab.Screen
                 name="settings"
-                component={MainScreen}
+                component={PlaceholderScreen}
                 options={{
                     tabBarIcon: ({ focused }) => (
                         <UserIcon color={focused ? colors.palette.neutral200 : colors.palette.neutral800} />
@@ -38,7 +39,7 @@ function MainNavigator() {
             ></Tab.Screen>
             <Tab.Screen
                 name="info"
-                component={MainScreen}
+                component={PlaceholderScreen}
                 options={{
                     tabBarIcon: ({ focused }) => (
                         <InfoIcon color={focused ? colors.palette.neutral200 : colors.palette.neutral800} />
@@ -56,7 +57,7 @@ function MainNavigator() {
             ></Tab.Screen>
             <Tab.Screen
                 name="list"
-                component={MainScreen}
+                component={PlaceholderScreen}
                 options={{
                     tabBarIcon: ({ focused }) => (
                         <ListIcon color={focused ? colors.palette.neutral200 : colors.palette.neutral800} />
@@ -65,7 +66,7 @@ function MainNavigator() {
             ></Tab.Screen>
             <Tab.Screen
                 name="buffet"
-                component={MainScreen}
+                component={PlaceholderScreen}
                 options={{
                     tabBarIcon: ({ focused }) => (
                         <CutleryIcon

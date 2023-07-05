@@ -2,6 +2,7 @@ import React from 'react'
 import ClassroomBox from './ClassroomBox/ClassroomBox'
 import { Classroom } from '../types/classroom.type'
 import { colors } from '../theme/colors'
+import { HeadingCenter, MediumTextCenter } from '../components/commonStyles'
 
 type Props = {
     data: Classroom[]
@@ -26,9 +27,11 @@ function MapClassrooms({ data, status }: Props) {
               ]
     return (
         <>
-            {data.map((item, id) => (
-                <ClassroomBox classroom={item} key={id} colorPalette={colorPalette} />
-            ))}
+            {data.length > 0 ? (
+                data.map((item, id) => <ClassroomBox classroom={item} key={id} colorPalette={colorPalette} />)
+            ) : (
+                <MediumTextCenter>Brak sal do wyświetlenia</MediumTextCenter>
+            )}
         </>
     )
 }
