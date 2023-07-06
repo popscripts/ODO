@@ -12,10 +12,10 @@ export const authorize = async (request: Request, response: Response, next: Next
         const tokenData: Token = AuthHelper.verifyToken(JWT, 'accessToken')
 
         // Check if the token renewal time is coming
-        const now = new Date()
-        const exp = new Date(tokenData.exp * 1000)
-        const difference = exp.getTime() - now.getTime()
-        const minutes = Math.round(difference / 60000)
+        const now: Date = new Date()
+        const exp: Date = new Date(tokenData.exp * 1000)
+        const difference: number = exp.getTime() - now.getTime()
+        const minutes: number = Math.round(difference / 60000)
 
         if (refreshToken && minutes < 15) {
             // Verify refresh token and get refresh token data
@@ -29,8 +29,8 @@ export const authorize = async (request: Request, response: Response, next: Next
                     accountType: tokenData.accountType
                 }
                 // Generate new tokens
-                const newAccessToken = AuthHelper.generateToken(newTokenData)
-                const newRefreshToken = AuthHelper.generateRefreshToken(newTokenData)
+                const newAccessToken: string = AuthHelper.generateToken(newTokenData)
+                const newRefreshToken: string = AuthHelper.generateRefreshToken(newTokenData)
 
                 // Set response cookies
                 response.cookie('JWT', newAccessToken, {

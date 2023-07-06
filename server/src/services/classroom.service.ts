@@ -1,5 +1,5 @@
 import { db } from '../utils/db.server'
-import { Classroom, NewClassroom } from '../types/classroom.type'
+import { Classroom } from '../types/classroom.type'
 
 export const listClassrooms = async (openDayId: number): Promise<Classroom[]> => {
     return db.classroom.findMany({
@@ -15,7 +15,8 @@ export const listClassrooms = async (openDayId: number): Promise<Classroom[]> =>
             managedBy: {
                 select: {
                     id: true,
-                    username: true
+                    username: true,
+                    name: true
                 }
             },
             status: true,
@@ -23,13 +24,43 @@ export const listClassrooms = async (openDayId: number): Promise<Classroom[]> =>
             reservedBy: {
                 select: {
                     id: true,
-                    username: true
+                    groupMemberOne: {
+                        select: {
+                            id: true,
+                            username: true,
+                            name: true
+                        }
+                    },
+                    groupMemberTwo: {
+                        select: {
+                            id: true,
+                            username: true,
+                            name: true
+                        }
+                    },
+                    groupSize: true,
+                    description: true
                 }
             },
             takenBy: {
                 select: {
                     id: true,
-                    username: true
+                    groupMemberOne: {
+                        select: {
+                            id: true,
+                            username: true,
+                            name: true
+                        }
+                    },
+                    groupMemberTwo: {
+                        select: {
+                            id: true,
+                            username: true,
+                            name: true
+                        }
+                    },
+                    groupSize: true,
+                    description: true
                 }
             },
             takenAt: true
@@ -55,8 +86,13 @@ export const addClassroom = async (
     })
 }
 
-export const updateClassroom = async (id: number, updatedClassroom: NewClassroom) => {
-    const { classroom, title, description, managedById } = updatedClassroom
+export const updateClassroom = async (
+    id: number,
+    classroom: string,
+    title: string,
+    description: string,
+    managedById: number
+) => {
     return db.classroom.update({
         where: {
             id
@@ -115,7 +151,7 @@ export const listFreeClassrooms = async (openDayId: number): Promise<Classroom[]
         where: {
             openDayId,
             status: {
-                status: 'free'
+                name: 'free'
             }
         },
         select: {
@@ -128,7 +164,8 @@ export const listFreeClassrooms = async (openDayId: number): Promise<Classroom[]
                 select: {
                     id: true,
                     username: true,
-                    pictureName: true
+                    pictureName: true,
+                    name: true
                 }
             },
             status: true,
@@ -136,15 +173,43 @@ export const listFreeClassrooms = async (openDayId: number): Promise<Classroom[]
             reservedBy: {
                 select: {
                     id: true,
-                    username: true,
-                    pictureName: true
+                    groupMemberOne: {
+                        select: {
+                            id: true,
+                            username: true,
+                            name: true
+                        }
+                    },
+                    groupMemberTwo: {
+                        select: {
+                            id: true,
+                            username: true,
+                            name: true
+                        }
+                    },
+                    groupSize: true,
+                    description: true
                 }
             },
             takenBy: {
                 select: {
                     id: true,
-                    username: true,
-                    pictureName: true
+                    groupMemberOne: {
+                        select: {
+                            id: true,
+                            username: true,
+                            name: true
+                        }
+                    },
+                    groupMemberTwo: {
+                        select: {
+                            id: true,
+                            username: true,
+                            name: true
+                        }
+                    },
+                    groupSize: true,
+                    description: true
                 }
             },
             takenAt: true
@@ -157,7 +222,7 @@ export const listBusyClassrooms = async (openDayId: number): Promise<Classroom[]
         where: {
             openDayId,
             status: {
-                status: 'busy'
+                name: 'busy'
             }
         },
         select: {
@@ -170,7 +235,8 @@ export const listBusyClassrooms = async (openDayId: number): Promise<Classroom[]
                 select: {
                     id: true,
                     username: true,
-                    pictureName: true
+                    pictureName: true,
+                    name: true
                 }
             },
             status: true,
@@ -178,15 +244,43 @@ export const listBusyClassrooms = async (openDayId: number): Promise<Classroom[]
             reservedBy: {
                 select: {
                     id: true,
-                    username: true,
-                    pictureName: true
+                    groupMemberOne: {
+                        select: {
+                            id: true,
+                            username: true,
+                            name: true
+                        }
+                    },
+                    groupMemberTwo: {
+                        select: {
+                            id: true,
+                            username: true,
+                            name: true
+                        }
+                    },
+                    groupSize: true,
+                    description: true
                 }
             },
             takenBy: {
                 select: {
                     id: true,
-                    username: true,
-                    pictureName: true
+                    groupMemberOne: {
+                        select: {
+                            id: true,
+                            username: true,
+                            name: true
+                        }
+                    },
+                    groupMemberTwo: {
+                        select: {
+                            id: true,
+                            username: true,
+                            name: true
+                        }
+                    },
+                    groupSize: true,
+                    description: true
                 }
             },
             takenAt: true
@@ -199,7 +293,7 @@ export const listReservedClassrooms = async (openDayId: number): Promise<Classro
         where: {
             openDayId,
             status: {
-                status: 'reserved'
+                name: 'reserved'
             }
         },
         select: {
@@ -212,7 +306,8 @@ export const listReservedClassrooms = async (openDayId: number): Promise<Classro
                 select: {
                     id: true,
                     username: true,
-                    pictureName: true
+                    pictureName: true,
+                    name: true
                 }
             },
             status: true,
@@ -220,15 +315,43 @@ export const listReservedClassrooms = async (openDayId: number): Promise<Classro
             reservedBy: {
                 select: {
                     id: true,
-                    username: true,
-                    pictureName: true
+                    groupMemberOne: {
+                        select: {
+                            id: true,
+                            username: true,
+                            name: true
+                        }
+                    },
+                    groupMemberTwo: {
+                        select: {
+                            id: true,
+                            username: true,
+                            name: true
+                        }
+                    },
+                    groupSize: true,
+                    description: true
                 }
             },
             takenBy: {
                 select: {
                     id: true,
-                    username: true,
-                    pictureName: true
+                    groupMemberOne: {
+                        select: {
+                            id: true,
+                            username: true,
+                            name: true
+                        }
+                    },
+                    groupMemberTwo: {
+                        select: {
+                            id: true,
+                            username: true,
+                            name: true
+                        }
+                    },
+                    groupSize: true,
+                    description: true
                 }
             },
             takenAt: true
@@ -250,7 +373,9 @@ export const getClassroom = async (id: number): Promise<Classroom | null> => {
             managedBy: {
                 select: {
                     id: true,
-                    username: true
+                    username: true,
+                    pictureName: true,
+                    name: true
                 }
             },
             status: true,
@@ -258,13 +383,43 @@ export const getClassroom = async (id: number): Promise<Classroom | null> => {
             reservedBy: {
                 select: {
                     id: true,
-                    username: true
+                    groupMemberOne: {
+                        select: {
+                            id: true,
+                            username: true,
+                            name: true
+                        }
+                    },
+                    groupMemberTwo: {
+                        select: {
+                            id: true,
+                            username: true,
+                            name: true
+                        }
+                    },
+                    groupSize: true,
+                    description: true
                 }
             },
             takenBy: {
                 select: {
                     id: true,
-                    username: true
+                    groupMemberOne: {
+                        select: {
+                            id: true,
+                            username: true,
+                            name: true
+                        }
+                    },
+                    groupMemberTwo: {
+                        select: {
+                            id: true,
+                            username: true,
+                            name: true
+                        }
+                    },
+                    groupSize: true,
+                    description: true
                 }
             },
             takenAt: true
