@@ -7,7 +7,7 @@ import { ShortUser } from '../types/auth.type'
 import { Status } from '../types/status.type'
 
 const ClassroomContext = createContext<Classroom[]>([])
-const ParsedClassroomContext = createContext({ free: [], reserved: [], busy: [] })
+const ParsedClassroomContext = createContext({ free: [0], reserved: [0], busy: [0] })
 const SetStatusContext = createContext((id: number, status: string) => {})
 
 export function useClassrooms() {
@@ -24,42 +24,64 @@ export function useSetStatus() {
 
 function ClassroomProvider({ children }: Children) {
     const [classrooms, setClassrooms] = useState<Classroom[]>([])
-    const [parsedClassrooms, setParsedClassrooms] = useState({
-        free: [],
-        reserved: [],
-        busy: []
-    })
+    const [freeClassrooms, setFreeClassrooms] = useState<number[]>([])
+    const [reservedClassrooms, setReservedClassrooms] = useState<number[]>([])
+    const [busyClassrooms, setBusyClassrooms] = useState<number[]>([])
     const token = useToken()
 
     useEffect(() => {
         if (classrooms.length === 0) {
             getClassrooms()
-            ClassroomService.getParsedClassrooms().then((response) => setParsedClassrooms(response.result))
         }
     }, [token])
 
-    function parseClassrooms() {
-        setParsedClassrooms({
-            free: classrooms.filter((classroom) => classroom.status.status === 'free'),
-            reserved: classrooms.filter((classroom) => classroom.status.status === 'reserved'),
-            busy: classrooms.filter((classroom) => classroom.status.status === 'busy')
+    function parseClassrooms(classrooms: Classroom[]) {
+        classrooms.map((classroom, index) => {
+            if (classroom.status.status === 'free') {
+                setFreeClassrooms((classrooms) => [...classrooms, classroom.id])
+            } else if (classroom.status.status === 'reserved') {
+                setReservedClassrooms((classrooms) => [...classrooms, classroom.id])
+            } else if (classroom.status.status === 'busy') {
+                setBusyClassrooms((classrooms) => [...classrooms, classroom.id])
+            }
         })
     }
 
     function getClassrooms() {
-        ClassroomService.getClassrooms().then((response) => setClassrooms(response.result))
+        ClassroomService.getClassrooms().then((response) => {
+            setClassrooms(response.result)
+            parseClassrooms(response.result)
+        })
     }
-
-    useEffect(() => {
-        console.log('dupa')
-        parseClassrooms()
-    }, [classrooms])
 
     function setStatus(id: number, status: string) {
-        ClassroomService.changeClassroomStatus(id, status).then(
-            (response) => !response.error && getClassrooms()
-        )
+        const temp = freeClassrooms.slice()
+        const index = temp.indexOf(id)
+        if (index > -1) {
+            temp.splice(index, 1)
+        }
+        setFreeClassrooms(temp)
+
+        const temp2 = busyClassrooms.slice()
+        temp2.unshift(id)
+        setBusyClassrooms(temp2)
+        console.log(parsedClassrooms)
+        // ClassroomService.changeClassroomStatus(id, status).then()
     }
+
+    const [parsedClassrooms, setParsedClassrooms] = useState({
+        free: freeClassrooms,
+        reserved: reservedClassrooms,
+        busy: busyClassrooms
+    })
+
+    useEffect(() => {
+        setParsedClassrooms({
+            free: freeClassrooms,
+            reserved: reservedClassrooms,
+            busy: busyClassrooms
+        })
+    }, [freeClassrooms, reservedClassrooms, busyClassrooms])
 
     return (
         <ClassroomContext.Provider value={classrooms}>

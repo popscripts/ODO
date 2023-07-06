@@ -11,8 +11,9 @@ import { useSetStatus } from '../../providers/ClassroomProvider'
 type Props = {
     classroom: Classroom
     colorPalette: any[]
+    status: string
 }
-function ClassroomBox({ classroom, colorPalette }: Props) {
+function ClassroomBox({ classroom, colorPalette, status }: Props) {
     const setStatus = useSetStatus()
 
     const width = Dimensions.get('screen').width
@@ -27,13 +28,15 @@ function ClassroomBox({ classroom, colorPalette }: Props) {
     return (
         <TouchableOpacity onPress={() => setStatus(classroom.id, 'reserved')}>
             <Wrapper colors={[colorPalette[0], colorPalette[1]]} width={width}>
-                {changedAt && (
+                {status !== 'free' && changedAt && (
                     <TimedGradient changedAt={changedAt} colors={[colorPalette[2], colorPalette[3]]} />
                 )}
                 <ContentWrapper>
                     <Heading>{classroom.classroom}</Heading>
                     <MediumText>{classroom.title}</MediumText>
-                    <TimerWrapper>{changedAt && <Timer timeLeft={timeLeft} />}</TimerWrapper>
+                    <TimerWrapper>
+                        {status !== 'free' && changedAt && <Timer timeLeft={timeLeft} />}
+                    </TimerWrapper>
                 </ContentWrapper>
                 <Highlight colors={['#ffffff00', '#ffffff33']} />
             </Wrapper>
