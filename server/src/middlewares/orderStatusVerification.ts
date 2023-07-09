@@ -10,15 +10,15 @@ export const orderStatusVerification = async (request: Request, response: Respon
     const token = request.cookies.JWT
     const tokenData: Token = AuthHelper.verifyToken(token, 'accessToken')
     const order: Order | null = await getOrder(id)
-    let verified = false
+    let verified: boolean = false
 
     // Check if order belongs to the user, new status isn't "done" and order isn't cancelled
-    if (tokenData.id === order?.orderedBy.id && status !== 'done' && order?.status.status !== 'cancelled') {
+    if (tokenData.id === order?.orderedBy.id && status !== 'done' && order?.status.name !== 'cancelled') {
         verified = true
     }
 
     // Check if user has admin or cook privileges
-    if (tokenData.accountType.accountType !== 'user') {
+    if (tokenData.accountType.name !== 'user') {
         verified = true
     }
 

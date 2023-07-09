@@ -6,15 +6,16 @@ import { Request, Response } from 'express'
 import * as AuthHelper from '../utils/auth.helper'
 import { verifyToken } from '../utils/auth.helper'
 import { AccountTypes } from '../libs/accountTypes'
-import { LoginUser, Token, User } from '../types/auth.type'
+import { LoginUser, Token, User, Users } from '../types/auth.type'
 import { logger } from '../config/logger'
 import { UploadedFile } from 'express-fileupload'
 import { upload } from '../utils/file.helper'
+import { Key } from '../types/key.types'
 
 export const register = async (request: Request, response: Response) => {
     try {
         const { key, username, password } = request.body
-        const keyData = await KeyService.getKey(key)
+        const keyData: Key | null = await KeyService.getKey(key)
 
         if (!keyData) {
             logger.error(`500 | keyData is undefined`)
@@ -24,7 +25,8 @@ export const register = async (request: Request, response: Response) => {
         const registerData = {
             openDayId: keyData.openDayId,
             username,
-            password
+            password,
+            accountType: AccountTypes['user']
         }
         await AuthService.register(registerData)
         return response.status(201).json(Callback.register)
@@ -85,8 +87,8 @@ export const logout = (request: Request, response: Response) => {
 export const user = async (request: Request, response: Response) => {
     try {
         const token: string = request.cookies.JWT
-        const tokenData: Token = verifyToken(token, 'accessToken')
-        const userData: User | null = await AuthService.getUser(tokenData.id)
+        const { id }: Token = verifyToken(token, 'accessToken')
+        const userData: User | null = await AuthService.getUser(id)
         return response.status(200).json({ result: userData, error: 0 })
     } catch (error: any) {
         logger.error(`500 | ${error}`)
@@ -108,8 +110,8 @@ export const jwt = async (request: Request, response: Response) => {
 export const users = async (request: Request, response: Response) => {
     try {
         const token: string = request.cookies.JWT
-        const tokenData: Token = verifyToken(token, 'accessToken')
-        const users = await AuthService.getUsers(tokenData.openDayId)
+        const { openDayId }: Token = verifyToken(token, 'accessToken')
+        const users: Users[] | null = await AuthService.getUsers(openDayId)
         return response.status(200).json({ result: users, error: 0 })
     } catch (error: any) {
         logger.error(`500 | ${error}`)
@@ -156,7 +158,7 @@ export const usersByStatus = async (request: Request, response: Response) => {
         const token: string = request.cookies.JWT
         const tokenData: Token = verifyToken(token, 'accessToken')
         const status: boolean = request.params.status === 'active'
-        const users = await AuthService.getUsersByStatus(tokenData.openDayId, status)
+        const users: Users[] | null = await AuthService.getUsersByStatus(tokenData.openDayId, status)
         return response.status(200).json({ result: users, error: 0 })
     } catch (error: any) {
         logger.error(`500 | ${error}`)
@@ -180,7 +182,6 @@ export const updateProfilePicture = async (request: Request, response: Response)
 export const getPicture = async (request: Request, response: Response) => {
     try {
         const pictureId: string = request.params.id
-
         return response.status(200).sendFile('/uploads/' + pictureId, { root: '.' })
     } catch (error: any) {
         logger.error(`500 | ${error}`)
