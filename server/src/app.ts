@@ -40,3 +40,5 @@ if (process.env.ODO_ENV === 'prod') {
 app.listen(PORT, () => {
     logger.info('Server started!')
 })
+
+export { app }

@@ -4,6 +4,9 @@ import { faker } from '@faker-js/faker'
 import { NewClassroom } from '../src/types/classroom.type'
 import { hashPassword } from '../src/utils/auth.helper'
 import { NewKey } from '../src/types/key.types'
+import * as dotenv from 'dotenv'
+
+dotenv.config()
 
 const devSeed = async () => {
     // Create random users
@@ -82,7 +85,12 @@ const createRandomClassroom = (): NewClassroom => {
 }
 
 const createAdminAccount = async (): Promise<NewUser> => {
-    return { openDayId: 1, accountType: 1, username: 'admin', password: await hashPassword('haslo123') }
+    return {
+        openDayId: 1,
+        accountType: 1,
+        username: process.env.SEED_USER_USERNAME!,
+        password: await hashPassword(process.env.SEED_USER_PASSWORD!)
+    }
 }
 
 const KEY: NewKey = {
