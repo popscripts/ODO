@@ -2,6 +2,7 @@ import styled from 'styled-components/native'
 import { typography } from '../theme/typography'
 import { colors } from '../theme/colors'
 import { spacing } from '../theme/spacing'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 export const ErrorText = styled.Text`
     font-family: ${typography.primary.medium};
@@ -14,4 +15,40 @@ export const Heading = styled.Text`
     font-family: ${typography.primary.bold};
     font-size: ${spacing.lg};
     color: ${colors.text};
+`
+export const HeadingCenter = styled.Text`
+    font-family: ${typography.primary.bold};
+    font-size: ${spacing.lg};
+    color: ${colors.text};
+    margin: ${spacing.lg};
+    width: 100%;
+    text-align: center;
+`
+
+export const MediumText = styled.Text`
+    font-family: ${typography.primary.normal};
+    font-size: ${spacing.nm};
+    color: ${colors.text};
+`
+
+export const DefaultBackground = styled.View`
+    height: 100%;
+    width: 100%;
+    background-color: ${colors.background};
+`
+
+export const SafeArea = styled(SafeAreaView)`
+    width: 100%;
+    height: 100%;
+`
+
+export const Scroll = styled.ScrollView`
+    width: 100%;
+`
+
+export const Link = styled.Text`
+    font-family: ${typography.primary.normal};
+    font-size: ${spacing.md};
+    color: ${colors.text};
+    text-decoration: underline;
 `

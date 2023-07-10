@@ -1,10 +1,11 @@
 import { db } from '../utils/db.server'
 import { hashPassword } from '../utils/auth.helper'
 import * as AuthType from '../types/auth.type'
+import { Group } from '../types/auth.type'
 
 export const register = async (registerData: AuthType.NewUser) => {
     const { openDayId, username, password } = registerData
-    const hashedPassword = await hashPassword(password)
+    const hashedPassword: string = await hashPassword(password)
     return db.user.create({
         data: {
             openDayId,
@@ -27,7 +28,7 @@ export const login = async (username: string): Promise<AuthType.LoginUser | null
             accountType: {
                 select: {
                     id: true,
-                    accountType: true
+                    name: true
                 }
             }
         }
@@ -53,12 +54,13 @@ export const getUser = async (id: number): Promise<AuthType.User | null> => {
         },
         select: {
             id: true,
-            username: true,
             openDayId: true,
+            username: true,
+            name: true,
             accountType: {
                 select: {
                     id: true,
-                    accountType: true
+                    name: true
                 }
             },
             pictureName: true,
@@ -68,82 +70,6 @@ export const getUser = async (id: number): Promise<AuthType.User | null> => {
                     classroom: true,
                     title: true,
                     description: true
-                }
-            },
-            ReservedClassroom: {
-                select: {
-                    id: true,
-                    openDayId: true,
-                    classroom: true,
-                    title: true,
-                    description: true,
-                    managedBy: {
-                        select: {
-                            id: true,
-                            username: true,
-                            pictureName: true
-                        }
-                    },
-                    status: {
-                        select: {
-                            id: true,
-                            status: true
-                        }
-                    },
-                    reservedAt: true,
-                    reservedBy: {
-                        select: {
-                            id: true,
-                            username: true,
-                            pictureName: true
-                        }
-                    },
-                    takenBy: {
-                        select: {
-                            id: true,
-                            username: true,
-                            pictureName: true
-                        }
-                    },
-                    takenAt: true
-                }
-            },
-            TakenClassroom: {
-                select: {
-                    id: true,
-                    openDayId: true,
-                    classroom: true,
-                    title: true,
-                    description: true,
-                    managedBy: {
-                        select: {
-                            id: true,
-                            username: true,
-                            pictureName: true
-                        }
-                    },
-                    status: {
-                        select: {
-                            id: true,
-                            status: true
-                        }
-                    },
-                    reservedAt: true,
-                    reservedBy: {
-                        select: {
-                            id: true,
-                            username: true,
-                            pictureName: true
-                        }
-                    },
-                    takenBy: {
-                        select: {
-                            id: true,
-                            username: true,
-                            pictureName: true
-                        }
-                    },
-                    takenAt: true
                 }
             }
         }
@@ -158,6 +84,7 @@ export const getUsers = async (openDayId: number): Promise<AuthType.Users[]> => 
         select: {
             id: true,
             username: true,
+            name: true,
             openDayId: true,
             accountType: true,
             active: true
@@ -202,7 +129,7 @@ export const restoreUser = async (id: number) => {
 export const isValidAccountType = async (accountType: string): Promise<boolean> => {
     const isValid = await db.accountType.findFirst({
         where: {
-            accountType
+            name: accountType
         }
     })
     return !!isValid
@@ -226,6 +153,7 @@ export const getUsersByStatus = async (openDayId: number, status: boolean): Prom
         select: {
             id: true,
             username: true,
+            name: true,
             openDayId: true,
             accountType: true,
             active: true
@@ -261,6 +189,135 @@ export const getProfilePictureName = async (id: number): Promise<AuthType.Pictur
         },
         select: {
             pictureName: true
+        }
+    })
+}
+
+export const getGroup = async (id: number): Promise<Group | null> => {
+    return db.group.findUnique({
+        where: {
+            id
+        },
+        select: {
+            id: true,
+            groupSize: true,
+            groupMemberOne: {
+                select: {
+                    id: true,
+                    username: true,
+                    name: true
+                }
+            },
+            groupMemberTwo: {
+                select: {
+                    id: true,
+                    username: true,
+                    name: true
+                }
+            },
+            description: true,
+            Reserved: {
+                select: {
+                    id: true,
+                    openDayId: true,
+                    classroom: true,
+                    title: true,
+                    description: true,
+                    managedBy: {
+                        select: {
+                            id: true,
+                            username: true,
+                            name: true
+                        }
+                    },
+                    status: true
+                }
+            },
+            Taken: {
+                select: {
+                    id: true,
+                    openDayId: true,
+                    classroom: true,
+                    title: true,
+                    description: true,
+                    managedBy: {
+                        select: {
+                            id: true,
+                            username: true,
+                            name: true
+                        }
+                    },
+                    status: true
+                }
+            }
+        }
+    })
+}
+
+export const getGroupByMemberId = async (groupMemberId: number): Promise<Group | null> => {
+    return db.group.findFirst({
+        where: {
+            OR: [
+                {
+                    groupMemberOneId: groupMemberId
+                },
+                {
+                    groupMemberTwoId: groupMemberId
+                }
+            ]
+        },
+        select: {
+            id: true,
+            groupSize: true,
+            groupMemberOne: {
+                select: {
+                    id: true,
+                    username: true,
+                    name: true
+                }
+            },
+            groupMemberTwo: {
+                select: {
+                    id: true,
+                    username: true,
+                    name: true
+                }
+            },
+            description: true,
+            Reserved: {
+                select: {
+                    id: true,
+                    openDayId: true,
+                    classroom: true,
+                    title: true,
+                    description: true,
+                    managedBy: {
+                        select: {
+                            id: true,
+                            username: true,
+                            name: true
+                        }
+                    },
+                    status: true
+                }
+            },
+            Taken: {
+                select: {
+                    id: true,
+                    openDayId: true,
+                    classroom: true,
+                    title: true,
+                    description: true,
+                    managedBy: {
+                        select: {
+                            id: true,
+                            username: true,
+                            name: true
+                        }
+                    },
+                    status: true
+                }
+            }
         }
     })
 }

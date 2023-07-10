@@ -38,7 +38,13 @@ export const updateClassroom = async (request: Request, response: Response) => {
     try {
         const editedClassroom = request.body
         const id: number = request.body.id
-        await ClassroomService.updateClassroom(id, editedClassroom)
+        await ClassroomService.updateClassroom(
+            id,
+            editedClassroom.classroom,
+            editedClassroom.title,
+            editedClassroom.description,
+            editedClassroom.managedById
+        )
         return response.status(201).json(Callback.editClassroom)
     } catch (error: any) {
         logger.error(`500 | ${error}`)

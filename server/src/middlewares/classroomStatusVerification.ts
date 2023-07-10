@@ -4,68 +4,61 @@ import * as AuthService from '../services/auth.service'
 import { Classroom } from '../types/classroom.type'
 import { getClassroom } from '../services/classroom.service'
 import * as Error from '../libs/errors'
+import { Group, Token } from '../types/auth.type'
 
 export const classroomStatusVerification = async (
     request: Request,
     response: Response,
     next: NextFunction
 ) => {
-    const { id, status } = request.body
+    const classroomId = request.body.id
+    const { status } = request.body
     const token = request.cookies.JWT
-    const tokenData: any = AuthHelper.verifyToken(token, 'accessToken')
-    const classroom: Classroom | null = await getClassroom(id)
-    let verified = false
+    const { id, accountType }: Token = AuthHelper.verifyToken(token, 'accessToken')
+    const classroom: Classroom | null = await getClassroom(classroomId)
+    let verified: boolean = false
 
-    const user = await AuthService.getUser(tokenData.id)
+    const group: Group | null = await AuthService.getGroupByMemberId(id)
 
     // Check if classroom is already free and request status is free
-    if (classroom?.status.status === 'free' && status === 'free') {
+    if (classroom?.status.name === 'free' && status === 'free') {
         return response.status(500).json(Error.classroomAlreadyFree)
     }
 
     // Check if user is an admin
-    if (tokenData.accountType.accountType === 'admin') {
+    if (accountType.name === 'admin') {
         verified = true
     }
 
     // Check if classroom is free and no classroom is taken by him
-    if (classroom?.status.status === 'free' && user?.TakenClassroom.length === 0) {
+    if (classroom?.status.name === 'free' && group?.Taken !== null) {
         verified = true
     }
 
     // Check if classroom isn't reserved and request status is "reserved"
-    if (classroom?.status.status !== 'reserved' && status === 'reserved') {
+    if (classroom?.status.name !== 'reserved' && status === 'reserved') {
         verified = true
     }
 
     // Check if user is a manager of the classroom
-    Object.values(user!.ManagedClassroom).forEach((managedClassroom) => {
-        if (managedClassroom.id === id) {
-            verified = true
-        }
-    })
+    if (accountType.name === 'classroomManager' && classroom?.managedBy?.id === id) {
+        verified = true
+    }
 
-    // Check if classroom is taken by user
-    Object.values(user!.TakenClassroom).forEach((takenClassroom) => {
-        if (takenClassroom.id === id && status === 'free') {
-            verified = true
-        }
-    })
+    // Check if classroom is taken by group
+    if (classroomId === group?.Taken?.id) {
+        verified = true
+    }
 
     // Check if classroom is reserved by user and classroom isn't busy
-    Object.values(user!.ReservedClassroom).forEach((reservedClassroom) => {
-        if (reservedClassroom.id === id && reservedClassroom.status.status !== 'busy') {
-            verified = true
-        }
-    })
+    if (group?.Reserved?.id === classroomId && classroom?.status.name !== 'busy') {
+        verified = true
+    }
 
     // Check if classroom is reserved by user and request status is "free"
-    Object.values(user!.ReservedClassroom).forEach((reservedClassroom) => {
-        if (reservedClassroom.id === id && status === 'free') {
-            verified = true
-        }
-    })
-
+    if (group?.Reserved?.id === classroomId && status === 'free') {
+        verified = true
+    }
     if (verified) {
         next()
     } else {

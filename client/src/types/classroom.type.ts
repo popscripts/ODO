@@ -17,10 +17,10 @@ export type Classroom = {
     description: string
     managedBy: ShortUser | null
     status: Status
-    reservedAt: Date | null
+    reservedAt: string | null
     reservedBy: ShortUser | null
     takenBy: ShortUser | null
-    takenAt: Date | null
+    takenAt: string | null
 }
 
 export type ManagedClassroom = {

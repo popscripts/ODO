@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
-import { TextInput, Wrapper } from './InputStyle'
+import { InputIconWrapper, TextInput, Wrapper } from './InputStyle'
 import { ErrorText } from '../commonStyles'
 import { colors } from '../../theme/colors'
 import { KeyboardTypeOptions } from 'react-native'
+import EyeIcon from '../icons/EyeIcon'
+import EyeClosedIcon from '../icons/EyeClosedIcon'
 
 type Props = {
     text: string
@@ -23,8 +25,23 @@ function Input({
     keyboardType = 'default'
 }: Props) {
     const [focused, setFocused] = useState<boolean>(false)
+    const [showPassword, setShowPassword] = useState<boolean>(password)
+
+    function handlePassword() {
+        setShowPassword((showPassword) => !showPassword)
+    }
     return (
         <Wrapper>
+            {password && (
+                <InputIconWrapper onPress={handlePassword}>
+                    {showPassword ? (
+                        <EyeClosedIcon color={colors.palette.neutral300} size={25} />
+                    ) : (
+                        <EyeIcon color={colors.palette.neutral300} size={25} />
+                    )}
+                </InputIconWrapper>
+            )}
+
             <TextInput
                 placeholder={placeholder}
                 value={text}
@@ -35,7 +52,7 @@ function Input({
                 error={error}
                 placeholderTextColor={colors.textDim}
                 autoCapitalize={'none'}
-                secureTextEntry={password}
+                secureTextEntry={showPassword}
                 keyboardType={keyboardType}
             />
             {errorText && <ErrorText>{errorText}</ErrorText>}

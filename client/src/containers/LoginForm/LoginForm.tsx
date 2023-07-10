@@ -3,9 +3,11 @@ import { FormWrapper } from './LoginFormStyle'
 import { useCredentials, useLogIn } from '../../providers/AuthProvider'
 import { loginValidation, passwordValidation } from '../../utils/inputValidators'
 import { apiLoginResponse } from '../../types/response.type'
-import { ErrorText, Heading } from '../../components/commonStyles'
+import { Heading } from '../../components/commonStyles'
 import Input from '../../components/Input/Input'
 import Button from '../../components/Button/Button'
+import { colors } from '../../theme/colors'
+import { Vibration } from 'react-native'
 
 type Error = {
     error: boolean
@@ -17,7 +19,6 @@ function LoginForm() {
     const [isSubmitted, setIsSubmitted] = useState<boolean>(false)
     const [login, setLogin] = useState<string>(credentials.username)
     const [password, setPassword] = useState<string>(credentials.password)
-    const [otherError, setOtherError] = useState<string>('')
     const [loginError, setLoginError] = useState<Error>({
         error: false,
         errorText: ''
@@ -37,6 +38,17 @@ function LoginForm() {
         setPasswordError(passwordValidation(password))
     }
 
+    function setError(result: string, param: string | undefined) {
+        switch (param) {
+            case 'username':
+                setLoginError({ error: true, errorText: result })
+                break
+            case 'password':
+                setPasswordError({ error: true, errorText: result })
+                break
+        }
+    }
+
     useEffect(() => {
         isSubmitted && ValidateLogin()
     }, [login, isSubmitted])
@@ -46,19 +58,28 @@ function LoginForm() {
     }, [password, isSubmitted])
 
     function LogInPress() {
+        setIsSubmitted(true)
+
+        if (loginValidation(login).error) {
+            Vibration.vibrate(100)
+            return null
+        }
+
+        if (passwordValidation(password).error) {
+            Vibration.vibrate(100)
+            return null
+        }
+
         logIn(login, password).then((res: apiLoginResponse) => {
-            if (res.error && !loginError.error && !passwordError.error && isSubmitted) {
-                setOtherError(res?.result)
-                setPasswordError({ error: true, errorText: '' })
-                setLoginError({ error: true, errorText: '' })
+            if (res.error) {
+                Vibration.vibrate(100)
+                setError(res?.result, res?.param)
             }
         })
-        setIsSubmitted(true)
     }
     return (
         <FormWrapper>
             <Heading>Logowanie</Heading>
-            {otherError && <ErrorText>{otherError}</ErrorText>}
             <Input
                 text={login}
                 setText={setLogin}
@@ -74,7 +95,7 @@ function LoginForm() {
                 errorText={passwordError.errorText}
                 password={true}
             />
-            <Button content={'Zaloguj się'} onPress={LogInPress} />
+            <Button content={'Zaloguj się'} onPress={LogInPress} color={colors.palette.secondary300} />
         </FormWrapper>
     )
 }

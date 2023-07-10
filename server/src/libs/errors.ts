@@ -9,8 +9,9 @@ export const userDoesNotExist = {
 }
 
 export const wrongPassword = {
-    result: 'Podano błędne hasło',
-    error: 1
+    result: 'Podano błędny login lub hasło',
+    error: 1,
+    param: 'username'
 }
 
 export const loginError = {
