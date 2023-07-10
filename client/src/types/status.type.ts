@@ -1,4 +1,4 @@
 export type Status = {
     id: number
-    name: string
+    name: 'free' | 'reserved' | 'busy'
 }

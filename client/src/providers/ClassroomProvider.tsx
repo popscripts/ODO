@@ -1,10 +1,12 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { Children } from '../types/props.type'
-import { Classroom } from '../types/classroom.type'
+import { Classroom, classroomStatus } from '../types/classroom.type'
 import { useToken, useUserData } from './AuthProvider'
 import ClassroomService from '../services/classroomService'
 import io from 'socket.io-client'
-const socket = io('http://192.168.1.220:3005')
+import { API_URL } from '../config'
+
+const socket = io(API_URL)
 
 const ClassroomContext = createContext<Classroom[]>([])
 const ParsedClassroomContext = createContext({ free: [0], reserved: [0], busy: [0] })
@@ -27,33 +29,35 @@ function ClassroomProvider({ children }: Children) {
     const [freeClassrooms, setFreeClassrooms] = useState<number[]>([])
     const [reservedClassrooms, setReservedClassrooms] = useState<number[]>([])
     const [busyClassrooms, setBusyClassrooms] = useState<number[]>([])
+    const [changedClassroom, setChangedClassroom] = useState<classroomStatus>()
     const token = useToken()
     const userData = useUserData()
 
-    useEffect(() => {
+    const setStatusClassrooms = {
+        free: setFreeClassrooms,
+        reserved: setReservedClassrooms,
+        busy: setBusyClassrooms
+    }
+
+    const [parsedClassrooms, setParsedClassrooms] = useState({
+        free: freeClassrooms,
+        reserved: reservedClassrooms,
+        busy: busyClassrooms
+    })
+
+    function joinRoom() {
         if (userData.id) {
-            socket.removeAllListeners()
             let data = {
                 username: userData.username,
                 accountType: userData.accountType.name
             }
             socket.emit('joinRoomByAccountType', data)
         }
-    }, [userData])
-
-    useEffect(() => {
-        !token.error && classrooms.length === 0 && getClassrooms()
-    }, [token])
+    }
 
     function parseClassrooms(classrooms: Classroom[]) {
         classrooms.map((classroom, index) => {
-            if (classroom.status.name === 'free') {
-                setFreeClassrooms((classrooms) => [...classrooms, classroom.id])
-            } else if (classroom.status.name === 'reserved') {
-                setReservedClassrooms((classrooms) => [...classrooms, classroom.id])
-            } else if (classroom.status.name === 'busy') {
-                setBusyClassrooms((classrooms) => [...classrooms, classroom.id])
-            }
+            setStatusClassrooms[classroom.status.name]((classrooms) => [...classrooms, classroom.id])
         })
     }
 
@@ -64,7 +68,7 @@ function ClassroomProvider({ children }: Children) {
         })
     }
 
-    function changeClassroomStatusS(classroomId: number, prevStatus: string, status: string) {
+    function changeClassroomStatus(classroomId: number, prevStatus: string, status: string) {
         const data = {
             id: classroomId,
             userId: userData?.id,
@@ -76,39 +80,30 @@ function ClassroomProvider({ children }: Children) {
     }
 
     function setStatus(id: number, prevStatus: string, status: string) {
-        changeClassroomStatusS(id, prevStatus, status)
-        // const temp = freeClassrooms.slice()
-        // const index = temp.indexOf(id)
-        // if (index > -1) {
-        //     temp.splice(index, 1)
-        // }
-        // setFreeClassrooms(temp)
-        //
-        // const temp2 = busyClassrooms.slice()
-        // temp2.unshift(id)
-        // setBusyClassrooms(temp2)
-        // ClassroomService.changeClassroomStatus(id, status).then()
+        changeClassroomStatus(id, prevStatus, status)
     }
 
-    socket.on('classroomStatuses', (classroom) => {
-        console.log(classroom.id)
-        // const temp = freeClassrooms.slice()
-        // const index = temp.indexOf(classroom.id)
-        // if (index > -1) {
-        //     temp.splice(index, 1)
-        // }
-        // setFreeClassrooms(temp)
-        //
-        // const temp2 = busyClassrooms.slice()
-        // temp2.unshift(classroom.id)
-        // setBusyClassrooms(temp2)
-    })
+    function handleStatusChange() {
+        if (changedClassroom) {
+            const previousClassrooms = parsedClassrooms[changedClassroom?.prevStatus].slice()
+            const previousIndex = previousClassrooms.indexOf(changedClassroom?.id)
+            previousIndex > -1 && previousClassrooms.splice(previousIndex, 1)
+            setStatusClassrooms[changedClassroom?.prevStatus](previousClassrooms)
 
-    const [parsedClassrooms, setParsedClassrooms] = useState({
-        free: freeClassrooms,
-        reserved: reservedClassrooms,
-        busy: busyClassrooms
-    })
+            const currentClassrooms = parsedClassrooms[changedClassroom?.status].slice()
+            const currentIndex = currentClassrooms.indexOf(changedClassroom?.id)
+            currentIndex < 0 && currentClassrooms.unshift(changedClassroom?.id)
+            setStatusClassrooms[changedClassroom?.status](currentClassrooms)
+        }
+    }
+
+    useEffect(() => {
+        joinRoom()
+    }, [userData])
+
+    useEffect(() => {
+        !token.error && classrooms.length === 0 && getClassrooms()
+    }, [token])
 
     useEffect(() => {
         setParsedClassrooms({
@@ -117,6 +112,19 @@ function ClassroomProvider({ children }: Children) {
             busy: busyClassrooms
         })
     }, [freeClassrooms, reservedClassrooms, busyClassrooms])
+
+    useEffect(() => {
+        handleStatusChange()
+    }, [changedClassroom])
+
+    useEffect(() => {
+        socket.removeAllListeners()
+        socket.on('classroomStatuses', (classroom: classroomStatus) => {
+            if (classroom.prevStatus !== classroom.status) {
+                setChangedClassroom(classroom)
+            }
+        })
+    }, [])
 
     return (
         <ClassroomContext.Provider value={classrooms}>

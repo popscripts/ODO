@@ -1,10 +1,10 @@
 import React from 'react'
 import { Classroom } from '../../types/classroom.type'
 import { Heading, MediumText } from '../../components/commonStyles'
-import { ContentWrapper, Highlight, TimerWrapper, Wrapper } from './ClassroomBoxStyle'
+import { ContentWrapper, Highlight, Press, TimerWrapper, Wrapper } from './ClassroomBoxStyle'
 import TimedGradient from '../TimedGradient/TimedGradient'
 import Timer from '../../components/Timer'
-import { Dimensions, TouchableOpacity } from 'react-native'
+import { Dimensions } from 'react-native'
 import { MAX_TIME } from '../../config'
 import { useSetStatus } from '../../providers/ClassroomProvider'
 
@@ -26,7 +26,7 @@ function ClassroomBox({ classroom, colorPalette, status }: Props) {
     const timeLeft = timePassed ? MAX_TIME - timePassed : null
 
     return (
-        <TouchableOpacity onPress={() => setStatus(classroom.id, status, 'reserved')}>
+        <Press underlayColor={'#ffffff'} onPress={() => setStatus(classroom.id, status, 'busy')}>
             <Wrapper colors={[colorPalette[0], colorPalette[1]]} width={width}>
                 {status !== 'free' && changedAt && (
                     <TimedGradient changedAt={changedAt} colors={[colorPalette[2], colorPalette[3]]} />
@@ -40,7 +40,7 @@ function ClassroomBox({ classroom, colorPalette, status }: Props) {
                 </ContentWrapper>
                 <Highlight colors={['#ffffff00', '#ffffff33']} />
             </Wrapper>
-        </TouchableOpacity>
+        </Press>
     )
 }
 
