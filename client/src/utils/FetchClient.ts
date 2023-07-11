@@ -17,6 +17,17 @@ const FetchClient = {
                 'Content-Type': 'application/json'
             }
         })
+    },
+
+    async patch(endpoint: string, body: object) {
+        return await fetch(API_URL + endpoint, {
+            method: 'PATCH',
+            body: JSON.stringify(body),
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
     }
 }
 

@@ -32,7 +32,7 @@ export type ShortUser = {
 
 export type AccountType = {
     id: number
-    accountType: string
+    name: string
 }
 
 export interface Token {

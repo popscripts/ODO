@@ -7,6 +7,9 @@ import cookieParser from 'cookie-parser'
 import { cronConfig } from './config/cron'
 import { logger, morganMiddleware } from './config/logger'
 import fileUpload from 'express-fileupload'
+import { Server as httpServer } from 'http'
+import { Server } from 'socket.io'
+import { ioConnectionConfig, socketConfig } from './config/socket'
 
 dotenv.config()
 
@@ -37,6 +40,9 @@ if (process.env.ODO_ENV === 'prod') {
     cronConfig()
 }
 
-app.listen(PORT, () => {
+const server: httpServer = app.listen(PORT, () => {
     logger.info('Server started!')
 })
+
+const io: Server = socketConfig(server)
+ioConnectionConfig(io)
