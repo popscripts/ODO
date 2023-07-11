@@ -13,9 +13,26 @@ const storeCredentials = async (username: string, password: string) => {
     }
 }
 
+const storeLogIn = async (login: boolean) => {
+    try {
+        await AsyncStorage.setItem('login', String(login))
+    } catch (e) {
+        console.error('Error saving to local storage')
+    }
+}
+
 const getCredentials = async () => {
     try {
         const jsonValue = await AsyncStorage.getItem('credentials')
+        return jsonValue != null ? JSON.parse(jsonValue) : null
+    } catch (e) {
+        console.error('Error reading from local storage')
+    }
+}
+
+const getLogIn = async () => {
+    try {
+        const jsonValue = await AsyncStorage.getItem('login')
         return jsonValue != null ? JSON.parse(jsonValue) : null
     } catch (e) {
         console.error('Error reading from local storage')
@@ -33,7 +50,7 @@ const userDataPlaceholder = {
     TakenClassroom: []
 }
 
-const TokenContext = createContext<apiLoginResponse>({ error: 1, result: '' })
+const TokenContext = createContext<apiLoginResponse>({ error: 2, result: '' })
 const LogInContext = createContext<Function>(() => {})
 const LogOutContext = createContext<Function>(() => {})
 const RegisterContext = createContext<Function>(() => {})
@@ -66,7 +83,7 @@ export function useCredentials() {
 
 export default function AuthProvider({ children }: Children) {
     const [token, setToken] = useState<apiLoginResponse>({
-        error: 1,
+        error: 2,
         result: ''
     })
     const [userData, setUserData] = useState<User>(userDataPlaceholder)
@@ -76,6 +93,7 @@ export default function AuthProvider({ children }: Children) {
         const response = await AuthService.logIn(username, password).then((response) => {
             setToken(response)
             storeCredentials(username, password)
+            storeLogIn(true)
             return response
         })
 
@@ -87,6 +105,7 @@ export default function AuthProvider({ children }: Children) {
     async function logOut() {
         return await AuthService.logOut().then((response) => {
             setToken({ error: 1, result: '' })
+            storeLogIn(false)
             return response
         })
     }
@@ -112,7 +131,13 @@ export default function AuthProvider({ children }: Children) {
         getCredentials().then((credentials) => {
             if (credentials) {
                 setCredentials(credentials)
-                logIn(credentials.username, credentials.password).then()
+                getLogIn().then((response) => {
+                    response
+                        ? logIn(credentials.username, credentials.password).then()
+                        : setToken({ error: 1, result: '' })
+                })
+            } else {
+                setToken({ error: 1, result: '' })
             }
         })
     }, [])
