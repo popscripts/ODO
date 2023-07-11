@@ -75,3 +75,9 @@ export type ShortGroup = {
     groupSize: number | null
     description: string | null
 }
+
+export type SocketUserData = {
+    id: number
+    username: string
+    accountType: string
+}

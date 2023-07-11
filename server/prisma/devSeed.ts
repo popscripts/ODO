@@ -3,7 +3,7 @@ import { NewUser } from '../src/types/auth.type'
 import { faker } from '@faker-js/faker'
 import { NewClassroom } from '../src/types/classroom.type'
 import { hashPassword } from '../src/utils/auth.helper'
-import { NewKey } from '../src/types/key.types'
+import { NewKey } from '../src/types/key.type'
 
 const devSeed = async () => {
     // Create random users

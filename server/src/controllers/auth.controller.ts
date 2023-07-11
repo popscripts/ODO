@@ -10,7 +10,7 @@ import { LoginUser, Token, User, Users } from '../types/auth.type'
 import { logger } from '../config/logger'
 import { UploadedFile } from 'express-fileupload'
 import { upload } from '../utils/file.helper'
-import { Key } from '../types/key.types'
+import { Key } from '../types/key.type'
 
 export const register = async (request: Request, response: Response) => {
     try {

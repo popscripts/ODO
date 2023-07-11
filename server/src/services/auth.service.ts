@@ -230,7 +230,9 @@ export const getGroup = async (id: number): Promise<Group | null> => {
                             name: true
                         }
                     },
-                    status: true
+                    status: true,
+                    reservedAt: true,
+                    takenAt: true
                 }
             },
             Taken: {
@@ -247,7 +249,9 @@ export const getGroup = async (id: number): Promise<Group | null> => {
                             name: true
                         }
                     },
-                    status: true
+                    status: true,
+                    reservedAt: true,
+                    takenAt: true
                 }
             }
         }
@@ -298,7 +302,9 @@ export const getGroupByMemberId = async (groupMemberId: number): Promise<Group |
                             name: true
                         }
                     },
-                    status: true
+                    status: true,
+                    reservedAt: true,
+                    takenAt: true
                 }
             },
             Taken: {
@@ -315,7 +321,9 @@ export const getGroupByMemberId = async (groupMemberId: number): Promise<Group |
                             name: true
                         }
                     },
-                    status: true
+                    status: true,
+                    reservedAt: true,
+                    takenAt: true
                 }
             }
         }

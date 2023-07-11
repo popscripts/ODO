@@ -1,7 +1,7 @@
 import { CronJob } from 'cron'
 import * as KeyService from '../services/key.service'
 import { logger } from '../config/logger'
-import { Key } from '../types/key.types'
+import { Key } from '../types/key.type'
 
 export const expireTheKey = new CronJob('* */12 * * *', async () => {
     try {

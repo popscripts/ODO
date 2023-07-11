@@ -37,4 +37,14 @@ export type ShortClassroom = {
     title: string
     description: string
     status: Status
+    reservedAt: Date | null
+    takenAt: Date | null
+}
+
+export interface ClassroomStatusEvent extends Event {
+    classroomId: number
+    userId: number
+    accountType: string
+    status: string
+    prevStatus: string
 }

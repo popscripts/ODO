@@ -1,4 +1,4 @@
-import { NewKey } from '../types/key.types'
+import { NewKey } from '../types/key.type'
 
 export const generateKey = (openDayId: number, expiresIn: number = 7): NewKey => {
     const expiresAt: Date = getExpirationDay(expiresIn)
