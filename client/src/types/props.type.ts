@@ -1,3 +1,5 @@
+import { ReactNode } from 'react'
+
 export type Children = {
-    children: JSX.Element[] | JSX.Element
+    children: ReactNode | ReactNode[]
 }

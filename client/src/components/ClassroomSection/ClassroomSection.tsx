@@ -11,6 +11,7 @@ type Props = {
 
 function ClassroomSection({ title, children }: Props) {
     const width = Dimensions.get('screen').width
+
     return (
         <View>
             <Gradient colors={[colors.transparent, colors.palette.neutral800]} />

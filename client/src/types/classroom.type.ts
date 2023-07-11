@@ -9,6 +9,14 @@ export type NewClassroom = {
     managedById: number | null
 }
 
+export type classroomStatus = {
+    id: number
+    userId: number
+    prevStatus: 'free' | 'reserved' | 'busy'
+    status: 'free' | 'reserved' | 'busy'
+    accountType: string
+}
+
 export type Classroom = {
     id: number
     openDayId: number
@@ -28,4 +36,10 @@ export type ManagedClassroom = {
     classroom: string
     title: string
     description: string
+}
+
+export type ParsedClassrooms = {
+    free: Classroom[]
+    reserved: Classroom[]
+    busy: Classroom[]
 }
