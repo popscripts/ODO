@@ -5,7 +5,7 @@ import { userData } from '../handlers/connection.handler'
 export const socketConfig = (server: httpServer): Server => {
     return new Server(server, {
         cors: {
-            origin: 'http://192.168.1.7:19000'
+            origin: 'http://192.168.1.220:19000'
         }
     })
 }
@@ -47,14 +47,11 @@ function statusHandler(error: Error, io: Server, data: any) {
     if (error) {
         console.log('error.message')
     } else {
-        const { id, userId, status, accountType } = data
+        const { id, userId, prevStatus, status, accountType } = data
         // TODO... Add JWT verification middleware
         // await setClassroomStatus(id, status, userId)
-        io.to(accountType).emit(
-            'classroomStatuses',
-            `Classroom ${id} status changed from free to ${status} by ${userId}`
-        )
-        console.log(`Classroom ${id} status changed from free to ${status} by ${userId}`)
+        io.to(accountType).emit('classroomStatuses', { id, userId, prevStatus, status })
+        console.log({ id, userId, prevStatus, status })
     }
 }
 
