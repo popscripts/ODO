@@ -7,6 +7,6 @@ export const spacing = {
     md: '16px',
     lg: '20px',
     xl: '26px',
-    xxl: '48px',
-    xxxl: '64px'
+    xxl: '32px',
+    xxxl: '48px'
 }

@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { Children } from '../types/props.type'
 import { Classroom } from '../types/classroom.type'
-import { useToken } from './AuthProvider'
+import { useUserData } from './AuthProvider'
 import ClassroomService from '../services/classroomService'
 
 const ClassroomContext = createContext<Classroom[]>([])
@@ -12,13 +12,13 @@ export function useClassrooms() {
 
 function ClassroomProvider({ children }: Children) {
     const [classrooms, setClassrooms] = useState<Classroom[]>([])
-    const token = useToken()
+    const userData = useUserData()
 
     useEffect(() => {
-        if (classrooms.length === 0) {
+        if (classrooms.length === 0 && userData.id) {
             ClassroomService.getClassrooms().then((response) => setClassrooms(response.result))
         }
-    }, [token])
+    }, [userData])
 
     return <ClassroomContext.Provider value={classrooms}>{children}</ClassroomContext.Provider>
 }

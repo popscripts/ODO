@@ -52,3 +52,10 @@ export const Link = styled.Text`
     color: ${colors.text};
     text-decoration: underline;
 `
+
+export const StretchWrapper = styled.View`
+    width: 100%;
+    flex-grow: 20;
+    justify-content: center;
+    align-items: center;
+`

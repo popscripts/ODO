@@ -33,8 +33,8 @@ export const InputIconWrapper = styled.TouchableOpacity`
     position: absolute;
     z-index: 3;
     right: 0;
-    height: ${spacing.xxl};
-    width: ${spacing.xxl};
+    height: ${spacing.xxxl};
+    width: ${spacing.xxxl};
     display: flex;
     justify-content: center;
     align-items: center;

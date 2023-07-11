@@ -17,19 +17,19 @@ function MainScreen() {
                 <ClassroomSection title={'Wolne Sale'}>
                     <MapClassrooms
                         status={'free'}
-                        data={classrooms.filter((classroom) => classroom.status.status === 'free')}
+                        data={classrooms.filter((classroom) => classroom.status.name === 'free')}
                     />
                 </ClassroomSection>
                 <ClassroomSection title={'Zajęte Sale'}>
                     <MapClassrooms
                         status={'busy'}
-                        data={classrooms.filter((classroom) => classroom.status.status === 'busy')}
+                        data={classrooms.filter((classroom) => classroom.status.name === 'busy')}
                     />
                 </ClassroomSection>
                 <ClassroomSection title={'Zarezerwowane Sale'}>
                     <MapClassrooms
                         status={'reserved'}
-                        data={classrooms.filter((classroom) => classroom.status.status === 'reserved')}
+                        data={classrooms.filter((classroom) => classroom.status.name === 'reserved')}
                     />
                 </ClassroomSection>
                 <Footer />

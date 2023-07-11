@@ -8,11 +8,7 @@ import Input from '../../components/Input/Input'
 import Button from '../../components/Button/Button'
 import { colors } from '../../theme/colors'
 import { Vibration } from 'react-native'
-
-type Error = {
-    error: boolean
-    errorText: string
-}
+import { Error } from '../../types/response.type'
 
 function LoginForm() {
     const credentials = useCredentials()
