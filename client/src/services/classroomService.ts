@@ -13,6 +13,26 @@ class ClassroomService {
             throw e
         }
     }
+
+    async getParsedClassrooms() {
+        try {
+            const response = await this.httpClient.get('api/classroom/status')
+            return response.json()
+        } catch (e) {
+            console.error(e)
+            throw e
+        }
+    }
+
+    async changeClassroomStatus(id: number, status: string) {
+        try {
+            const response = await this.httpClient.patch('api/classroom/status', { id, status })
+            return response.json()
+        } catch (e) {
+            console.error(e)
+            throw e
+        }
+    }
 }
 
 export default new ClassroomService()

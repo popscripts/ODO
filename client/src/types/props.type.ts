@@ -1,9 +1,11 @@
+import { ReactNode } from 'react'
 import { NavigationProp } from '@react-navigation/native'
 
 export type Children = {
-    children: JSX.Element[] | JSX.Element
+    children: ReactNode | ReactNode[]
 }
 
 export type Navigation = {
     navigation: NavigationProp<any>
 }
+

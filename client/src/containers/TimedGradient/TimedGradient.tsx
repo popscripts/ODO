@@ -10,7 +10,7 @@ type Props = {
 
 function TimedGradient({ changedAt, colors }: Props) {
     // Get time with timezone
-    const changedAtDate = new Date(new Date(changedAt).getTime() + new Date().getTimezoneOffset() * 60000)
+    const changedAtDate = new Date(new Date(changedAt).getTime())
     const now = new Date()
 
     const timePassed = now.getTime() - changedAtDate.getTime()

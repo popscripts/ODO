@@ -31,6 +31,14 @@ export const MediumText = styled.Text`
     color: ${colors.text};
 `
 
+export const MediumTextCenter = styled.Text`
+    font-family: ${typography.primary.normal};
+    font-size: ${spacing.nm};
+    color: ${colors.text};
+    width: 100%;
+    text-align: center;
+`
+
 export const DefaultBackground = styled.View`
     height: 100%;
     width: 100%;

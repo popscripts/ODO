@@ -33,3 +33,7 @@ export const Highlight = styled(LinearGradient)`
     position: absolute;
     bottom: 0;
 `
+
+export const Press = styled.TouchableHighlight`
+    border-radius: 20px;
+`

@@ -21,7 +21,7 @@ function Navigator({ navigation }: Navigation) {
     const userData = useUserData()
 
     useEffect(() => {
-        if (token.error === 2) {
+        if (token.error === 1) {
             navigation.navigate('WelcomeNavigator')
         } else if (!userData.name && token.error === 0) {
             navigation.navigate('CompleteData')
