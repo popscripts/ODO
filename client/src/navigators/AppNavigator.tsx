@@ -5,8 +5,6 @@ import MainNavigator from './MainNavigator'
 import WelcomeScreen from '../screens/WelcomeScreen'
 import { DefaultBackground } from '../components/commonStyles'
 import CompleteDataScreen from '../screens/CompleteDataScreen'
-import { Navigation } from '../types/props.type'
-import { useEffect } from 'react'
 
 const Stack = createStackNavigator()
 
@@ -16,23 +14,9 @@ const Fade = ({ current }: StackCardInterpolationProps) => ({
     }
 })
 
-function Navigator({ navigation }: Navigation) {
+function AppNavigator() {
     const token = useToken()
     const userData = useUserData()
-
-    useEffect(() => {
-        if (token.error === 1) {
-            navigation.navigate('WelcomeNavigator')
-        } else if (!userData.name && token.error === 0) {
-            navigation.navigate('CompleteData')
-        } else if (token.error === 0) {
-            navigation.navigate('MainNavigator')
-        }
-    }, [token, userData])
-    return <DefaultBackground />
-}
-
-function AppNavigator() {
     return (
         <NavigationContainer>
             <Stack.Navigator
@@ -40,22 +24,27 @@ function AppNavigator() {
                     headerShown: false
                 }}
             >
-                <Stack.Screen name="Placeholder" component={Navigator} />
-                <Stack.Screen
-                    name="WelcomeNavigator"
-                    component={WelcomeScreen}
-                    options={{ cardStyleInterpolator: Fade }}
-                />
-                <Stack.Screen
-                    name="MainNavigator"
-                    component={MainNavigator}
-                    options={{ cardStyleInterpolator: Fade }}
-                />
-                <Stack.Screen
-                    name="CompleteData"
-                    component={CompleteDataScreen}
-                    options={{ cardStyleInterpolator: Fade }}
-                />
+                {token.error === 2 ? (
+                    <Stack.Screen name="Placeholder" component={DefaultBackground} />
+                ) : token.error === 1 ? (
+                    <Stack.Screen
+                        name="Welcome"
+                        component={WelcomeScreen}
+                        options={{ cardStyleInterpolator: Fade }}
+                    />
+                ) : !userData.name && token.error === 0 ? (
+                    <Stack.Screen
+                        name="CompleteData"
+                        component={CompleteDataScreen}
+                        options={{ cardStyleInterpolator: Fade }}
+                    />
+                ) : (
+                    <Stack.Screen
+                        name="MainNavigator"
+                        component={MainNavigator}
+                        options={{ cardStyleInterpolator: Fade }}
+                    />
+                )}
             </Stack.Navigator>
         </NavigationContainer>
     )

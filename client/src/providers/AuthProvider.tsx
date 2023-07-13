@@ -111,7 +111,7 @@ export default function AuthProvider({ children }: Children) {
     async function logOut() {
         return await AuthService.logOut().then((response) => {
             setToken({ error: 1, result: '' })
-            setUserData(userDataPlaceholder)
+            setTimeout(() => setUserData(userDataPlaceholder), 300)
             storeLogIn(false)
             return response
         })
