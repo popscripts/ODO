@@ -9,6 +9,7 @@ import { TouchableOpacity, UIManager, Platform, LayoutAnimation } from 'react-na
 import { Link } from '../../components/commonStyles'
 import { useKeyboardHeight } from '../../hooks/useKeyboardHeight'
 import SlideFromBottom from '../../components/SlideFromBottom'
+import Loading from '../../components/Loading/Loading'
 
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
     UIManager.setLayoutAnimationEnabledExperimental(true)
@@ -18,6 +19,7 @@ function FormDrawer() {
     const keyboardHeight = useKeyboardHeight()
     const { bottom } = useSafeAreaInsets()
     const [formOpened, setFormOpened] = useState('')
+    const [loading, setLoading] = useState<boolean>(false)
 
     function changeForm() {
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
@@ -25,9 +27,14 @@ function FormDrawer() {
     }
     return (
         <>
+        <Loading show={loading}/>
             <SlideFromBottom>
                 <Wrapper bottom={!formOpened ? bottom : 0}>
-                    {formOpened === 'login' ? <LoginForm /> : formOpened === 'register' && <RegisterForm />}
+                    {formOpened === 'login' ? 
+                        <LoginForm setLoading={setLoading}/> 
+                    : formOpened === 'register' && 
+                        <RegisterForm setLoading={setLoading}/>
+                    }
                     {!formOpened ? (
                         <ButtonWrapper>
                             <Button

@@ -6,6 +6,7 @@ import ClassroomSection from '../components/ClassroomSection/ClassroomSection'
 import { Scroll } from '../components/commonStyles'
 import Footer from '../components/Footer/Footer'
 import { useClassrooms, useParsedClassrooms } from '../providers/ClassroomProvider'
+import SlideFromBottom from '../components/SlideFromBottom'
 
 function MainScreen() {
     const classrooms = useClassrooms()
@@ -13,6 +14,7 @@ function MainScreen() {
 
     return (
         <ScreenWrapper>
+            <SlideFromBottom>
             <Scroll>
                 <MainHeader />
                 <ClassroomSection title={'Wolne Sale'}>
@@ -26,6 +28,7 @@ function MainScreen() {
                 </ClassroomSection>
                 <Footer />
             </Scroll>
+            </SlideFromBottom>
         </ScreenWrapper>
     )
 }

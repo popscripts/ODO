@@ -119,7 +119,6 @@ export default function AuthProvider({ children }: Children) {
 
     async function register(key: number, username: string, password: string) {
         const response = await AuthService.register(key, username, password).then((response) => {
-            setToken(response)
             return response
         })
         if (response.error) return response

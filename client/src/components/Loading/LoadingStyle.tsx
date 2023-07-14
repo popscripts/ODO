@@ -8,4 +8,6 @@ export const Background = styled.View`
     display: flex;
     justify-content: center;
     align-items: center;
+    position: absolute;
+    z-index: 30;
 `

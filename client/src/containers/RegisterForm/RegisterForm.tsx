@@ -13,13 +13,14 @@ import { apiLoginResponse } from '../../types/response.type'
 import { BottomWrapper, FormWrapper } from './RegisterFormStyle'
 import { colors } from '../../theme/colors'
 import { Vibration } from 'react-native'
+import Loading from '../../components/Loading/Loading'
+import { Error } from '../../types/response.type'
 
-type Error = {
-    error: boolean
-    errorText: string
+type Props = {
+    setLoading: Function
 }
 
-function RegisterForm() {
+function RegisterForm({setLoading}: Props) {
     const [isSubmitted, setIsSubmitted] = useState<boolean>(false)
     const [key, setKey] = useState<string>('')
     const [login, setLogin] = useState<string>('')
@@ -113,10 +114,12 @@ function RegisterForm() {
             return null
         }
 
+        setLoading(true)
         register(parseInt(key), login, password).then((res: apiLoginResponse) => {
             if (res.error) {
                 Vibration.vibrate(100)
                 setError(res?.result, res?.param)
+                setLoading(false)
             }
         })
     }

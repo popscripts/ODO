@@ -17,6 +17,7 @@ const Fade = ({ current }: StackCardInterpolationProps) => ({
 function AppNavigator() {
     const token = useToken()
     const userData = useUserData()
+
     return (
         <NavigationContainer>
             <Stack.Navigator
@@ -24,26 +25,26 @@ function AppNavigator() {
                     headerShown: false
                 }}
             >
-                {token.error === 2 ? (
-                    <Stack.Screen name="Placeholder" component={DefaultBackground} />
-                ) : token.error === 1 ? (
+                {!userData.name && userData.id && token.error === 0? (
+                    <Stack.Screen
+                        name="CompleteData"
+                        component={CompleteDataScreen}
+                        options={{ cardStyleInterpolator: Fade }}
+                    /> 
+                ) : (token.error === 1 || !userData.id) && token.error !== 2? (
                     <Stack.Screen
                         name="Welcome"
                         component={WelcomeScreen}
                         options={{ cardStyleInterpolator: Fade }}
                     />
-                ) : !userData.name && token.error === 0 ? (
-                    <Stack.Screen
-                        name="CompleteData"
-                        component={CompleteDataScreen}
-                        options={{ cardStyleInterpolator: Fade }}
-                    />
-                ) : (
+                ) : userData.name ? (
                     <Stack.Screen
                         name="MainNavigator"
                         component={MainNavigator}
                         options={{ cardStyleInterpolator: Fade }}
                     />
+                ) : (
+                    <Stack.Screen name="Placeholder" component={DefaultBackground} />
                 )}
             </Stack.Navigator>
         </NavigationContainer>
