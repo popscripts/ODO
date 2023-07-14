@@ -3,3 +3,8 @@ export type apiLoginResponse = {
     error: number
     param?: string
 }
+
+export type Error = {
+    error: boolean
+    errorText: string
+}

@@ -14,6 +14,7 @@ type Props = {
     errorText?: string | undefined
     password?: boolean
     keyboardType?: KeyboardTypeOptions
+    autoCapitalize?: boolean
 }
 function Input({
     text,
@@ -22,7 +23,8 @@ function Input({
     error = false,
     errorText,
     password = false,
-    keyboardType = 'default'
+    keyboardType = 'default',
+    autoCapitalize = false
 }: Props) {
     const [focused, setFocused] = useState<boolean>(false)
     const [showPassword, setShowPassword] = useState<boolean>(password)
@@ -51,7 +53,7 @@ function Input({
                 focused={focused}
                 error={error}
                 placeholderTextColor={colors.textDim}
-                autoCapitalize={'none'}
+                autoCapitalize={autoCapitalize ? 'words' : 'none'}
                 secureTextEntry={showPassword}
                 keyboardType={keyboardType}
             />

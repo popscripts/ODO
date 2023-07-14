@@ -43,8 +43,9 @@ const userDataPlaceholder = {
     id: 0,
     username: '',
     openDayId: 1,
-    accountType: { id: 0, accountType: '' },
+    accountType: { id: 0, name: '' },
     pictureName: null,
+    name: null,
     ManagedClassroom: [],
     ReservedClassroom: [],
     TakenClassroom: []
@@ -56,6 +57,7 @@ const LogOutContext = createContext<Function>(() => {})
 const RegisterContext = createContext<Function>(() => {})
 const UserDataContext = createContext<User>(userDataPlaceholder)
 const CredentialsContext = createContext({ username: '', password: '' })
+const UpdateNameContext = createContext((name: string, surname: string) => {})
 
 export function useToken() {
     return useContext(TokenContext)
@@ -79,6 +81,10 @@ export function useUserData() {
 
 export function useCredentials() {
     return useContext(CredentialsContext)
+}
+
+export function useUpdateName() {
+    return useContext(UpdateNameContext)
 }
 
 export default function AuthProvider({ children }: Children) {
@@ -105,6 +111,7 @@ export default function AuthProvider({ children }: Children) {
     async function logOut() {
         return await AuthService.logOut().then((response) => {
             setToken({ error: 1, result: '' })
+            setTimeout(() => setUserData(userDataPlaceholder), 300)
             storeLogIn(false)
             return response
         })
@@ -125,6 +132,13 @@ export default function AuthProvider({ children }: Children) {
             setUserData(response.result)
             return response
         })
+    }
+
+    function handleUpdateName(name: string, surname: string) {
+        setTimeout(() => {
+            const data = { ...userData, name: `${name} ${surname}` }
+            setUserData(data)
+        }, 1500)
     }
 
     useEffect(() => {
@@ -148,7 +162,11 @@ export default function AuthProvider({ children }: Children) {
                 <LogOutContext.Provider value={logOut}>
                     <UserDataContext.Provider value={userData}>
                         <CredentialsContext.Provider value={credentials}>
-                            <RegisterContext.Provider value={register}>{children}</RegisterContext.Provider>
+                            <UpdateNameContext.Provider value={handleUpdateName}>
+                                <RegisterContext.Provider value={register}>
+                                    {children}
+                                </RegisterContext.Provider>
+                            </UpdateNameContext.Provider>
                         </CredentialsContext.Provider>
                     </UserDataContext.Provider>
                 </LogOutContext.Provider>

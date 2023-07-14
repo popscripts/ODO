@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import ClassroomBox from './ClassroomBox/ClassroomBox'
 import { Classroom } from '../types/classroom.type'
 import { colors } from '../theme/colors'
-import { HeadingCenter, MediumTextCenter } from '../components/commonStyles'
+import { MediumTextCenter } from '../components/commonStyles'
 import { LayoutAnimation, Platform, UIManager } from 'react-native'
 
 if (Platform.OS === 'android') {
@@ -43,7 +43,7 @@ function MapClassrooms({ data, status, filter }: Props) {
             {filter.length > 0 ? (
                 filter.map((id) => (
                     <ClassroomBox
-                        classroom={data.filter((classroom) => classroom.id === id)[0]}
+                        classroom={data.filter((classroom) => classroom?.id === id)[0]}
                         key={id}
                         colorPalette={colorPalette}
                         status={status}

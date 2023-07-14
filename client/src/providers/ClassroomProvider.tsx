@@ -46,7 +46,7 @@ function ClassroomProvider({ children }: Children) {
     })
 
     function joinRoom() {
-        if (userData.id) {
+        if (userData.name) {
             let data = {
                 username: userData.username,
                 accountType: userData.accountType.name
