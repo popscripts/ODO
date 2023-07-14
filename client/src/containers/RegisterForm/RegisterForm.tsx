@@ -119,7 +119,7 @@ function RegisterForm({setLoading}: Props) {
             if (res.error) {
                 Vibration.vibrate(100)
                 setError(res?.result, res?.param)
-                setLoading(false)
+                setTimeout(() => setLoading(false), 200)
             }
         })
     }
