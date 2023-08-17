@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from 'express'
-import * as AuthHelper from '../utils/auth.helper'
-import * as AuthService from '../services/auth.service'
-import { Classroom } from '../types/classroom.type'
-import { getClassroom } from '../services/classroom.service'
+import * as AuthHelper from '@utils/auth.helper'
+import * as AuthService from '@services/auth.service'
+import { Classroom } from '@customTypes/classroom.type'
+import { getClassroom } from '@services/classroom.service'
 import * as Error from '../libs/errors'
-import { Group, Token } from '../types/auth.type'
+import { Group, Token } from '@customTypes/auth.type'
 
 export const classroomStatusVerification = async (
     request: Request,

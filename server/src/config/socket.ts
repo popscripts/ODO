@@ -1,6 +1,6 @@
 import { Server as httpServer } from 'http'
 import { Server, Socket } from 'socket.io'
-import { userData } from '../handlers/connection.handler'
+import { userData } from '@handlers/connection.handler'
 
 export const socketConfig = (server: httpServer): Server => {
     return new Server(server, {

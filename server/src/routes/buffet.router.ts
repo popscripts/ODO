@@ -1,11 +1,11 @@
 import express from 'express'
 import * as BuffetController from '../controllers/buffet.controller'
-import { validate } from '../middlewares/validation'
-import { authorize } from '../middlewares/authorization'
-import { verifyAccountType } from '../middlewares/accountTypeVerification'
-import { AccountTypes } from '../libs/accountTypes'
-import { newOrderValidation, orderStatusChangeValidation } from '../validations/buffet.validation'
-import { orderStatusVerification } from '../middlewares/orderStatusVerification'
+import { validate } from '@middlewares/validation'
+import { authorize } from '@middlewares/authorization'
+import { verifyAccountType } from '@middlewares/accountTypeVerification'
+import { AccountTypes } from '@libs/accountTypes'
+import { newOrderValidation, orderStatusChangeValidation } from '@validations/buffet.validation'
+import { orderStatusVerification } from '@middlewares/orderStatusVerification'
 
 export const buffetRouter = express.Router()
 

@@ -1,10 +1,10 @@
 import express from 'express'
-import { validate } from '../middlewares/validation'
-import { authorize } from '../middlewares/authorization'
-import { verifyAccountType } from '../middlewares/accountTypeVerification'
-import { AccountTypes } from '../libs/accountTypes'
-import * as InfoController from '../controllers/info.controller'
-import { newInfoValidation, updatedInfoValidation } from '../validations/info.validation'
+import { validate } from '@middlewares/validation'
+import { authorize } from '@middlewares/authorization'
+import { verifyAccountType } from '@middlewares/accountTypeVerification'
+import { AccountTypes } from '@libs/accountTypes'
+import * as InfoController from '@controllers/info.controller'
+import { newInfoValidation, updatedInfoValidation } from '@validations/info.validation'
 
 export const infoRouter = express.Router()
 

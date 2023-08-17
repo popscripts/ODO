@@ -1,5 +1,5 @@
-import * as ClassroomService from '../services/classroom.service'
-import { Classroom } from '../types/classroom.type'
+import * as ClassroomService from '@services/classroom.service'
+import { Classroom } from '@customTypes/classroom.type'
 
 export const setClassroomStatus = async (id: number, status: string, userId: number) => {
     const date: Date = new Date()

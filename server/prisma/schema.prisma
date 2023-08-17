@@ -20,11 +20,9 @@ model OpenDay {
 }
 
 model AccountType {
-  id        Int      @id @default(autoincrement())
-  name      String   @db.VarChar(16)
-  User      User[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id   Int    @id @default(autoincrement())
+  name String @db.VarChar(16)
+  User User[]
 }
 
 model Classroom {
@@ -89,8 +87,6 @@ model Order {
 model Status {
   id        Int         @id @default(autoincrement())
   name      String      @db.VarChar(16)
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
   Order     Order[]
   Classroom Classroom[]
 }
@@ -129,11 +125,9 @@ model Group {
 }
 
 model Dish {
-  id        Int      @id @default(autoincrement())
-  name      String   @db.VarChar(64)
-  cheese    Boolean  @default(false)
-  ham       Boolean  @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  Order     Order[]
+  id     Int     @id @default(autoincrement())
+  name   String  @db.VarChar(64)
+  cheese Boolean @default(false)
+  ham    Boolean @default(false)
+  Order  Order[]
 }

@@ -1,7 +1,7 @@
-import { db } from '../src/utils/db.server'
-import { Dish } from '../src/types/buffet.type'
-import { Status } from '../src/types/status.type'
-import { AccountType } from '../src/types/auth.type'
+import { db } from '@utils/db.server'
+import { Dish } from '@customTypes/buffet.type'
+import { Status } from '@customTypes/status.type'
+import { AccountType } from '@customTypes/auth.type'
 
 const seed = async () => {
     await Promise.all(

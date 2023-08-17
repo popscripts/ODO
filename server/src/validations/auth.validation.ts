@@ -1,6 +1,6 @@
 import { body, CustomValidator } from 'express-validator'
-import * as AuthService from '../services/auth.service'
-import * as KeyService from '../services/key.service'
+import * as AuthService from '@services/auth.service'
+import * as KeyService from '@services/key.service'
 
 const usernameValidation: CustomValidator = async (username) => {
     if (!username) {
