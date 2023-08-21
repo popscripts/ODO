@@ -1,5 +1,5 @@
 import * as dotenv from 'dotenv'
-import express from 'express'
+import express, { Express } from 'express'
 import cors from 'cors'
 import { routerConfig } from './config/router'
 import { dbHealthCheck } from './utils/db.healthcheck'
@@ -10,6 +10,7 @@ import fileUpload from 'express-fileupload'
 import { Server as httpServer } from 'http'
 import { Server } from 'socket.io'
 import { ioConnectionConfig, socketConfig } from './config/socket'
+import { swaggerDocs } from './utils/swagger'
 
 dotenv.config()
 
@@ -22,7 +23,7 @@ dbHealthCheck()
 
 const PORT: number = parseInt(process.env.PORT as string, 10)
 
-const app = express()
+const app: Express = express()
 app.use(cors())
 app.use(
     fileUpload({
@@ -36,6 +37,7 @@ app.use(express.json())
 app.use(cookieParser())
 app.use(morganMiddleware)
 routerConfig(app)
+swaggerDocs(app)
 if (process.env.ODO_ENV === 'prod') {
     cronConfig()
 }
