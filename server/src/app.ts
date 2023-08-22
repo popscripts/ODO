@@ -19,7 +19,7 @@ if (!process.env.PORT) {
     process.exit(1)
 }
 
-dbHealthCheck()
+// dbHealthCheck()
 
 const PORT: number = parseInt(process.env.PORT as string, 10)
 

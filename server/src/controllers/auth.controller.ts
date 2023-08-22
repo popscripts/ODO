@@ -43,7 +43,7 @@ export const login = async (request: Request, response: Response) => {
 
         const validatePassword: boolean = await AuthHelper.validatePassword(password, user!.password)
         if (!validatePassword) {
-            return response.status(403).json(Error.wrongPassword)
+            return response.status(401).json(Error.wrongPassword)
         }
 
         const userData = {

@@ -13,11 +13,11 @@ export const verifyAccountType = (...accountTypes: number[]) => {
                 .map((allowedAccountType: number): boolean => allowedAccountType === accountType.id)
                 .includes(true)
             if (!result) {
-                return response.status(401).json(Error.permissionError)
+                return response.status(403).json(Error.permissionError)
             }
             next()
         } catch (error: any) {
-            return response.status(401).json(Error.permissionError)
+            return response.status(403).json(Error.permissionError)
         }
     }
 }

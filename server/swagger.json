@@ -1,130 +1,134 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.0.0",
-    "title": "Swagger Petstore",
+    "version": "2.0.0",
+    "title": "ODO API Docs",
+    "description": "API used for 'ODO - Open Days Organizer' app ",
+    "contact": {
+      "name": "ODO backend developer",
+      "email": "bartoszposzelezny@gmail.com"
+    },
     "license": {
-      "name": "MIT"
+      "name": "UNLICENSED"
     }
   },
   "servers": [
     {
-      "url": "http://petstore.swagger.io/v1"
+      "url": "http://localhost:3000/api"
+    }
+  ],
+  "tags": [
+    {
+      "name": "auth",
+      "description": "Authorization endpoints"
+    },
+    {
+      "name": "classroom",
+      "description": "Classroom endpoints"
+    },
+    {
+      "name": "buffet",
+      "description": "Buffet endpoints"
+    },
+    {
+      "name": "key",
+      "description": "Key endpoints"
+    },
+    {
+      "name": "info",
+      "description": "Info endpoints"
     }
   ],
   "paths": {
-    "/pets": {
-      "get": {
-        "summary": "List all pets",
-        "operationId": "listPets",
-        "tags": [
-          "pets"
-        ],
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "How many items to return at one time (max 100)",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "maximum": 100,
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "A paged array of pets",
-            "headers": {
-              "x-next": {
-                "description": "A link to the next page of responses",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Pets"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      },
+    "/auth/register": {
       "post": {
-        "summary": "Create a pet",
-        "operationId": "createPets",
         "tags": [
-          "pets"
+          "auth"
         ],
+        "summary": "Register to the app",
+        "description": "Regsiter to the app via the open days key provided by the admin",
+        "operationId": "register",
+        "requestBody": {
+          "description": "User's credentials",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterCredentials"
+              },
+              "example": {
+                "key": 123456,
+                "username": "username",
+                "password": "password123"
+              }
+            }
+          }
+        },
         "responses": {
           "201": {
-            "description": "Null response"
+            "$ref": "#/components/responses/successful201Response"
           },
-          "default": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
+          "422": {
+            "$ref": "#/components/responses/error422Response"
+          },
+          "500": {
+            "$ref": "#/components/responses/error500Response"
           }
         }
       }
     },
-    "/pets/{petId}": {
+    "/auth/user": {
       "get": {
-        "summary": "Info for a specific pet",
-        "operationId": "showPetById",
         "tags": [
-          "pets"
+          "auth"
+        ],
+        "summary": "User data",
+        "description": "Returns the user data",
+        "operationId": "Get the user data",
+        "security": [
+          {
+            "JWTAuth": []
+          }
         ],
         "parameters": [
           {
-            "name": "petId",
-            "in": "path",
-            "required": true,
-            "description": "The id of the pet to retrieve",
-            "schema": {
-              "type": "string"
-            }
+            "$ref": "#/components/parameters/accessToken"
           }
         ],
         "responses": {
           "200": {
-            "description": "Expected response to a valid request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Pet"
-                }
-              }
-            }
+            "$ref": "#/components/responses/successful200Response"
           },
-          "default": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
+          "401": {
+            "$ref": "#/components/responses/error401Response"
+          },
+          "500": {
+            "$ref": "#/components/responses/error500Response"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Deactivate the user",
+        "description": "Deactivate the user by provided ID",
+        "operationId": "deactivate the user",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of pet to delete",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
             }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "pet deleted"
           }
         }
       }
@@ -133,44 +137,166 @@
   "components": {
     "schemas": {
       "Pet": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RegisterCredentials"
+          },
+          {
+            "type": "object",
+            "required": [
+              "id"
+            ],
+            "properties": {
+              "id": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          }
+        ]
+      },
+      "RegisterCredentials": {
         "type": "object",
         "required": [
-          "id",
-          "name"
+          "key",
+          "username",
+          "password"
         ],
         "properties": {
-          "id": {
+          "key": {
+            "description": "Key provided by the open days admin used for registration",
             "type": "integer",
-            "format": "int64"
+            "minimum": 6
           },
-          "name": {
-            "type": "string"
+          "username": {
+            "type": "string",
+            "minimum": 1
           },
-          "tag": {
-            "type": "string"
+          "password": {
+            "type": "string",
+            "minimum": 6
           }
         }
       },
-      "Pets": {
-        "type": "array",
-        "maxItems": 100,
-        "items": {
-          "$ref": "#/components/schemas/Pet"
+      "SuccessfulResponse": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "string",
+            "description": "Successful callback message / data"
+          },
+          "error": {
+            "type": "boolean",
+            "description": "Error status"
+          }
+        },
+        "example": {
+          "result": "Successful callback message / data",
+          "error": 1
         }
       },
-      "Error": {
+      "ErrorResponse": {
         "type": "object",
-        "required": [
-          "code",
-          "message"
-        ],
         "properties": {
-          "code": {
-            "type": "integer",
-            "format": "int32"
+          "result": {
+            "type": "string",
+            "description": "Error callback message"
           },
-          "message": {
+          "error": {
+            "type": "boolean",
+            "description": "Error status"
+          }
+        },
+        "example": {
+          "result": "Error message",
+          "error": 1
+        }
+      }
+    },
+    "securitySchemes": {
+      "JWTAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "parameters": {
+      "accessToken": {
+          "name": "accessToken",
+          "in": "cookie",
+          "description": "JWT access token",
+          "required": true,
+          "schema": {
             "type": "string"
+          }
+      }
+    },
+    "responses": {
+      "successful200Response": {
+        "description": "Successful response",
+        "content": {
+          "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SuccessfulResponse"
+              }
+          }
+        }
+      },
+      "successful201Response": {
+        "description": "Object has been created / updated successfuly",
+        "content": {
+          "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SuccessfulResponse"
+              }
+          }
+        }
+      },
+      "error401Response": {
+        "description": "Unauthorized error response",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "result": "Nie zalogowano",
+              "error": 1
+            }
+          }
+        }
+      },
+      "error403Response": {
+        "description": "No privileges to access",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "result": "Brak uprawnień",
+              "error": 1
+            }
+          }
+        }
+      },
+      "error422Response": {
+        "description": "Invalid data provided / validation failed",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      },
+      "error500Response": {
+        "description": "Internal server error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
           }
         }
       }
