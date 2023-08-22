@@ -1,5 +1,5 @@
-import { db } from '../utils/db.server'
-import { Classroom } from '../types/classroom.type'
+import { db } from '@utils/db.server'
+import { Classroom } from '@customTypes/classroom.type'
 
 export const listClassrooms = async (openDayId: number): Promise<Classroom[]> => {
     return db.classroom.findMany({

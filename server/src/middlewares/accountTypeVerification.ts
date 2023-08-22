@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
-import * as AuthHelper from '../utils/auth.helper'
-import * as Error from '../libs/errors'
-import { Token } from '../types/auth.type'
+import * as AuthHelper from '@utils/auth.helper'
+import * as Error from '@libs/errors'
+import { Token } from '@customTypes/auth.type'
 
 export const verifyAccountType = (...accountTypes: number[]) => {
     return (request: Request, response: Response, next: NextFunction) => {

@@ -1,4 +1,4 @@
-import * as Job from '../utils/cron.jobs'
+import * as Job from '@utils/cron.jobs'
 
 export const cronConfig = () => {
     Job.expireTheKey.start()

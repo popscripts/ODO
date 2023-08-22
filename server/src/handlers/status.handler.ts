@@ -1,5 +1,5 @@
 import { Server, Socket } from 'socket.io'
-import { setClassroomStatus } from '../utils/status.helper'
+import { setClassroomStatus } from '@utils/status.helper'
 
 type classroomStatus = {
     id: number

@@ -1,5 +1,5 @@
-import { db } from '../utils/db.server'
-import * as BuffetType from '../types/buffet.type'
+import { db } from '@utils/db.server'
+import * as BuffetType from '@customTypes/buffet.type'
 
 export const getOrders = async (openDayId: number): Promise<BuffetType.Order[]> => {
     return db.order.findMany({

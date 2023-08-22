@@ -1,16 +1,16 @@
 import express from 'express'
-import { authorize } from '../middlewares/authorization'
-import * as ClassroomController from '../controllers/classroom.controller'
-import { validate } from '../middlewares/validation'
+import { authorize } from '@middlewares/authorization'
+import * as ClassroomController from '@controllers/classroom.controller'
+import { validate } from '@middlewares/validation'
 import {
     deleteClassroomValidation,
     newClassroomValidation,
     restoreClassroomValidation,
     updatedClassroomValidation
-} from '../validations/classroom.validation'
-import { verifyAccountType } from '../middlewares/accountTypeVerification'
-import { AccountTypes } from '../libs/accountTypes'
-import { classroomStatusVerification } from '../middlewares/classroomStatusVerification'
+} from '@validations/classroom.validation'
+import { verifyAccountType } from '@middlewares/accountTypeVerification'
+import { AccountTypes } from '@libs/accountTypes'
+import { classroomStatusVerification } from '@middlewares/classroomStatusVerification'
 
 export const classroomRouter = express.Router()
 
