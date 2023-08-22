@@ -118,13 +118,6 @@ export const placeOrder = async (
     amount: number,
     comment: string | null
 ) => {
-    console.log({
-        openDayId,
-        dishId,
-        amount,
-        orderedById,
-        comment
-    })
     return db.order.create({
         data: {
             openDayId,
