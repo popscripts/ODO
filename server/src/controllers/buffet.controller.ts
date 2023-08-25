@@ -1,13 +1,13 @@
 import { Request, Response } from 'express'
-import * as BuffetService from '../services/buffet.service'
-import * as Error from '../libs/errors'
-import { verifyToken } from '../utils/auth.helper'
-import { Token } from '../types/auth.type'
-import * as Callback from '../libs/callbacks'
-import { statuses } from '../libs/statuses'
-import { logger } from '../config/logger'
-import { NewOrder, Order } from '../types/buffet.type'
-import { Dishes } from '../libs/dishes'
+import * as BuffetService from '@services/buffet.service'
+import * as Error from '@libs/errors'
+import { verifyToken } from '@utils/auth.helper'
+import { Token } from '@customTypes/auth.type'
+import * as Callback from '@libs/callbacks'
+import { statuses } from '@libs/statuses'
+import { logger } from '@config/logger'
+import { NewOrder, Order } from '@customTypes/buffet.type'
+import { Dishes } from '@libs/dishes'
 
 export const orders = async (request: Request, response: Response) => {
     try {

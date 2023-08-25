@@ -32,8 +32,8 @@ function ClassroomBox({ classroom, colorPalette, status }: Props) {
                     <TimedGradient changedAt={changedAt} colors={[colorPalette[2], colorPalette[3]]} />
                 )}
                 <ContentWrapper>
-                    <Heading>{classroom.classroom}</Heading>
-                    <MediumText>{classroom.title}</MediumText>
+                    <Heading>{classroom?.classroom}</Heading>
+                    <MediumText>{classroom?.title}</MediumText>
                     <TimerWrapper>
                         {status !== 'free' && changedAt && <Timer timeLeft={timeLeft} />}
                     </TimerWrapper>

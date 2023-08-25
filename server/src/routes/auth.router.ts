@@ -1,16 +1,16 @@
 import express from 'express'
-import { validate } from '../middlewares/validation'
+import { validate } from '@middlewares/validation'
 import {
     deleteUserValidation,
     editUserValidation,
     loginValidation,
     registerValidation,
     restoreUserValidation
-} from '../validations/auth.validation'
-import * as AuthController from '../controllers/auth.controller'
-import { authorize } from '../middlewares/authorization'
-import { verifyAccountType } from '../middlewares/accountTypeVerification'
-import { AccountTypes } from '../libs/accountTypes'
+} from '@validations/auth.validation'
+import * as AuthController from '@controllers/auth.controller'
+import { authorize } from '@middlewares/authorization'
+import { verifyAccountType } from '@middlewares/accountTypeVerification'
+import { AccountTypes } from '@libs/accountTypes'
 
 export const authRouter = express.Router()
 

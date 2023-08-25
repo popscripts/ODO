@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-import { Token } from '../types/auth.type'
-import { logger } from '../config/logger'
+import { Token } from '@customTypes/auth.type'
+import { logger } from '@config/logger'
 
 export const hashPassword = async (password: string): Promise<string> => {
     return await bcrypt.hash(password, 10)

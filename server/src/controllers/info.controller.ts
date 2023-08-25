@@ -1,11 +1,11 @@
 import { Request, Response } from 'express'
-import * as Error from '../libs/errors'
-import { verifyToken } from '../utils/auth.helper'
-import { Token } from '../types/auth.type'
-import * as Callback from '../libs/callbacks'
-import { logger } from '../config/logger'
-import { Info } from '../types/info.type'
-import * as InfoService from '../services/info.service'
+import * as Error from '@libs/errors'
+import { verifyToken } from '@utils/auth.helper'
+import { Token } from '@customTypes/auth.type'
+import * as Callback from '@libs/callbacks'
+import { logger } from '@config/logger'
+import { Info } from '@customTypes/info.type'
+import * as InfoService from '@services/info.service'
 
 export const info = async (request: Request, response: Response) => {
     try {

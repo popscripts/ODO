@@ -11,10 +11,10 @@ function MainHeader() {
     const logOut = useLogOut()
     return (
         <Wrapper>
-            <ProfilePicture url={userData.pictureName} size={100} />
+            <ProfilePicture url={userData?.pictureName} size={100} />
             <View>
-                <Heading>{userData.username}</Heading>
-                <SubHeading>{translateAccountType(userData.accountType)}</SubHeading>
+                <Heading>{userData?.username}</Heading>
+                <SubHeading>{translateAccountType(userData?.accountType)}</SubHeading>
                 <Button onPress={() => logOut()}>
                     <MediumText>Zakończ oprowadzanie</MediumText>
                 </Button>

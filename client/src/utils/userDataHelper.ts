@@ -5,7 +5,7 @@ export function getImageSource(url: string | null) {
 }
 
 export function translateAccountType(accountType: { id: number; name: string }) {
-    switch (accountType.name) {
+    switch (accountType?.name) {
         case 'user':
             return 'Oprowadzający'
         case 'admin':

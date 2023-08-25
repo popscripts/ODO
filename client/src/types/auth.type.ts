@@ -20,6 +20,7 @@ export type User = {
     openDayId: number
     accountType: AccountType
     pictureName: string | null
+    name: string | null
     ManagedClassroom: Array<ManagedClassroom>
     ReservedClassroom: Array<Classroom>
     TakenClassroom: Array<Classroom>

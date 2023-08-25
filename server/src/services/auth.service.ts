@@ -1,7 +1,7 @@
-import { db } from '../utils/db.server'
-import { hashPassword } from '../utils/auth.helper'
-import * as AuthType from '../types/auth.type'
-import { Group } from '../types/auth.type'
+import { db } from '@utils/db.server'
+import { hashPassword } from '@utils/auth.helper'
+import * as AuthType from '@customTypes//auth.type'
+import { Group } from '@customTypes/auth.type'
 
 export const register = async (registerData: AuthType.NewUser) => {
     const { openDayId, username, password } = registerData

@@ -1,5 +1,5 @@
 import { body, CustomValidator } from 'express-validator'
-import * as KeyService from '../services/key.service'
+import * as KeyService from '@services/key.service'
 
 const customKeyIdValidation: CustomValidator = async (id) => {
     if (!id) {

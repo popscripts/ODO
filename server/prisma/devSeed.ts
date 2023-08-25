@@ -1,9 +1,9 @@
-import { db } from '../src/utils/db.server'
-import { NewUser } from '../src/types/auth.type'
+import { db } from '@utils/db.server'
+import { NewUser } from '@customTypes/auth.type'
 import { faker } from '@faker-js/faker'
-import { NewClassroom } from '../src/types/classroom.type'
-import { hashPassword } from '../src/utils/auth.helper'
-import { NewKey } from '../src/types/key.type'
+import { NewClassroom } from '@customTypes/classroom.type'
+import { hashPassword } from '@utils/auth.helper'
+import { NewKey } from '@customTypes/key.type'
 
 const devSeed = async () => {
     // Create random users

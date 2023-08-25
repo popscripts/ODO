@@ -8,6 +8,7 @@ import RegisterForm from '../RegisterForm/RegisterForm'
 import { TouchableOpacity, UIManager, Platform, LayoutAnimation } from 'react-native'
 import { Link } from '../../components/commonStyles'
 import { useKeyboardHeight } from '../../hooks/useKeyboardHeight'
+import SlideFromBottom from '../../components/SlideFromBottom'
 
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
     UIManager.setLayoutAnimationEnabledExperimental(true)
@@ -24,33 +25,35 @@ function FormDrawer() {
     }
     return (
         <>
-            <Wrapper bottom={!formOpened ? bottom : 0}>
-                {formOpened === 'login' ? <LoginForm /> : formOpened === 'register' && <RegisterForm />}
-                {!formOpened ? (
-                    <ButtonWrapper>
-                        <Button
-                            content={'Zaloguj się'}
-                            onPress={() => {
-                                LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
-                                setFormOpened('login')
-                            }}
-                            color={colors.palette.secondary300}
-                        />
-                        <Button
-                            content={'Zarejestruj się'}
-                            onPress={() => {
-                                LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
-                                setFormOpened('register')
-                            }}
-                            color={colors.palette.tertiary300}
-                        />
-                    </ButtonWrapper>
-                ) : (
-                    <TouchableOpacity onPress={changeForm}>
-                        <Link>{formOpened === 'login' ? 'Zarejestruj się' : 'Zaloguj się'}</Link>
-                    </TouchableOpacity>
-                )}
-            </Wrapper>
+            <SlideFromBottom>
+                <Wrapper bottom={!formOpened ? bottom : 0}>
+                    {formOpened === 'login' ? <LoginForm /> : formOpened === 'register' && <RegisterForm />}
+                    {!formOpened ? (
+                        <ButtonWrapper>
+                            <Button
+                                content={'Zaloguj się'}
+                                onPress={() => {
+                                    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
+                                    setFormOpened('login')
+                                }}
+                                color={colors.palette.secondary300}
+                            />
+                            <Button
+                                content={'Zarejestruj się'}
+                                onPress={() => {
+                                    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
+                                    setFormOpened('register')
+                                }}
+                                color={colors.palette.tertiary300}
+                            />
+                        </ButtonWrapper>
+                    ) : (
+                        <TouchableOpacity onPress={changeForm}>
+                            <Link>{formOpened === 'login' ? 'Zarejestruj się' : 'Zaloguj się'}</Link>
+                        </TouchableOpacity>
+                    )}
+                </Wrapper>
+            </SlideFromBottom>
             {formOpened && <BottomArea height={keyboardHeight} />}
         </>
     )
