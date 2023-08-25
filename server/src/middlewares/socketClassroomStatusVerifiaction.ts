@@ -1,7 +1,7 @@
-import { Classroom } from '../types/classroom.type'
-import { getClassroom } from '../services/classroom.service'
-import { Group } from '../types/auth.type'
-import { getGroupByMemberId } from '../services/auth.service'
+import { Classroom } from '@customTypes/classroom.type'
+import { getClassroom } from '@services/classroom.service'
+import { Group } from '@customTypes/auth.type'
+import { getGroupByMemberId } from '@services/auth.service'
 
 export const socketClassroomStatusVerification = async (
     classroomId: number,

@@ -62,6 +62,6 @@
     "editor.formatOnSave": true,
     "bracketSameLine": false,
     "wordWrap": "wordWrapColumn",
-    "printWidth": 110
+    "printWidth": 80
   }
 }

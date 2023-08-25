@@ -41,8 +41,8 @@ export type ShortClassroom = {
     takenAt: Date | null
 }
 
-export interface ClassroomStatusEvent extends Event {
-    classroomId: number
+export type ClassroomStatusEvent = Event & {
+    id: number
     userId: number
     accountType: string
     status: string
