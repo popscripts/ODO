@@ -82,7 +82,12 @@ const createRandomClassroom = (): NewClassroom => {
 }
 
 const createAdminAccount = async (): Promise<NewUser> => {
-    return { openDayId: 1, accountType: 1, username: 'admin', password: await hashPassword('haslo123') }
+    return {
+        openDayId: 1,
+        accountType: 1,
+        username: process.env.SEED_USER_USERNAME!,
+        password: await hashPassword(process.env.SEED_USER_PASSWORD!)
+    }
 }
 
 const KEY: NewKey = {
@@ -91,8 +96,11 @@ const KEY: NewKey = {
     expiresAt: faker.date.soon({ days: 14 })
 }
 
-const CLASSROOMS: NewClassroom[] = faker.helpers.multiple(createRandomClassroom, {
-    count: 5
-})
+const CLASSROOMS: NewClassroom[] = faker.helpers.multiple(
+    createRandomClassroom,
+    {
+        count: 5
+    }
+)
 
 devSeed()

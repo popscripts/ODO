@@ -10,28 +10,28 @@ import {
 export const socketConfig = (server: httpServer): Server => {
     return new Server(server, {
         cors: {
-            origin: 'http://192.168.1.11:19000'
+            origin: process.env.EXPO_URI
         }
     })
 }
 
 export const ioConnectionConfig = (io: Server): void => {
     io.on('connection', (socket: Socket): void => {
-        console.log('connected')
+        console.log('connected') // TODO... just for development
         socket.use(socketMiddlewareHandler)
-        socket.on('joinRoomByAccountType', (data, err) =>
-            roomHandler(socket, data, err)
-        )
-        socket.on('send_message', (data, err) =>
-            newMessageHandler(io, data, err)
-        )
+
+        socket.on('joinRoom', (data, err) => roomHandler(socket, data, err))
+
         socket.on('setClassroomStatus', (data, err) =>
             statusHandler(io, data, err)
         )
 
+        socket.on('send_message', (data, err) =>
+            newMessageHandler(io, data, err)
+        )
+
         socket.on('error', (error: Error): void => {
             socket.emit('error_handler', error.message)
-            console.log(error)
         })
     })
 }

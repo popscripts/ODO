@@ -5,6 +5,7 @@ import { socketClassroomStatusVerification } from '@middlewares/socketClassroomS
 import { getClassroom } from '@services/classroom.service'
 import { setClassroomStatus } from '@utils/status.helper'
 import { getGroupByMemberId } from '@services/auth.service'
+import { logger } from '@config/logger'
 
 export const roomHandler = (
     socket: Socket,
@@ -36,24 +37,27 @@ export const newMessageHandler = (
 
 export const statusHandler = async (
     io: Server,
-    data: any,
+    data: ClassroomStatusEvent,
     error: Error
 ): Promise<void> => {
     if (error) {
         console.log(error)
     } else {
         try {
-            const { id, status, prevStatus, userId, accountType } =
-                data as ClassroomStatusEvent
+            const { id, status, prevStatus, userId } = data
             const group: Group | null = await getGroupByMemberId(userId)
-            await setClassroomStatus(id, status, group!.id)
+            if (!group) {
+                throw new Error('User is not a member of any group')
+            }
 
+            await setClassroomStatus(id, status, group.id)
             const classroom: Classroom | null = await getClassroom(id)
-            io.to(accountType).emit('classroomStatuses', {
+
+            io.emit('classroomStatus', {
                 prevStatus,
-                status,
                 classroom
             })
+
             console.log(
                 `Classroom ${id} status changed from ${prevStatus} to ${status} by ${userId}`
             )
@@ -67,6 +71,7 @@ export const socketMiddlewareHandler = async (
     event: Event[],
     next: any
 ): Promise<void> => {
+    logger.info(event[0])
     switch (event[0].toString()) {
         case 'setClassroomStatus':
             try {
@@ -81,10 +86,13 @@ export const socketMiddlewareHandler = async (
                     )
                 ) {
                     next()
+                } else {
+                    next(new Error('Something went wrong'))
                 }
+
                 break
             } catch (error: any) {
-                console.log(error.message)
+                next(new Error('Something went wrong'))
                 break
             }
         default:
