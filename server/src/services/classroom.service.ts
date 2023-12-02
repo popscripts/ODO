@@ -1,7 +1,9 @@
 import { db } from '@utils/db.server'
 import { Classroom } from '@customTypes/classroom.type'
 
-export const listClassrooms = async (openDayId: number): Promise<Classroom[]> => {
+export const listClassrooms = async (
+    openDayId: number
+): Promise<Classroom[]> => {
     return db.classroom.findMany({
         where: {
             openDayId
@@ -24,14 +26,7 @@ export const listClassrooms = async (openDayId: number): Promise<Classroom[]> =>
             reservedBy: {
                 select: {
                     id: true,
-                    groupMemberOne: {
-                        select: {
-                            id: true,
-                            username: true,
-                            name: true
-                        }
-                    },
-                    groupMemberTwo: {
+                    GroupMembers: {
                         select: {
                             id: true,
                             username: true,
@@ -45,14 +40,7 @@ export const listClassrooms = async (openDayId: number): Promise<Classroom[]> =>
             takenBy: {
                 select: {
                     id: true,
-                    groupMemberOne: {
-                        select: {
-                            id: true,
-                            username: true,
-                            name: true
-                        }
-                    },
-                    groupMemberTwo: {
+                    GroupMembers: {
                         select: {
                             id: true,
                             username: true,
@@ -146,12 +134,15 @@ export const doesClassroomExist = async (id: number): Promise<boolean> => {
     return !!doesExist
 }
 
-export const listFreeClassrooms = async (openDayId: number): Promise<Classroom[]> => {
+export const listClassroomsByStatus = async (
+    openDayId: number,
+    status: string
+): Promise<Classroom[]> => {
     return db.classroom.findMany({
         where: {
             openDayId,
             status: {
-                name: 'free'
+                name: status
             }
         },
         select: {
@@ -173,14 +164,7 @@ export const listFreeClassrooms = async (openDayId: number): Promise<Classroom[]
             reservedBy: {
                 select: {
                     id: true,
-                    groupMemberOne: {
-                        select: {
-                            id: true,
-                            username: true,
-                            name: true
-                        }
-                    },
-                    groupMemberTwo: {
+                    GroupMembers: {
                         select: {
                             id: true,
                             username: true,
@@ -194,156 +178,7 @@ export const listFreeClassrooms = async (openDayId: number): Promise<Classroom[]
             takenBy: {
                 select: {
                     id: true,
-                    groupMemberOne: {
-                        select: {
-                            id: true,
-                            username: true,
-                            name: true
-                        }
-                    },
-                    groupMemberTwo: {
-                        select: {
-                            id: true,
-                            username: true,
-                            name: true
-                        }
-                    },
-                    groupSize: true,
-                    description: true
-                }
-            },
-            takenAt: true
-        }
-    })
-}
-
-export const listBusyClassrooms = async (openDayId: number): Promise<Classroom[]> => {
-    return db.classroom.findMany({
-        where: {
-            openDayId,
-            status: {
-                name: 'busy'
-            }
-        },
-        select: {
-            id: true,
-            openDayId: true,
-            classroom: true,
-            title: true,
-            description: true,
-            managedBy: {
-                select: {
-                    id: true,
-                    username: true,
-                    pictureName: true,
-                    name: true
-                }
-            },
-            status: true,
-            reservedAt: true,
-            reservedBy: {
-                select: {
-                    id: true,
-                    groupMemberOne: {
-                        select: {
-                            id: true,
-                            username: true,
-                            name: true
-                        }
-                    },
-                    groupMemberTwo: {
-                        select: {
-                            id: true,
-                            username: true,
-                            name: true
-                        }
-                    },
-                    groupSize: true,
-                    description: true
-                }
-            },
-            takenBy: {
-                select: {
-                    id: true,
-                    groupMemberOne: {
-                        select: {
-                            id: true,
-                            username: true,
-                            name: true
-                        }
-                    },
-                    groupMemberTwo: {
-                        select: {
-                            id: true,
-                            username: true,
-                            name: true
-                        }
-                    },
-                    groupSize: true,
-                    description: true
-                }
-            },
-            takenAt: true
-        }
-    })
-}
-
-export const listReservedClassrooms = async (openDayId: number): Promise<Classroom[]> => {
-    return db.classroom.findMany({
-        where: {
-            openDayId,
-            status: {
-                name: 'reserved'
-            }
-        },
-        select: {
-            id: true,
-            openDayId: true,
-            classroom: true,
-            title: true,
-            description: true,
-            managedBy: {
-                select: {
-                    id: true,
-                    username: true,
-                    pictureName: true,
-                    name: true
-                }
-            },
-            status: true,
-            reservedAt: true,
-            reservedBy: {
-                select: {
-                    id: true,
-                    groupMemberOne: {
-                        select: {
-                            id: true,
-                            username: true,
-                            name: true
-                        }
-                    },
-                    groupMemberTwo: {
-                        select: {
-                            id: true,
-                            username: true,
-                            name: true
-                        }
-                    },
-                    groupSize: true,
-                    description: true
-                }
-            },
-            takenBy: {
-                select: {
-                    id: true,
-                    groupMemberOne: {
-                        select: {
-                            id: true,
-                            username: true,
-                            name: true
-                        }
-                    },
-                    groupMemberTwo: {
+                    GroupMembers: {
                         select: {
                             id: true,
                             username: true,
@@ -383,14 +218,7 @@ export const getClassroom = async (id: number): Promise<Classroom | null> => {
             reservedBy: {
                 select: {
                     id: true,
-                    groupMemberOne: {
-                        select: {
-                            id: true,
-                            username: true,
-                            name: true
-                        }
-                    },
-                    groupMemberTwo: {
+                    GroupMembers: {
                         select: {
                             id: true,
                             username: true,
@@ -404,14 +232,7 @@ export const getClassroom = async (id: number): Promise<Classroom | null> => {
             takenBy: {
                 select: {
                     id: true,
-                    groupMemberOne: {
-                        select: {
-                            id: true,
-                            username: true,
-                            name: true
-                        }
-                    },
-                    groupMemberTwo: {
+                    GroupMembers: {
                         select: {
                             id: true,
                             username: true,
@@ -454,7 +275,11 @@ export const cancelReservation = async (id: number) => {
     })
 }
 
-export const setBusyStatus = async (id: number, takenById: number, takenAt: Date) => {
+export const setBusyStatus = async (
+    id: number,
+    takenById: number,
+    takenAt: Date
+) => {
     return db.classroom.update({
         where: {
             id
@@ -467,7 +292,11 @@ export const setBusyStatus = async (id: number, takenById: number, takenAt: Date
     })
 }
 
-export const setReservedStatus = async (id: number, reservedById: number, reservedAt: Date) => {
+export const setReservedStatus = async (
+    id: number,
+    reservedById: number,
+    reservedAt: Date
+) => {
     return db.classroom.update({
         where: {
             id
@@ -480,7 +309,11 @@ export const setReservedStatus = async (id: number, reservedById: number, reserv
     })
 }
 
-export const setReservedStatusWhenBusy = async (id: number, reservedById: number, reservedAt: Date) => {
+export const setReservedStatusWhenBusy = async (
+    id: number,
+    reservedById: number,
+    reservedAt: Date
+) => {
     return db.classroom.update({
         where: {
             id
@@ -492,7 +325,11 @@ export const setReservedStatusWhenBusy = async (id: number, reservedById: number
     })
 }
 
-export const setBusyClassroomWhenReserved = async (id: number, takenById: number, takenAt: Date) => {
+export const setBusyClassroomWhenReserved = async (
+    id: number,
+    takenById: number,
+    takenAt: Date
+) => {
     return db.classroom.update({
         where: {
             id

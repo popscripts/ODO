@@ -41,7 +41,11 @@ export const login = async (request: Request, response: Response) => {
         const { username, password } = request.body
         const user: LoginUser | null = await AuthService.login(username)
 
-        const validatePassword: boolean = await AuthHelper.validatePassword(password, user!.password)
+        const validatePassword: boolean = await AuthHelper.validatePassword(
+            password,
+            user!.password
+        )
+
         if (!validatePassword) {
             return response.status(403).json(Error.wrongPassword)
         }
@@ -158,7 +162,10 @@ export const usersByStatus = async (request: Request, response: Response) => {
         const token: string = request.cookies.JWT
         const tokenData: Token = verifyToken(token, 'accessToken')
         const status: boolean = request.params.status === 'active'
-        const users: Users[] | null = await AuthService.getUsersByStatus(tokenData.openDayId, status)
+        const users: Users[] | null = await AuthService.getUsersByStatus(
+            tokenData.openDayId,
+            status
+        )
         return response.status(200).json({ result: users, error: 0 })
     } catch (error: any) {
         logger.error(`500 | ${error}`)
@@ -166,7 +173,10 @@ export const usersByStatus = async (request: Request, response: Response) => {
     }
 }
 
-export const updateProfilePicture = async (request: Request, response: Response) => {
+export const updateProfilePicture = async (
+    request: Request,
+    response: Response
+) => {
     try {
         const token: string = request.cookies.JWT
         const tokenData: Token = verifyToken(token, 'accessToken')
@@ -182,7 +192,9 @@ export const updateProfilePicture = async (request: Request, response: Response)
 export const getPicture = async (request: Request, response: Response) => {
     try {
         const pictureId: string = request.params.id
-        return response.status(200).sendFile('/uploads/' + pictureId, { root: '.' })
+        return response
+            .status(200)
+            .sendFile('/uploads/' + pictureId, { root: '.' })
     } catch (error: any) {
         logger.error(`500 | ${error}`)
         return response.status(500).json(Error.loadProfilePictureError)

@@ -1,5 +1,6 @@
 import { Status } from './status.type'
-import { ShortGroup, ShortUser } from './auth.type'
+import { ShortUser } from './auth.type'
+import { ShortGroup } from '@customTypes/group.type'
 
 export type NewClassroom = {
     openDayId: number

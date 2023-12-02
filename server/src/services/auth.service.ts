@@ -1,7 +1,6 @@
 import { db } from '@utils/db.server'
 import { hashPassword } from '@utils/auth.helper'
 import * as AuthType from '@customTypes//auth.type'
-import { Group } from '@customTypes/auth.type'
 
 export const register = async (registerData: AuthType.NewUser) => {
     const { openDayId, username, password } = registerData
@@ -15,7 +14,9 @@ export const register = async (registerData: AuthType.NewUser) => {
     })
 }
 
-export const login = async (username: string): Promise<AuthType.LoginUser | null> => {
+export const login = async (
+    username: string
+): Promise<AuthType.LoginUser | null> => {
     return db.user.findUnique({
         where: {
             username
@@ -71,12 +72,62 @@ export const getUser = async (id: number): Promise<AuthType.User | null> => {
                     title: true,
                     description: true
                 }
+            },
+            Group: {
+                select: {
+                    id: true,
+                    groupSize: true,
+                    GroupMembers: {
+                        select: {
+                            id: true,
+                            username: true,
+                            name: true
+                        }
+                    },
+                    description: true,
+                    Reserved: {
+                        select: {
+                            id: true,
+                            openDayId: true,
+                            classroom: true,
+                            title: true,
+                            description: true,
+                            managedBy: {
+                                select: {
+                                    id: true,
+                                    username: true,
+                                    name: true
+                                }
+                            },
+                            status: true
+                        }
+                    },
+                    Taken: {
+                        select: {
+                            id: true,
+                            openDayId: true,
+                            classroom: true,
+                            title: true,
+                            description: true,
+                            managedBy: {
+                                select: {
+                                    id: true,
+                                    username: true,
+                                    name: true
+                                }
+                            },
+                            status: true
+                        }
+                    }
+                }
             }
         }
     })
 }
 
-export const getUsers = async (openDayId: number): Promise<AuthType.Users[]> => {
+export const getUsers = async (
+    openDayId: number
+): Promise<AuthType.Users[]> => {
     return db.user.findMany({
         where: {
             openDayId
@@ -92,7 +143,11 @@ export const getUsers = async (openDayId: number): Promise<AuthType.Users[]> => 
     })
 }
 
-export const editUser = async (id: number, username: string, accountTypeId: number) => {
+export const editUser = async (
+    id: number,
+    username: string,
+    accountTypeId: number
+) => {
     return db.user.update({
         where: {
             id
@@ -126,7 +181,9 @@ export const restoreUser = async (id: number) => {
     })
 }
 
-export const isValidAccountType = async (accountType: string): Promise<boolean> => {
+export const isValidAccountType = async (
+    accountType: string
+): Promise<boolean> => {
     const isValid = await db.accountType.findFirst({
         where: {
             name: accountType
@@ -144,7 +201,10 @@ export const isValidIdUser = async (id: number): Promise<boolean> => {
     return !!isValid
 }
 
-export const getUsersByStatus = async (openDayId: number, status: boolean): Promise<AuthType.Users[]> => {
+export const getUsersByStatus = async (
+    openDayId: number,
+    status: boolean
+): Promise<AuthType.Users[]> => {
     return db.user.findMany({
         where: {
             openDayId,
@@ -171,7 +231,10 @@ export const doesUserExists = async (username: string): Promise<boolean> => {
     return !!doesExists
 }
 
-export const saveProfilePictureToDatabase = async (id: number, pictureName: string) => {
+export const saveProfilePictureToDatabase = async (
+    id: number,
+    pictureName: string
+) => {
     return db.user.update({
         where: {
             id
@@ -182,142 +245,15 @@ export const saveProfilePictureToDatabase = async (id: number, pictureName: stri
     })
 }
 
-export const getProfilePictureName = async (id: number): Promise<AuthType.PictureName | null> => {
+export const getProfilePictureName = async (
+    id: number
+): Promise<AuthType.PictureName | null> => {
     return db.user.findUnique({
         where: {
             id
         },
         select: {
             pictureName: true
-        }
-    })
-}
-
-export const getGroup = async (id: number): Promise<Group | null> => {
-    return db.group.findUnique({
-        where: {
-            id
-        },
-        select: {
-            id: true,
-            groupSize: true,
-            groupMemberOne: {
-                select: {
-                    id: true,
-                    username: true,
-                    name: true
-                }
-            },
-            groupMemberTwo: {
-                select: {
-                    id: true,
-                    username: true,
-                    name: true
-                }
-            },
-            description: true,
-            Reserved: {
-                select: {
-                    id: true,
-                    openDayId: true,
-                    classroom: true,
-                    title: true,
-                    description: true,
-                    managedBy: {
-                        select: {
-                            id: true,
-                            username: true,
-                            name: true
-                        }
-                    },
-                    status: true
-                }
-            },
-            Taken: {
-                select: {
-                    id: true,
-                    openDayId: true,
-                    classroom: true,
-                    title: true,
-                    description: true,
-                    managedBy: {
-                        select: {
-                            id: true,
-                            username: true,
-                            name: true
-                        }
-                    },
-                    status: true
-                }
-            }
-        }
-    })
-}
-
-export const getGroupByMemberId = async (groupMemberId: number): Promise<Group | null> => {
-    return db.group.findFirst({
-        where: {
-            OR: [
-                {
-                    groupMemberOneId: groupMemberId
-                },
-                {
-                    groupMemberTwoId: groupMemberId
-                }
-            ]
-        },
-        select: {
-            id: true,
-            groupSize: true,
-            groupMemberOne: {
-                select: {
-                    id: true,
-                    username: true,
-                    name: true
-                }
-            },
-            groupMemberTwo: {
-                select: {
-                    id: true,
-                    username: true,
-                    name: true
-                }
-            },
-            description: true,
-            Reserved: {
-                select: {
-                    id: true,
-                    openDayId: true,
-                    classroom: true,
-                    title: true,
-                    description: true,
-                    managedBy: {
-                        select: {
-                            id: true,
-                            username: true,
-                            name: true
-                        }
-                    },
-                    status: true
-                }
-            },
-            Taken: {
-                select: {
-                    id: true,
-                    openDayId: true,
-                    classroom: true,
-                    title: true,
-                    description: true,
-                    managedBy: {
-                        select: {
-                            id: true,
-                            username: true,
-                            name: true
-                        }
-                    },
-                    status: true
-                }
-            }
         }
     })
 }
