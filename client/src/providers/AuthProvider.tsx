@@ -137,6 +137,7 @@ export default function AuthProvider({ children }: Children) {
         setTimeout(() => {
             const data = { ...userData, name: `${name} ${surname}` }
             setUserData(data)
+            // TODO... Connect to backend
         }, 1500)
     }
 

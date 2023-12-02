@@ -5,12 +5,13 @@ import { useToken, useUserData } from './AuthProvider'
 import ClassroomService from '../services/classroomService'
 import io from 'socket.io-client'
 import { API_URL } from '../config'
+import { Status } from '../types/status.type'
 
 const socket = io(API_URL)
 
 const ClassroomContext = createContext<Classroom[]>([])
 const ParsedClassroomContext = createContext({ free: [0], reserved: [0], busy: [0] })
-const SetStatusContext = createContext((id: number, prevStatus: string, status: string) => {})
+const SetStatusContext = createContext((id: number, prevStatus: Status["name"], status: Status["name"]) => {})
 
 export function useClassrooms() {
     return useContext(ClassroomContext)
@@ -56,7 +57,7 @@ function ClassroomProvider({ children }: Children) {
     }
 
     function parseClassrooms(classrooms: Classroom[]) {
-        classrooms.map((classroom, index) => {
+        classrooms.map((classroom) => {
             setStatusClassrooms[classroom.status.name]((classrooms) => [...classrooms, classroom.id])
         })
     }
@@ -68,7 +69,7 @@ function ClassroomProvider({ children }: Children) {
         })
     }
 
-    function changeClassroomStatus(classroomId: number, prevStatus: string, status: string) {
+    function changeClassroomStatus(classroomId: number, prevStatus: Status["name"], status: Status["name"]) {
         const data = {
             id: classroomId,
             userId: userData?.id,
@@ -76,10 +77,11 @@ function ClassroomProvider({ children }: Children) {
             prevStatus,
             status
         }
+        setChangedClassroom(data)
         socket.emit('setClassroomStatus', data)
     }
 
-    function setStatus(id: number, prevStatus: string, status: string) {
+    function setStatus(id: number, prevStatus: Status["name"], status: Status["name"]) {
         changeClassroomStatus(id, prevStatus, status)
     }
 
@@ -97,9 +99,26 @@ function ClassroomProvider({ children }: Children) {
         }
     }
 
+    function handleClassroomChange(classroom: Classroom) {
+        let temp = classrooms
+        let prevClassroom = classrooms.find(item => item.id === classroom.id)
+        if (!prevClassroom) return
+        console.log(prevClassroom)
+
+        let id = classrooms.indexOf(prevClassroom)   
+        console.log("id: ", id,)
+        if (id > -1) {
+            temp[id] = classroom
+            setClassrooms({...temp})
+        }    
+    }
+
     useEffect(() => {
         joinRoom()
     }, [userData])
+    // useEffect(() => {
+    //     console.log("classrooms: ", classrooms)
+    // }, [classrooms])
 
     useEffect(() => {
         !token.error && classrooms.length === 0 && getClassrooms()
@@ -119,9 +138,13 @@ function ClassroomProvider({ children }: Children) {
 
     useEffect(() => {
         socket.removeAllListeners()
-        socket.on('classroomStatuses', (classroom: classroomStatus) => {
-            if (classroom.prevStatus !== classroom.status) {
-                setChangedClassroom(classroom)
+        socket.on('classroomStatus', (data) => {
+            console.log("socket: ", data.prevStatus, data.classroom.status)
+            if (data.prevStatus !== data.classroom.status.name) {
+                // TODO... change taken by etc
+                let changed: classroomStatus = {id: data.classroom.id, userId: 1, accountType: 'admin' ,status: data.classroom.status.name, prevStatus: data.prevStatus,}
+                setChangedClassroom(changed)
+                handleClassroomChange(data.classroom)
             }
         })
     }, [])
