@@ -18,7 +18,11 @@ export const authRouter = express.Router()
  * POST: User registration
  * Params: key, username, password
  */
-authRouter.post('/register', validate(registerValidation), AuthController.register)
+authRouter.post(
+    '/register',
+    validate(registerValidation),
+    AuthController.register
+)
 
 /**
  * POST: User login
@@ -45,7 +49,12 @@ authRouter.get('/jwt', authorize, AuthController.jwt)
  * GET: List of all users
  * Allowed account types: admin
  */
-authRouter.get('/users', authorize, verifyAccountType(AccountTypes.admin), AuthController.users)
+authRouter.get(
+    '/users',
+    authorize,
+    verifyAccountType(AccountTypes.admin),
+    AuthController.users
+)
 
 /**
  * PUT: Update user
