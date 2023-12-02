@@ -100,28 +100,25 @@ model User {
   username         String      @unique @db.VarChar(64)
   password         String      @db.VarChar(255)
   name             String?     @db.VarChar(64)
+  Group            Group?      @relation(fields: [groupId], references: [id])
+  groupId          Int?
   pictureName      String?     @db.VarChar(255)
   active           Boolean     @default(true)
   createdAt        DateTime    @default(now())
   updatedAt        DateTime    @updatedAt
   Order            Order[]     @relation("orders")
   ManagedClassroom Classroom?  @relation("managed")
-  GroupMemberOne   Group?      @relation(name: "groupMemberOne")
-  GroupMemberTwo   Group?      @relation(name: "groupMemberTwo")
 }
 
 model Group {
-  id               Int        @id @default(autoincrement())
-  groupMemberOne   User?      @relation(name: "groupMemberOne", fields: [groupMemberOneId], references: [id])
-  groupMemberOneId Int?       @unique
-  groupMemberTwo   User?      @relation(name: "groupMemberTwo", fields: [groupMemberTwoId], references: [id])
-  groupMemberTwoId Int?       @unique
-  groupSize        Int?
-  description      String?
-  createdAt        DateTime   @default(now())
-  updatedAt        DateTime   @updatedAt
-  Reserved         Classroom? @relation("reserved")
-  Taken            Classroom? @relation("taken")
+  id           Int        @id @default(autoincrement())
+  groupSize    Int?
+  description  String?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  Reserved     Classroom? @relation("reserved")
+  Taken        Classroom? @relation("taken")
+  GroupMembers User[]
 }
 
 model Dish {

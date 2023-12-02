@@ -73,7 +73,11 @@ classroomRouter.patch(
 /**
  * GET: List of all classrooms by statuses
  */
-classroomRouter.get('/status', authorize, ClassroomController.listClassroomsByStatuses)
+classroomRouter.get(
+    '/status/:status',
+    authorize,
+    ClassroomController.listClassroomsByStatus
+)
 
 /**
  * PATCH: Change classroom status

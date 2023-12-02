@@ -92,3 +92,8 @@ export const regenerateKey = {
     result: 'Pomyślnie odnowiono klucz',
     error: 0
 }
+
+export const updatePersonalData = {
+    result: 'Pomyślnie ustawiono dane osobowe',
+    error: 0
+}
