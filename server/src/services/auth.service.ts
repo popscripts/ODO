@@ -257,3 +257,14 @@ export const getProfilePictureName = async (
         }
     })
 }
+
+export const updatePersonalData = async (id: number, name: string) => {
+    return db.user.update({
+        where: {
+            id
+        },
+        data: {
+            name
+        }
+    })
+}

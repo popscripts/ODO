@@ -200,3 +200,17 @@ export const getPicture = async (request: Request, response: Response) => {
         return response.status(500).json(Error.loadProfilePictureError)
     }
 }
+
+export const updatePersonalData = async (
+    request: Request,
+    response: Response
+): Promise<Response> => {
+    try {
+        const { userId, name } = request.body
+        await AuthService.updatePersonalData(userId, name)
+        return response.status(201).json(Callback.updatePersonalData)
+    } catch (error: any) {
+        logger.error(`500 | ${error}`)
+        return response.status(500).json(Error.updatePersonalDataError)
+    }
+}
