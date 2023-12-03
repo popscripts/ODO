@@ -1,7 +1,7 @@
-import * as AuthService from '../services/auth.service'
-import * as KeyService from '../services/key.service'
-import * as Callback from '../libs/callbacks'
-import * as Error from '../libs/errors'
+import * as AuthService from '@services/auth.service'
+import * as KeyService from '@services/key.service'
+import * as Callback from '@libs/callbacks'
+import * as Error from '@libs/errors'
 import { Request, Response } from 'express'
 import { UploadedFile } from 'express-fileupload'
 import * as AuthHelper from '@utils/auth.helper'
@@ -10,7 +10,7 @@ import { AccountTypes } from '@libs/accountTypes'
 import { LoginUser, Token, User, Users } from '@customTypes/auth.type'
 import { logger } from '@config/logger'
 import { Key } from '@customTypes/key.type'
-import { upload } from '../utils/file.helper'
+import { upload } from '@utils/file.helper'
 
 export const register = async (request: Request, response: Response) => {
     try {

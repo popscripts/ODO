@@ -1,11 +1,13 @@
 import { Server, Socket } from 'socket.io'
-import { Group, SocketUserData } from '@customTypes/auth.type'
+import { SocketUserData } from '@customTypes/auth.type'
+import { Group } from '@customTypes/group.type'
 import { Classroom, ClassroomStatusEvent } from '@customTypes/classroom.type'
 import { socketClassroomStatusVerification } from '@middlewares/socketClassroomStatusVerifiaction'
 import { getClassroom } from '@services/classroom.service'
 import { setClassroomStatus } from '@utils/status.helper'
-import { getGroupByMemberId } from '@services/auth.service'
+import { getGroupByMemberId } from '@services/group.service'
 import { logger } from '@config/logger'
+import { SocketEnum } from '@libs/socketEnum'
 
 export const roomHandler = (
     socket: Socket,
@@ -13,25 +15,10 @@ export const roomHandler = (
     error: Error
 ): void => {
     if (error) {
-        console.log(error.message)
+        logger.error(error.message)
     } else {
         socket.join(data.accountType)
-        console.log(data.username + ' joined room: ' + data.accountType)
-    }
-}
-
-export const newMessageHandler = (
-    io: Server,
-    data: any,
-    error: Error
-): void => {
-    if (error) {
-        console.log(error.message)
-    } else {
-        io.in(data.room).emit('receive_message', data.message)
-        console.log(
-            `message from ${data.username} - ${data.message} to room: ${data.room}`
-        )
+        logger.info(`${data.username} joined room: ${data.accountType}`)
     }
 }
 
@@ -41,28 +28,29 @@ export const statusHandler = async (
     error: Error
 ): Promise<void> => {
     if (error) {
-        console.log(error)
+        logger.error(error.message)
     } else {
         try {
             const { id, status, prevStatus, userId } = data
             const group: Group | null = await getGroupByMemberId(userId)
+            const classroom: Classroom | null = await getClassroom(id)
+
             if (!group) {
-                throw new Error('User is not a member of any group')
+                logger.error(`User: ${userId} is not a member of any group`)
+                return
             }
 
             await setClassroomStatus(id, status, group.id)
-            const classroom: Classroom | null = await getClassroom(id)
-
             io.emit('classroomStatus', {
                 prevStatus,
                 classroom
             })
 
-            console.log(
-                `Classroom ${id} status changed from ${prevStatus} to ${status} by ${userId}`
+            logger.info(
+                `ClassroomId: ${id} | ${prevStatus} -> ${status} | UserId: ${userId}`
             )
         } catch (error: any) {
-            console.log(error.message)
+            logger.error(error.message)
         }
     }
 }
@@ -71,12 +59,13 @@ export const socketMiddlewareHandler = async (
     event: Event[],
     next: any
 ): Promise<void> => {
-    logger.info(event[0])
-    switch (event[0].toString()) {
+    logger.info(`Emitted event: ${event[SocketEnum.EventName]}`)
+    switch (event[SocketEnum.EventName].toString()) {
         case 'setClassroomStatus':
             try {
-                const { id, status, userId, accountType } =
-                    event[1] as ClassroomStatusEvent
+                const { id, status, userId, accountType } = event[
+                    SocketEnum.EventData
+                ] as ClassroomStatusEvent
                 if (
                     await socketClassroomStatusVerification(
                         id,
@@ -87,11 +76,20 @@ export const socketMiddlewareHandler = async (
                 ) {
                     next()
                 } else {
-                    next(new Error('Something went wrong'))
+                    logger.error(
+                        "You can't change classroom status at the moment"
+                    )
+
+                    next(
+                        new Error(
+                            "You can't change classroom status at the moment"
+                        )
+                    )
                 }
 
                 break
             } catch (error: any) {
+                logger.error(`Something wen wrong: ${error.message}`)
                 next(new Error('Something went wrong'))
                 break
             }
