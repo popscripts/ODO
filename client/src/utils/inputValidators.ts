@@ -33,3 +33,23 @@ export const keyValidation = (key: string) => {
     if (key.length !== 6) return { error: true, errorText: 'Kod musi mieć dokładnie 6 cyfr' }
     return { error: false, errorText: '' }
 }
+
+export function nameValidation(name: string) {
+    if (name.length === 0) return { error: true, errorText: 'Pole imię nie może być puste' }
+    if (name.length < 2)
+        return {
+            error: true,
+            errorText: 'Imię musi składać się z co najmniej 2 znaków'
+        }
+    return { error: false, errorText: '' }
+}
+
+export function surnameValidation(surname: string) {
+    if (surname.length === 0) return { error: true, errorText: 'Pole nazwisko nie może być puste' }
+    if (surname.length < 2)
+        return {
+            error: true,
+            errorText: 'Nazwisko musi składać się z co najmniej 2 znaków'
+        }
+    return { error: false, errorText: '' }
+}

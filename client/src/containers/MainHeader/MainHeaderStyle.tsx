@@ -23,3 +23,10 @@ export const Wrapper = styled.View`
     gap: ${spacing.md};
     padding: ${spacing.md};
 `
+
+export const Button = styled.TouchableOpacity`
+    background-color: ${colors.palette.neutral600};
+    border-radius: 20px;
+    padding: ${spacing.xs} ${spacing.md} ${spacing.xs} ${spacing.md};
+    margin-top: ${spacing.xs};
+`

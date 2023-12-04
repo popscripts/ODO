@@ -17,7 +17,7 @@ export const Wrapper = styled.View<WrapperProps>`
     justify-content: center;
     align-items: center;
     gap: ${spacing.md};
-    bottom: 0;
+    bottom: -20px;
 `
 
 export const ButtonWrapper = styled.View`
@@ -28,7 +28,11 @@ export const ButtonWrapper = styled.View`
     gap: ${spacing.md};
 `
 
-export const BottomArea = styled.View`
-    height: 15%;
+type BottomAreaProps = {
+    height: number
+}
+
+export const BottomArea = styled.View<BottomAreaProps>`
+    height: ${(props) => (props.height ? props.height + 'px' : '15%')};
     flex-grow: 2;
 `

@@ -1,4 +1,4 @@
 export type Status = {
     id: number
-    status: string
+    name: string
 }

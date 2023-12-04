@@ -13,9 +13,26 @@ const storeCredentials = async (username: string, password: string) => {
     }
 }
 
+const storeLogIn = async (login: boolean) => {
+    try {
+        await AsyncStorage.setItem('login', String(login))
+    } catch (e) {
+        console.error('Error saving to local storage')
+    }
+}
+
 const getCredentials = async () => {
     try {
         const jsonValue = await AsyncStorage.getItem('credentials')
+        return jsonValue != null ? JSON.parse(jsonValue) : null
+    } catch (e) {
+        console.error('Error reading from local storage')
+    }
+}
+
+const getLogIn = async () => {
+    try {
+        const jsonValue = await AsyncStorage.getItem('login')
         return jsonValue != null ? JSON.parse(jsonValue) : null
     } catch (e) {
         console.error('Error reading from local storage')
@@ -26,8 +43,9 @@ const userDataPlaceholder = {
     id: 0,
     username: '',
     openDayId: 1,
-    accountType: { id: 0, accountType: '' },
+    accountType: { id: 0, name: '' },
     pictureName: null,
+    name: null,
     ManagedClassroom: [],
     ReservedClassroom: [],
     TakenClassroom: []
@@ -39,6 +57,7 @@ const LogOutContext = createContext<Function>(() => {})
 const RegisterContext = createContext<Function>(() => {})
 const UserDataContext = createContext<User>(userDataPlaceholder)
 const CredentialsContext = createContext({ username: '', password: '' })
+const UpdateNameContext = createContext((name: string, surname: string) => {})
 
 export function useToken() {
     return useContext(TokenContext)
@@ -64,6 +83,10 @@ export function useCredentials() {
     return useContext(CredentialsContext)
 }
 
+export function useUpdateName() {
+    return useContext(UpdateNameContext)
+}
+
 export default function AuthProvider({ children }: Children) {
     const [token, setToken] = useState<apiLoginResponse>({
         error: 2,
@@ -76,6 +99,7 @@ export default function AuthProvider({ children }: Children) {
         const response = await AuthService.logIn(username, password).then((response) => {
             setToken(response)
             storeCredentials(username, password)
+            storeLogIn(true)
             return response
         })
 
@@ -87,13 +111,14 @@ export default function AuthProvider({ children }: Children) {
     async function logOut() {
         return await AuthService.logOut().then((response) => {
             setToken({ error: 1, result: '' })
+            setTimeout(() => setUserData(userDataPlaceholder), 300)
+            storeLogIn(false)
             return response
         })
     }
 
     async function register(key: number, username: string, password: string) {
         const response = await AuthService.register(key, username, password).then((response) => {
-            setToken(response)
             return response
         })
         if (response.error) return response
@@ -108,11 +133,25 @@ export default function AuthProvider({ children }: Children) {
         })
     }
 
+    function handleUpdateName(name: string, surname: string) {
+        setTimeout(() => {
+            const data = { ...userData, name: `${name} ${surname}` }
+            setUserData(data)
+            // TODO... Connect to backend
+        }, 1500)
+    }
+
     useEffect(() => {
         getCredentials().then((credentials) => {
             if (credentials) {
                 setCredentials(credentials)
-                logIn(credentials.username, credentials.password).then()
+                getLogIn().then((response) => {
+                    response
+                        ? logIn(credentials.username, credentials.password).then()
+                        : setToken({ error: 1, result: '' })
+                })
+            } else {
+                setToken({ error: 1, result: '' })
             }
         })
     }, [])
@@ -123,7 +162,11 @@ export default function AuthProvider({ children }: Children) {
                 <LogOutContext.Provider value={logOut}>
                     <UserDataContext.Provider value={userData}>
                         <CredentialsContext.Provider value={credentials}>
-                            <RegisterContext.Provider value={register}>{children}</RegisterContext.Provider>
+                            <UpdateNameContext.Provider value={handleUpdateName}>
+                                <RegisterContext.Provider value={register}>
+                                    {children}
+                                </RegisterContext.Provider>
+                            </UpdateNameContext.Provider>
                         </CredentialsContext.Provider>
                     </UserDataContext.Provider>
                 </LogOutContext.Provider>

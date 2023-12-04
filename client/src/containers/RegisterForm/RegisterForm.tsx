@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { ErrorText, Heading } from '../../components/commonStyles'
+import { Heading } from '../../components/commonStyles'
 import Input from '../../components/Input/Input'
 import Button from '../../components/Button/Button'
 import { useRegister } from '../../providers/AuthProvider'
@@ -12,13 +12,15 @@ import {
 import { apiLoginResponse } from '../../types/response.type'
 import { BottomWrapper, FormWrapper } from './RegisterFormStyle'
 import { colors } from '../../theme/colors'
+import { Vibration } from 'react-native'
+import Loading from '../../components/Loading/Loading'
+import { Error } from '../../types/response.type'
 
-type Error = {
-    error: boolean
-    errorText: string
+type Props = {
+    setLoading: Function
 }
 
-function RegisterForm() {
+function RegisterForm({setLoading}: Props) {
     const [isSubmitted, setIsSubmitted] = useState<boolean>(false)
     const [key, setKey] = useState<string>('')
     const [login, setLogin] = useState<string>('')
@@ -40,7 +42,6 @@ function RegisterForm() {
         error: false,
         errorText: ''
     })
-    const [otherError, setOtherError] = useState<string>('')
 
     const register = useRegister()
 
@@ -60,6 +61,20 @@ function RegisterForm() {
         setKeyError(keyValidation(key))
     }
 
+    function setError(result: string, param: string | undefined) {
+        switch (param) {
+            case 'username':
+                setLoginError({ error: true, errorText: result })
+                break
+            case 'password':
+                setPasswordError({ error: true, errorText: result })
+                break
+            case 'key':
+                setKeyError({ error: true, errorText: result })
+                break
+        }
+    }
+
     useEffect(() => {
         isSubmitted && ValidateLogin()
     }, [login, isSubmitted])
@@ -77,26 +92,40 @@ function RegisterForm() {
     }, [key, isSubmitted])
 
     function RegisterPress() {
+        setIsSubmitted(true)
+
+        if (loginValidation(login).error) {
+            Vibration.vibrate(100)
+            return null
+        }
+
+        if (passwordValidation(password).error) {
+            Vibration.vibrate(100)
+            return null
+        }
+
+        if (repeatPasswordValidation(password, repeatPassword).error) {
+            Vibration.vibrate(100)
+            return null
+        }
+
+        if (keyValidation(key).error) {
+            Vibration.vibrate(100)
+            return null
+        }
+
+        setLoading(true)
         register(parseInt(key), login, password).then((res: apiLoginResponse) => {
-            if (
-                res.error &&
-                !loginError.error &&
-                !passwordError.error &&
-                !repeatPasswordError.error &&
-                !keyError.error &&
-                isSubmitted
-            ) {
-                setOtherError(res?.result)
-                setPasswordError({ error: true, errorText: '' })
-                setLoginError({ error: true, errorText: '' })
+            if (res.error) {
+                Vibration.vibrate(100)
+                setError(res?.result, res?.param)
+                setTimeout(() => setLoading(false), 200)
             }
         })
-        setIsSubmitted(true)
     }
     return (
         <FormWrapper>
             <Heading>Rejestracja</Heading>
-            {otherError && <ErrorText>{otherError}</ErrorText>}
             <Input
                 text={login}
                 setText={setLogin}

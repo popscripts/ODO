@@ -59,7 +59,7 @@ const loginDataValidation: CustomValidator = async (username) => {
 
     return AuthService.doesUserExists(username).then((doesExists) => {
         if (!doesExists) {
-            return Promise.reject('Podany użytkownik nie istnieje')
+            return Promise.reject('Podano błędny login lub hasło')
         }
     })
 }

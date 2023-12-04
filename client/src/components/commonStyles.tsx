@@ -16,6 +16,28 @@ export const Heading = styled.Text`
     font-size: ${spacing.lg};
     color: ${colors.text};
 `
+export const HeadingCenter = styled.Text`
+    font-family: ${typography.primary.bold};
+    font-size: ${spacing.lg};
+    color: ${colors.text};
+    margin: ${spacing.lg};
+    width: 100%;
+    text-align: center;
+`
+
+export const MediumText = styled.Text`
+    font-family: ${typography.primary.normal};
+    font-size: ${spacing.nm};
+    color: ${colors.text};
+`
+
+export const MediumTextCenter = styled.Text`
+    font-family: ${typography.primary.normal};
+    font-size: ${spacing.nm};
+    color: ${colors.text};
+    width: 100%;
+    text-align: center;
+`
 
 export const DefaultBackground = styled.View`
     height: 100%;
@@ -28,12 +50,8 @@ export const SafeArea = styled(SafeAreaView)`
     height: 100%;
 `
 
-export const JustifyAlignCenter = styled.View`
+export const Scroll = styled.ScrollView`
     width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-grow: 1;
 `
 
 export const Link = styled.Text`
@@ -41,4 +59,11 @@ export const Link = styled.Text`
     font-size: ${spacing.md};
     color: ${colors.text};
     text-decoration: underline;
+`
+
+export const StretchWrapper = styled.View`
+    width: 100%;
+    flex-grow: 20;
+    justify-content: center;
+    align-items: center;
 `

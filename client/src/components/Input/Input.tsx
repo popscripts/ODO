@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
-import { InputIcon, InputIconWrapper, TextInput, Wrapper } from './InputStyle'
+import { InputIconWrapper, TextInput, Wrapper } from './InputStyle'
 import { ErrorText } from '../commonStyles'
 import { colors } from '../../theme/colors'
 import { KeyboardTypeOptions } from 'react-native'
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
+import EyeIcon from '../icons/EyeIcon'
+import EyeClosedIcon from '../icons/EyeClosedIcon'
 
 type Props = {
     text: string
@@ -13,6 +14,7 @@ type Props = {
     errorText?: string | undefined
     password?: boolean
     keyboardType?: KeyboardTypeOptions
+    autoCapitalize?: boolean
 }
 function Input({
     text,
@@ -21,7 +23,8 @@ function Input({
     error = false,
     errorText,
     password = false,
-    keyboardType = 'default'
+    keyboardType = 'default',
+    autoCapitalize = false
 }: Props) {
     const [focused, setFocused] = useState<boolean>(false)
     const [showPassword, setShowPassword] = useState<boolean>(password)
@@ -33,7 +36,11 @@ function Input({
         <Wrapper>
             {password && (
                 <InputIconWrapper onPress={handlePassword}>
-                    <InputIcon icon={showPassword ? faEyeSlash : faEye} size={20} />
+                    {showPassword ? (
+                        <EyeClosedIcon color={colors.palette.neutral300} size={25} />
+                    ) : (
+                        <EyeIcon color={colors.palette.neutral300} size={25} />
+                    )}
                 </InputIconWrapper>
             )}
 
@@ -46,7 +53,7 @@ function Input({
                 focused={focused}
                 error={error}
                 placeholderTextColor={colors.textDim}
-                autoCapitalize={'none'}
+                autoCapitalize={autoCapitalize ? 'words' : 'none'}
                 secureTextEntry={showPassword}
                 keyboardType={keyboardType}
             />
