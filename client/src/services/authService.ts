@@ -1,3 +1,4 @@
+import { Alert } from 'react-native'
 import { FetchClientType } from '../types/fetchClient.type'
 import FetchClient from '../utils/FetchClient'
 
@@ -12,7 +13,7 @@ class AuthService {
             })
             return response.json()
         } catch (e) {
-            console.error(e)
+            Alert.alert("Error", "Błąd połączenia z serwerem")
             throw e
         }
     }
@@ -26,7 +27,7 @@ class AuthService {
             })
             return response.json()
         } catch (e) {
-            console.error(e)
+            Alert.alert("Error", "Błąd połączenia z serwerem")
             throw e
         }
     }
@@ -36,7 +37,7 @@ class AuthService {
             const response = await this.httpClient.get('api/auth/logout')
             return response.json()
         } catch (e) {
-            console.error(e)
+            Alert.alert("Error", "Błąd połączenia z serwerem")
             throw e
         }
     }
