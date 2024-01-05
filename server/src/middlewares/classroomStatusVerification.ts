@@ -1,10 +1,11 @@
 import { Request, Response, NextFunction } from 'express'
-import * as AuthHelper from '../utils/auth.helper'
-import * as AuthService from '../services/auth.service'
-import { Classroom } from '../types/classroom.type'
-import { getClassroom } from '../services/classroom.service'
+import * as AuthHelper from '@utils/auth.helper'
+import { Classroom } from '@customTypes/classroom.type'
+import { getClassroom } from '@services/classroom.service'
 import * as Error from '../libs/errors'
-import { Group, Token } from '../types/auth.type'
+import { Token } from '@customTypes/auth.type'
+import { getGroupByMemberId } from '@services/group.service'
+import { Group } from '@customTypes/group.type'
 
 export const classroomStatusVerification = async (
     request: Request,
@@ -14,11 +15,14 @@ export const classroomStatusVerification = async (
     const classroomId = request.body.id
     const { status } = request.body
     const token = request.cookies.JWT
-    const { id, accountType }: Token = AuthHelper.verifyToken(token, 'accessToken')
+    const { id, accountType }: Token = AuthHelper.verifyToken(
+        token,
+        'accessToken'
+    )
     const classroom: Classroom | null = await getClassroom(classroomId)
     let verified: boolean = false
 
-    const group: Group | null = await AuthService.getGroupByMemberId(id)
+    const group: Group | null = await getGroupByMemberId(id)
 
     // Check if classroom is already free and request status is free
     if (classroom?.status.name === 'free' && status === 'free') {
@@ -31,7 +35,7 @@ export const classroomStatusVerification = async (
     }
 
     // Check if classroom is free and no classroom is taken by him
-    if (classroom?.status.name === 'free' && group?.Taken !== null) {
+    if (classroom?.status.name === 'free' && group?.Taken === null) {
         verified = true
     }
 
@@ -41,7 +45,10 @@ export const classroomStatusVerification = async (
     }
 
     // Check if user is a manager of the classroom
-    if (accountType.name === 'classroomManager' && classroom?.managedBy?.id === id) {
+    if (
+        accountType.name === 'classroomManager' &&
+        classroom?.managedBy?.id === id
+    ) {
         verified = true
     }
 
@@ -51,7 +58,10 @@ export const classroomStatusVerification = async (
     }
 
     // Check if classroom is reserved by user and classroom isn't busy
-    if (group?.Reserved?.id === classroomId && classroom?.status.name !== 'busy') {
+    if (
+        group?.Reserved?.id === classroomId &&
+        classroom?.status.name !== 'busy'
+    ) {
         verified = true
     }
 
@@ -59,6 +69,7 @@ export const classroomStatusVerification = async (
     if (group?.Reserved?.id === classroomId && status === 'free') {
         verified = true
     }
+
     if (verified) {
         next()
     } else {

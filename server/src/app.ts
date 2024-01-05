@@ -1,15 +1,15 @@
 import * as dotenv from 'dotenv'
 import express from 'express'
 import cors from 'cors'
-import { routerConfig } from './config/router'
-import { dbHealthCheck } from './utils/db.healthcheck'
+import { routerConfig } from '@config/router'
+import { dbHealthCheck } from '@utils/db.healthcheck'
 import cookieParser from 'cookie-parser'
-import { cronConfig } from './config/cron'
-import { logger, morganMiddleware } from './config/logger'
+import { cronConfig } from '@config/cron'
+import { logger, morganMiddleware } from '@config/logger'
 import fileUpload from 'express-fileupload'
 import { Server as httpServer } from 'http'
 import { Server } from 'socket.io'
-import { ioConnectionConfig, socketConfig } from './config/socket'
+import { ioConnectionConfig, socketConfig } from '@config/socket'
 
 dotenv.config()
 
@@ -20,7 +20,7 @@ if (!process.env.PORT) {
 
 dbHealthCheck()
 
-const PORT: number = parseInt(process.env.PORT as string, 10)
+const PORT: number = parseInt(process.env.PORT, 10)
 
 const app = express()
 app.use(cors())

@@ -1,4 +1,5 @@
-import { ManagedClassroom, ShortClassroom } from './classroom.type'
+import { ManagedClassroom } from './classroom.type'
+import { Group } from '@customTypes/group.type'
 
 export type NewUser = {
     openDayId: number
@@ -23,6 +24,7 @@ export type User = {
     accountType: AccountType
     pictureName: string | null
     ManagedClassroom: ManagedClassroom | null
+    Group: Group | null
 }
 
 export type ShortUser = {
@@ -58,20 +60,8 @@ export type PictureName = {
     pictureName: string | null
 }
 
-export type Group = {
+export type SocketUserData = {
     id: number
-    groupSize: number | null
-    groupMemberOne: ShortUser | null
-    groupMemberTwo: ShortUser | null
-    description: string | null
-    Reserved: ShortClassroom | null
-    Taken: ShortClassroom | null
-}
-
-export type ShortGroup = {
-    id: number
-    groupMemberOne: ShortUser | null
-    groupMemberTwo: ShortUser | null
-    groupSize: number | null
-    description: string | null
+    username: string
+    accountType: string
 }

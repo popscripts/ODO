@@ -1,16 +1,17 @@
 import express from 'express'
-import { validate } from '../middlewares/validation'
+import { validate } from '@middlewares/validation'
 import {
     deleteUserValidation,
     editUserValidation,
     loginValidation,
     registerValidation,
-    restoreUserValidation
-} from '../validations/auth.validation'
-import * as AuthController from '../controllers/auth.controller'
-import { authorize } from '../middlewares/authorization'
-import { verifyAccountType } from '../middlewares/accountTypeVerification'
-import { AccountTypes } from '../libs/accountTypes'
+    restoreUserValidation,
+    updateUserPersonalDataValidation
+} from '@validations/auth.validation'
+import * as AuthController from '@controllers/auth.controller'
+import { authorize } from '@middlewares/authorization'
+import { verifyAccountType } from '@middlewares/accountTypeVerification'
+import { AccountTypes } from '@libs/accountTypes'
 
 export const authRouter = express.Router()
 
@@ -18,7 +19,11 @@ export const authRouter = express.Router()
  * POST: User registration
  * Params: key, username, password
  */
-authRouter.post('/register', validate(registerValidation), AuthController.register)
+authRouter.post(
+    '/register',
+    validate(registerValidation),
+    AuthController.register
+)
 
 /**
  * POST: User login
@@ -45,7 +50,12 @@ authRouter.get('/jwt', authorize, AuthController.jwt)
  * GET: List of all users
  * Allowed account types: admin
  */
-authRouter.get('/users', authorize, verifyAccountType(AccountTypes.admin), AuthController.users)
+authRouter.get(
+    '/users',
+    authorize,
+    verifyAccountType(AccountTypes.admin),
+    AuthController.users
+)
 
 /**
  * PUT: Update user
@@ -108,3 +118,14 @@ authRouter.post('/picture', authorize, AuthController.updateProfilePicture)
  * GET: Get profile picture by ID
  */
 authRouter.get('/picture/:id', AuthController.getPicture)
+
+/**
+ * POST: Update user personal data
+ * Param: userId, name
+ */
+authRouter.post(
+    '/user/personal',
+    authorize,
+    validate(updateUserPersonalDataValidation),
+    AuthController.updatePersonalData
+)

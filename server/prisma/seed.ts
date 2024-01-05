@@ -1,49 +1,65 @@
-import { db } from '../src/utils/db.server'
-import { Dish } from '../src/types/buffet.type'
-import { Status } from '../src/types/status.type'
-import { AccountType } from '../src/types/auth.type'
+import { db } from '@utils/db.server'
+import { Dish } from '@customTypes/buffet.type'
+import { Status } from '@customTypes/status.type'
+import { AccountType } from '@customTypes/auth.type'
 
 const seed = async () => {
-    await Promise.all(
-        getStatuses().map((status: Status) => {
-            return db.status.create({
-                data: {
-                    id: status.id,
-                    name: status.name
-                }
+    try {
+        await Promise.all(
+            getStatuses().map((status: Status) => {
+                return db.status.create({
+                    data: {
+                        id: status.id,
+                        name: status.name
+                    }
+                })
             })
-        })
-    )
+        )
+    } catch (error: any) {
+        console.error('An error occurred during creating statuses')
+    }
 
-    await Promise.all(
-        getAccountTypes().map((accountType: AccountType) => {
-            return db.accountType.create({
-                data: {
-                    id: accountType.id,
-                    name: accountType.name
-                }
+    try {
+        await Promise.all(
+            getAccountTypes().map((accountType: AccountType) => {
+                return db.accountType.create({
+                    data: {
+                        id: accountType.id,
+                        name: accountType.name
+                    }
+                })
             })
-        })
-    )
+        )
+    } catch (error: any) {
+        console.error('An error occurred during creating account types')
+    }
 
-    await Promise.all(
-        getDishes().map((dish: Dish) => {
-            return db.dish.create({
-                data: {
-                    id: dish.id,
-                    name: dish.name,
-                    cheese: dish.cheese,
-                    ham: dish.ham
-                }
+    try {
+        await Promise.all(
+            getDishes().map((dish: Dish) => {
+                return db.dish.create({
+                    data: {
+                        id: dish.id,
+                        name: dish.name,
+                        cheese: dish.cheese,
+                        ham: dish.ham
+                    }
+                })
             })
-        })
-    )
+        )
+    } catch (error: any) {
+        console.error('An error occurred during creating dishes')
+    }
 
-    return db.openDay.create({
-        data: {
-            id: 1
-        }
-    })
+    try {
+        return db.openDay.create({
+            data: {
+                id: 1
+            }
+        })
+    } catch (error: any) {
+        console.error('An error occurred during creating open day')
+    }
 }
 
 const getStatuses = (): Array<Status> => {
