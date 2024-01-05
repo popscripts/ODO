@@ -32,7 +32,7 @@ function AppNavigator() {
                         component={WelcomeScreen}
                         options={{ cardStyleInterpolator: Fade }}
                     />
-                ) : !userData.name && token.error === 0 ? (
+                ) : !userData.name && userData.id && token.error === 0 ? (
                     <Stack.Screen
                         name="CompleteData"
                         component={CompleteDataScreen}
