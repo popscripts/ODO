@@ -6,7 +6,7 @@ import { typography } from "../../theme/typography";
 export const Background = styled.View`
     width: 90%;
     height: 80%;
-    background-color: ${colors.background};
+    background-color: ${colors.palette.neutral600};
     border-radius: 20px;
     display: flex;
     align-items: center;

@@ -28,6 +28,7 @@ export type User = {
 
 export type ShortUser = {
     id: number
+    name: string
     username: string
 }
 
@@ -55,4 +56,12 @@ export type Users = {
 
 export type PictureName = {
     pictureName: string | null
+}
+
+
+export type Group = {
+    GroupMembers: ShortUser[]
+    description: string
+    groupSize: number
+    id: number
 }

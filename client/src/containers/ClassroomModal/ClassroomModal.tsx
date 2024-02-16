@@ -1,8 +1,9 @@
-import { View, Modal } from "react-native"
+import { Modal } from "react-native"
 import { Backdrop, Background, ClassroomNumber, ClassroomTitle } from "./ClassroomModalStyle";
 import { MediumText } from "../../components/commonStyles";
 import { Classroom } from "../../types/classroom.type";
 import ChangeStatusButton from "../../components/ChangeStatusButton/ChangeStatusButton";
+import { useState } from "react";
 
 type Props = {
     visible: boolean;
@@ -12,6 +13,12 @@ type Props = {
 }
 
 const ClassroomModal = ({visible, handleVisible, classroom, color}: Props) => {
+    const [settings, setSettings] = useState({
+        taken: {disabled: false},
+        reserved: {disabled: false},
+        free: {disabled: false}
+    })
+
     return (
         <Modal
             visible={visible}
@@ -32,9 +39,9 @@ const ClassroomModal = ({visible, handleVisible, classroom, color}: Props) => {
                     <MediumText>
                         {classroom.description}
                     </MediumText>
-                    <ChangeStatusButton classroomId={classroom.id} prevStatus={classroom.status.name} status='busy' />
-                    <ChangeStatusButton classroomId={classroom.id} prevStatus={classroom.status.name} status='reserved' />
-                    <ChangeStatusButton classroomId={classroom.id} prevStatus={classroom.status.name} status='free' />
+                    <ChangeStatusButton classroom={classroom} prevStatus={classroom.status.name} status='busy' disabled={settings.taken.disabled}/>
+                    <ChangeStatusButton classroom={classroom} prevStatus={classroom.status.name} status='reserved' disabled={settings.reserved.disabled}/>
+                    <ChangeStatusButton classroom={classroom} prevStatus={classroom.status.name} status='free' disabled={settings.free.disabled}/>
                     <MediumText>
                         {classroom.managedBy?.username && "Zarządca klasy: " + classroom.managedBy?.username }
                     </MediumText>
