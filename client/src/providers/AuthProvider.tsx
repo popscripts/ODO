@@ -134,6 +134,7 @@ export default function AuthProvider({ children }: Children) {
     }
 
     function handleUpdateName(name: string, surname: string) {
+        AuthService.setUserName(userData.id, `${name} ${surname}`)
         setTimeout(() => {
             const data = { ...userData, name: `${name} ${surname}` }
             setUserData(data)
