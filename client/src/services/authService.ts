@@ -50,6 +50,19 @@ class AuthService {
             throw e
         }
     }
+
+    async setUserName(userId: number, name: string) {
+        try {
+            const response = await this.httpClient.post('api/auth/user/personal', {
+                userId,
+                name
+            })
+            return response.json()
+        }  catch (e) {
+            console.error(e)
+            throw e
+        }
+    }
 }
 
 export default new AuthService()
