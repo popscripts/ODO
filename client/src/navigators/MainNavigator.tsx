@@ -10,6 +10,7 @@ import InfoIcon from '../components/icons/InfoIcon'
 import HomeIcon from '../components/icons/HomeIcon'
 import CutleryIcon from '../components/icons/CutleryIcon'
 import PlaceholderScreen from '../screens/PlaceholderScreen'
+import { DefaultBackground } from '../components/commonStyles'
 
 const Tab = createMaterialTopTabNavigator()
 
@@ -18,6 +19,7 @@ function MainNavigator() {
     const tabWidth = (Dimensions.get('screen').width * 0.9) / 5
 
     return (
+        <DefaultBackground>
         <Tab.Navigator
             tabBarPosition="bottom"
             initialRouteName="home"
@@ -76,6 +78,7 @@ function MainNavigator() {
                 }}
             ></Tab.Screen>
         </Tab.Navigator>
+        </DefaultBackground>
     )
 }
 

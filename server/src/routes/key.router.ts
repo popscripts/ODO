@@ -1,10 +1,10 @@
 import express from 'express'
-import { authorize } from '../middlewares/authorization'
-import { verifyAccountType } from '../middlewares/accountTypeVerification'
-import { AccountTypes } from '../libs/accountTypes'
-import * as KeyController from '../controllers/key.controller'
-import { validate } from '../middlewares/validation'
-import { keyIdValidation } from '../validations/key.validaiton'
+import { authorize } from '@middlewares/authorization'
+import { verifyAccountType } from '@middlewares/accountTypeVerification'
+import { AccountTypes } from '@libs/accountTypes'
+import * as KeyController from '@controllers/key.controller'
+import { validate } from '@middlewares/validation'
+import { keyIdValidation } from '@validations/key.validaiton'
 
 export const keyRouter = express.Router()
 

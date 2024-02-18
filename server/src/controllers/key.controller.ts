@@ -1,11 +1,11 @@
 import { Request, Response } from 'express'
-import * as Error from '../libs/errors'
-import * as KeyService from '../services/key.service'
-import * as KeyType from '../types/key.types'
-import * as KeyHelper from '../utils/key.helper'
-import * as AuthHelper from '../utils/auth.helper'
-import * as Callback from '../libs/callbacks'
-import { logger } from '../config/logger'
+import * as Error from '@libs/errors'
+import * as KeyService from '@services/key.service'
+import * as KeyType from '@customTypes/key.type'
+import * as KeyHelper from '@utils/key.helper'
+import * as AuthHelper from '@utils/auth.helper'
+import * as Callback from '@libs/callbacks'
+import { logger } from '@config/logger'
 
 export const listKeys = async (request: Request, response: Response) => {
     try {

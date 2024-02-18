@@ -10,11 +10,8 @@ export type NewClassroom = {
 }
 
 export type classroomStatus = {
-    id: number
-    userId: number
-    prevStatus: 'free' | 'reserved' | 'busy'
-    status: 'free' | 'reserved' | 'busy'
-    accountType: string
+    classroom: Classroom,
+    prevStatus: Status['name']
 }
 
 export type Classroom = {

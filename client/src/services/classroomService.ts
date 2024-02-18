@@ -14,9 +14,19 @@ class ClassroomService {
         }
     }
 
-    async changeClassroomStatus(id: number, status: string) {
+    async getParsedClassrooms() {
         try {
-            const response = await this.httpClient.patch('api/classroom/status', { id, status })
+            const response = await this.httpClient.get('api/classroom/status')
+            return response.json()
+        } catch (e) {
+            console.error(e)
+            throw e
+        }
+    }
+
+    async changeClassroomStatus(id: number, status: string, prevStatus: string) {
+        try {
+            const response = await this.httpClient.patch('api/classroom/status', { id, status, prevStatus })
             return response.json()
         } catch (e) {
             console.error(e)

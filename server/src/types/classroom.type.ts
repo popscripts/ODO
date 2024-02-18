@@ -1,5 +1,6 @@
 import { Status } from './status.type'
-import { ShortGroup, ShortUser } from './auth.type'
+import { ShortUser } from './auth.type'
+import { ShortGroup } from '@customTypes/group.type'
 
 export type NewClassroom = {
     openDayId: number
@@ -37,4 +38,14 @@ export type ShortClassroom = {
     title: string
     description: string
     status: Status
+    reservedAt: Date | null
+    takenAt: Date | null
+}
+
+export type ClassroomStatusEvent = Event & {
+    id: number
+    userId: number
+    accountType: string
+    status: string
+    prevStatus: string
 }

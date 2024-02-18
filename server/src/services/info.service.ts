@@ -1,5 +1,5 @@
-import { db } from '../utils/db.server'
-import { Info } from '../types/info.type'
+import { db } from '@utils/db.server'
+import { Info } from '@customTypes/info.type'
 
 export const getInfo = async (openDayId: number): Promise<Info | null> => {
     return db.info.findFirst({

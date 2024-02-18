@@ -1,16 +1,16 @@
-import * as AuthService from '../services/auth.service'
-import * as KeyService from '../services/key.service'
-import * as Callback from '../libs/callbacks'
-import * as Error from '../libs/errors'
+import * as AuthService from '@services/auth.service'
+import * as KeyService from '@services/key.service'
+import * as Callback from '@libs/callbacks'
+import * as Error from '@libs/errors'
 import { Request, Response } from 'express'
-import * as AuthHelper from '../utils/auth.helper'
-import { verifyToken } from '../utils/auth.helper'
-import { AccountTypes } from '../libs/accountTypes'
-import { LoginUser, Token, User, Users } from '../types/auth.type'
-import { logger } from '../config/logger'
 import { UploadedFile } from 'express-fileupload'
-import { upload } from '../utils/file.helper'
-import { Key } from '../types/key.types'
+import * as AuthHelper from '@utils/auth.helper'
+import { verifyToken } from '@utils/auth.helper'
+import { AccountTypes } from '@libs/accountTypes'
+import { LoginUser, Token, User, Users } from '@customTypes/auth.type'
+import { logger } from '@config/logger'
+import { Key } from '@customTypes/key.type'
+import { upload } from '@utils/file.helper'
 
 export const register = async (request: Request, response: Response) => {
     try {
@@ -41,7 +41,11 @@ export const login = async (request: Request, response: Response) => {
         const { username, password } = request.body
         const user: LoginUser | null = await AuthService.login(username)
 
-        const validatePassword: boolean = await AuthHelper.validatePassword(password, user!.password)
+        const validatePassword: boolean = await AuthHelper.validatePassword(
+            password,
+            user!.password
+        )
+
         if (!validatePassword) {
             return response.status(403).json(Error.wrongPassword)
         }
@@ -158,7 +162,10 @@ export const usersByStatus = async (request: Request, response: Response) => {
         const token: string = request.cookies.JWT
         const tokenData: Token = verifyToken(token, 'accessToken')
         const status: boolean = request.params.status === 'active'
-        const users: Users[] | null = await AuthService.getUsersByStatus(tokenData.openDayId, status)
+        const users: Users[] | null = await AuthService.getUsersByStatus(
+            tokenData.openDayId,
+            status
+        )
         return response.status(200).json({ result: users, error: 0 })
     } catch (error: any) {
         logger.error(`500 | ${error}`)
@@ -166,7 +173,10 @@ export const usersByStatus = async (request: Request, response: Response) => {
     }
 }
 
-export const updateProfilePicture = async (request: Request, response: Response) => {
+export const updateProfilePicture = async (
+    request: Request,
+    response: Response
+) => {
     try {
         const token: string = request.cookies.JWT
         const tokenData: Token = verifyToken(token, 'accessToken')
@@ -182,9 +192,25 @@ export const updateProfilePicture = async (request: Request, response: Response)
 export const getPicture = async (request: Request, response: Response) => {
     try {
         const pictureId: string = request.params.id
-        return response.status(200).sendFile('/uploads/' + pictureId, { root: '.' })
+        return response
+            .status(200)
+            .sendFile('/uploads/' + pictureId, { root: '.' })
     } catch (error: any) {
         logger.error(`500 | ${error}`)
         return response.status(500).json(Error.loadProfilePictureError)
+    }
+}
+
+export const updatePersonalData = async (
+    request: Request,
+    response: Response
+): Promise<Response> => {
+    try {
+        const { userId, name } = request.body
+        await AuthService.updatePersonalData(userId, name)
+        return response.status(201).json(Callback.updatePersonalData)
+    } catch (error: any) {
+        logger.error(`500 | ${error}`)
+        return response.status(500).json(Error.updatePersonalDataError)
     }
 }

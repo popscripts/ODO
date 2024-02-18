@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from 'express'
-import * as AuthHelper from '../utils/auth.helper'
-import * as Error from '../libs/errors'
-import { Token } from '../types/auth.type'
-import { Order } from '../types/buffet.type'
-import { getOrder } from '../services/buffet.service'
+import * as AuthHelper from '@utils/auth.helper'
+import * as Error from '@libs/errors'
+import { Token } from '@customTypes/auth.type'
+import { Order } from '@customTypes/buffet.type'
+import { getOrder } from '@services/buffet.service'
 
 export const orderStatusVerification = async (request: Request, response: Response, next: NextFunction) => {
     const { id, status } = request.body

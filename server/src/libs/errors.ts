@@ -58,3 +58,8 @@ export const regenerateKeyError = {
     result: 'Wystąpił błąd podczas odnowienia klucza',
     error: 1
 }
+
+export const updatePersonalDataError = {
+    result: 'Wystąpił błąd podczas zapisywania danych personalnych',
+    error: 1
+}

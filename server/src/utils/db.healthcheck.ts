@@ -1,5 +1,5 @@
 import { db } from './db.server'
-import { logger } from '../config/logger'
+import { logger } from '@config/logger'
 
 export const dbHealthCheck = async (): Promise<void> => {
     const status: boolean = await dbStatus()

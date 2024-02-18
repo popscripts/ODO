@@ -1,5 +1,5 @@
 import { body, CustomValidator } from 'express-validator'
-import * as ClassroomService from '../services/classroom.service'
+import * as ClassroomService from '@services/classroom.service'
 
 const classroomIdValidation: CustomValidator = async (id) => {
     if (!id) {

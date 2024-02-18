@@ -1,33 +1,37 @@
-import React, { useState } from 'react'
-import { Classroom } from '../../types/classroom.type'
+import React, { useEffect, useState } from 'react'
 import { Heading, MediumText } from '../../components/commonStyles'
 import { ContentWrapper, Highlight, Press, TimerWrapper, Wrapper } from './ClassroomBoxStyle'
 import TimedGradient from '../TimedGradient/TimedGradient'
 import Timer from '../../components/Timer'
 import { Dimensions } from 'react-native'
-import { MAX_TIME } from '../../config'
 import ClassroomModal from '../ClassroomModal/ClassroomModal'
+import { useClassrooms, useSetStatus } from '../../providers/ClassroomProvider'
 
 type Props = {
-    classroom: Classroom
+    classroomId: number
     colorPalette: any[]
     status: string
 }
-function ClassroomBox({ classroom, colorPalette, status }: Props) {
+function ClassroomBox({ classroomId, colorPalette, status }: Props) {
+    const setStatus = useSetStatus()
     const [showModal, setShowModal] = useState(false)
-
     const handleVisible = () => {
         setShowModal(!showModal)
-    }
-
+}
     const width = Dimensions.get('screen').width
-    const changedAt = classroom.takenAt || classroom.reservedAt
+    const classrooms = useClassrooms()
+    const [classroom, setClassroom] = useState(classrooms.filter((item) => item?.id === classroomId)[0])
+    const [changedAt, setChangedAt] = useState<null | string>(null)
 
-    const changedAtDate = changedAt ? new Date(changedAt) : null
-    const now = new Date()
+    useEffect(() => {
+        if(classroom){
+            setChangedAt(classroom?.takenAt || classroom?.reservedAt)
+        }
+    }, [classroom])
 
-    const timePassed = changedAtDate ? now.getTime() - changedAtDate.getTime() : null
-    const timeLeft = timePassed ? MAX_TIME - timePassed : null
+    useEffect(() => {
+        setClassroom(classrooms.filter((item) => item?.id === classroomId)[0])
+    }, [classrooms])
 
     return (
         <>
@@ -41,7 +45,7 @@ function ClassroomBox({ classroom, colorPalette, status }: Props) {
                     <Heading>{classroom?.classroom}</Heading>
                     <MediumText>{classroom?.title}</MediumText>
                     <TimerWrapper>
-                        {status !== 'free' && changedAt && <Timer timeLeft={timeLeft} />}
+                        {status !== 'free' && changedAt && <Timer changedAt={changedAt} />}
                     </TimerWrapper>
                 </ContentWrapper>
                 <Highlight colors={['#ffffff00', '#ffffff33']} />

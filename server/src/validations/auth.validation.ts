@@ -1,6 +1,6 @@
-import { body, CustomValidator } from 'express-validator'
-import * as AuthService from '../services/auth.service'
-import * as KeyService from '../services/key.service'
+import { body, CustomValidator, ValidationChain } from 'express-validator'
+import * as AuthService from '@services/auth.service'
+import * as KeyService from '@services/key.service'
 
 const usernameValidation: CustomValidator = async (username) => {
     if (!username) {
@@ -57,14 +57,14 @@ const loginDataValidation: CustomValidator = async (username) => {
         return Promise.reject('Podaj login')
     }
 
-    return AuthService.doesUserExists(username).then((doesExists) => {
+    return AuthService.doesUserExists(username).then((doesExists: boolean) => {
         if (!doesExists) {
             return Promise.reject('Podano błędny login lub hasło')
         }
     })
 }
 
-export const registerValidation = [
+export const registerValidation: ValidationChain[] = [
     body('key').custom(keyValidation),
     body('username').custom(usernameValidation),
     body('password')
@@ -74,16 +74,28 @@ export const registerValidation = [
         .withMessage('Hasło za krótkie (min. 6 znaków)')
 ]
 
-export const loginValidation = [
+export const loginValidation: ValidationChain[] = [
     body('username').custom(loginDataValidation),
     body('password').isString().isLength({ min: 1 }).withMessage('Podaj hasło')
 ]
 
-export const editUserValidation = [
+export const editUserValidation: ValidationChain[] = [
     body('id').custom(isValidUser),
     body('username').isString().withMessage('Podaj nazwę użytkownika'),
     body('accountType').custom(accountTypeValidation)
 ]
 
-export const deleteUserValidation = [body('id').custom(isValidUser)]
-export const restoreUserValidation = [body('id').custom(isValidUser)]
+export const deleteUserValidation: ValidationChain[] = [
+    body('id').custom(isValidUser)
+]
+export const restoreUserValidation: ValidationChain[] = [
+    body('id').custom(isValidUser)
+]
+
+export const updateUserPersonalDataValidation: ValidationChain[] = [
+    body('userId').custom(isValidUser),
+    body('name')
+        .isString()
+        .isLength({ min: 5 })
+        .withMessage('Podane dane są za krótkie')
+]

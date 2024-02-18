@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import ClassroomBox from './ClassroomBox/ClassroomBox'
-import { Classroom } from '../types/classroom.type'
 import { colors } from '../theme/colors'
 import { MediumTextCenter } from '../components/commonStyles'
 import { LayoutAnimation, Platform, UIManager } from 'react-native'
@@ -12,12 +11,11 @@ if (Platform.OS === 'android') {
 }
 
 type Props = {
-    data: Classroom[]
     status: string
     filter: number[]
 }
-function MapClassrooms({ data, status, filter }: Props) {
-    const colorPalette =
+function MapClassrooms({status, filter }: Props) {
+     const colorPalette =
         status === 'free'
             ? [colors.palette.tertiary200, colors.palette.tertiary300]
             : status === 'busy'
@@ -43,7 +41,7 @@ function MapClassrooms({ data, status, filter }: Props) {
             {filter.length > 0 ? (
                 filter.map((id) => (
                     <ClassroomBox
-                        classroom={data.filter((classroom) => classroom?.id === id)[0]}
+                        classroomId={id}
                         key={id}
                         colorPalette={colorPalette}
                         status={status}

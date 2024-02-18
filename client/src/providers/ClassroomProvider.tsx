@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { Children } from '../types/props.type'
 import { Classroom, classroomStatus } from '../types/classroom.type'
-import { useToken, useUserData } from './AuthProvider'
+import { useLoggedIn, useUserData } from './AuthProvider'
 import ClassroomService from '../services/classroomService'
 import io from 'socket.io-client'
 import { API_URL } from '../config'
@@ -31,7 +31,7 @@ function ClassroomProvider({ children }: Children) {
     const [reservedClassrooms, setReservedClassrooms] = useState<number[]>([])
     const [busyClassrooms, setBusyClassrooms] = useState<number[]>([])
     const [changedClassroom, setChangedClassroom] = useState<classroomStatus>()
-    const token = useToken()
+    const loggedIn = useLoggedIn()
     const userData = useUserData()
 
     const setStatusClassrooms = {
@@ -69,33 +69,32 @@ function ClassroomProvider({ children }: Children) {
         })
     }
 
-    function changeClassroomStatus(classroomId: number, prevStatus: Status["name"], status: Status["name"]) {
-        const data = {
-            id: classroomId,
-            userId: userData?.id,
-            accountType: userData?.accountType.name,
-            prevStatus,
-            status
-        }
-        setChangedClassroom(data)
-        socket.emit('setClassroomStatus', data)
-    }
-
-    function setStatus(id: number, prevStatus: Status["name"], status: Status["name"]) {
-        changeClassroomStatus(id, prevStatus, status)
+    function setStatus(id: number, prevStatus: string, status: string) {
+        ClassroomService.changeClassroomStatus(id, status, prevStatus)
     }
 
     function handleStatusChange() {
         if (changedClassroom) {
             const previousClassrooms = parsedClassrooms[changedClassroom?.prevStatus].slice()
-            const previousIndex = previousClassrooms.indexOf(changedClassroom?.id)
+            const previousIndex = previousClassrooms.indexOf(changedClassroom?.classroom.id)
             previousIndex > -1 && previousClassrooms.splice(previousIndex, 1)
             setStatusClassrooms[changedClassroom?.prevStatus](previousClassrooms)
 
-            const currentClassrooms = parsedClassrooms[changedClassroom?.status].slice()
-            const currentIndex = currentClassrooms.indexOf(changedClassroom?.id)
-            currentIndex < 0 && currentClassrooms.unshift(changedClassroom?.id)
-            setStatusClassrooms[changedClassroom?.status](currentClassrooms)
+            const currentClassrooms = parsedClassrooms[changedClassroom?.classroom.status.name].slice()
+            const currentIndex = currentClassrooms.indexOf(changedClassroom?.classroom.id)
+            currentIndex < 0 && currentClassrooms.unshift(changedClassroom?.classroom.id)
+            setStatusClassrooms[changedClassroom?.classroom.status.name](currentClassrooms)
+        }
+    }
+
+    function updateClassroomData() {
+        if (changedClassroom) {
+            const previousClassrooms = classrooms.slice()
+            for (let item in previousClassrooms) {
+                if (previousClassrooms[item].id === changedClassroom.classroom.id)
+                previousClassrooms[item] = { ...changedClassroom?.classroom}
+            }
+            setClassrooms(previousClassrooms)
         }
     }
 
@@ -116,13 +115,10 @@ function ClassroomProvider({ children }: Children) {
     useEffect(() => {
         joinRoom()
     }, [userData])
-    // useEffect(() => {
-    //     console.log("classrooms: ", classrooms)
-    // }, [classrooms])
 
     useEffect(() => {
-        !token.error && classrooms.length === 0 && getClassrooms()
-    }, [token])
+        loggedIn && classrooms.length === 0 && getClassrooms()
+    }, [loggedIn])
 
     useEffect(() => {
         setParsedClassrooms({
@@ -134,17 +130,14 @@ function ClassroomProvider({ children }: Children) {
 
     useEffect(() => {
         handleStatusChange()
+        updateClassroomData()
     }, [changedClassroom])
 
     useEffect(() => {
         socket.removeAllListeners()
-        socket.on('classroomStatus', (data) => {
-            console.log("socket: ", data.prevStatus, data.classroom.status)
+        socket.on('classroomStatus', (data: classroomStatus) => {
             if (data.prevStatus !== data.classroom.status.name) {
-                // TODO... change taken by etc
-                let changed: classroomStatus = {id: data.classroom.id, userId: 1, accountType: 'admin' ,status: data.classroom.status.name, prevStatus: data.prevStatus,}
-                setChangedClassroom(changed)
-                handleClassroomChange(data.classroom)
+                setChangedClassroom(data)
             }
         })
     }, [])

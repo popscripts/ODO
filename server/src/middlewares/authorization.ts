@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
-import * as Error from '../libs/errors'
-import * as AuthHelper from '../utils/auth.helper'
-import { Token } from '../types/auth.type'
+import * as Error from '@libs/errors'
+import * as AuthHelper from '@utils/auth.helper'
+import { Token } from '@customTypes/auth.type'
 
 export const authorize = async (request: Request, response: Response, next: NextFunction) => {
     try {

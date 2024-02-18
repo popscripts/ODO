@@ -1,7 +1,7 @@
 import { body, cookie, CustomValidator } from 'express-validator'
 import * as BuffetService from '../services/buffet.service'
-import { Token } from '../types/auth.type'
-import { verifyToken } from '../utils/auth.helper'
+import { Token } from '@customTypes/auth.type'
+import { verifyToken } from '@utils/auth.helper'
 
 const orderedByValidation: CustomValidator = async (token) => {
     const tokenData: Token = verifyToken(token, 'accessToken')

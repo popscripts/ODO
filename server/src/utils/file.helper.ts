@@ -1,9 +1,9 @@
 import { UploadedFile } from 'express-fileupload'
 import crypto from 'crypto'
 import path from 'path'
-import * as AuthService from '../services/auth.service'
+import * as AuthService from '@services/auth.service'
 import fs from 'fs'
-import { PictureName } from '../types/auth.type'
+import { PictureName } from '@customTypes/auth.type'
 
 export const upload = async (picture: UploadedFile, id: number) => {
     await removeOldPhoto(id)
