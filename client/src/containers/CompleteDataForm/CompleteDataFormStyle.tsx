@@ -26,5 +26,6 @@ export const TopText = styled.Text`
     font-size: ${spacing.lg};
     color: ${colors.text};
     margin: ${spacing.md};
+    width: 100%;
     text-align: center;
 `

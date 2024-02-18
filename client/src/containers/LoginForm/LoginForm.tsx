@@ -9,10 +9,16 @@ import Button from '../../components/Button/Button'
 import { colors } from '../../theme/colors'
 import { Vibration } from 'react-native'
 import { Error } from '../../types/response.type'
+import Loading from '../../components/Loading/Loading'
 
-function LoginForm() {
+type Props = {
+    setLoading: Function
+}
+
+function LoginForm({setLoading}: Props) {
     const credentials = useCredentials()
     const [isSubmitted, setIsSubmitted] = useState<boolean>(false)
+    
     const [login, setLogin] = useState<string>(credentials.username)
     const [password, setPassword] = useState<string>(credentials.password)
     const [loginError, setLoginError] = useState<Error>({
@@ -66,10 +72,12 @@ function LoginForm() {
             return null
         }
 
+        setLoading(true)
         logIn(login, password).then((res: apiLoginResponse) => {
             if (res.error) {
                 Vibration.vibrate(100)
                 setError(res?.result, res?.param)
+                setTimeout(() => setLoading(false), 200)
             }
         })
     }

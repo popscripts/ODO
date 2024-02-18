@@ -3,7 +3,7 @@ import { Animated, Dimensions } from 'react-native'
 import { Children } from '../types/props.type'
 
 function SlideFromBottom({ children }: Children) {
-    const height = Dimensions.get('window').height
+    const height = Dimensions.get('screen').height
     const animation = useRef(new Animated.Value(height)).current
 
     useEffect(() => {
