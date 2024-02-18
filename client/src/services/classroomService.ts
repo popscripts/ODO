@@ -24,9 +24,9 @@ class ClassroomService {
         }
     }
 
-    async changeClassroomStatus(id: number, status: string) {
+    async changeClassroomStatus(id: number, status: string, prevStatus: string) {
         try {
-            const response = await this.httpClient.patch('api/classroom/status', { id, status })
+            const response = await this.httpClient.patch('api/classroom/status', { id, status, prevStatus })
             return response.json()
         } catch (e) {
             console.error(e)

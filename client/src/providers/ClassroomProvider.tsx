@@ -68,32 +68,32 @@ function ClassroomProvider({ children }: Children) {
         })
     }
 
-    function changeClassroomStatus(classroomId: number, prevStatus: string, status: string) {
-        const data = {
-            id: classroomId,
-            userId: userData?.id,
-            accountType: userData?.accountType.name,
-            prevStatus,
-            status
-        }
-        socket.emit('setClassroomStatus', data)
-    }
-
     function setStatus(id: number, prevStatus: string, status: string) {
-        changeClassroomStatus(id, prevStatus, status)
+        ClassroomService.changeClassroomStatus(id, status, prevStatus)
     }
 
     function handleStatusChange() {
         if (changedClassroom) {
             const previousClassrooms = parsedClassrooms[changedClassroom?.prevStatus].slice()
-            const previousIndex = previousClassrooms.indexOf(changedClassroom?.id)
+            const previousIndex = previousClassrooms.indexOf(changedClassroom?.classroom.id)
             previousIndex > -1 && previousClassrooms.splice(previousIndex, 1)
             setStatusClassrooms[changedClassroom?.prevStatus](previousClassrooms)
 
-            const currentClassrooms = parsedClassrooms[changedClassroom?.status].slice()
-            const currentIndex = currentClassrooms.indexOf(changedClassroom?.id)
-            currentIndex < 0 && currentClassrooms.unshift(changedClassroom?.id)
-            setStatusClassrooms[changedClassroom?.status](currentClassrooms)
+            const currentClassrooms = parsedClassrooms[changedClassroom?.classroom.status.name].slice()
+            const currentIndex = currentClassrooms.indexOf(changedClassroom?.classroom.id)
+            currentIndex < 0 && currentClassrooms.unshift(changedClassroom?.classroom.id)
+            setStatusClassrooms[changedClassroom?.classroom.status.name](currentClassrooms)
+        }
+    }
+
+    function updateClassroomData() {
+        if (changedClassroom) {
+            const previousClassrooms = classrooms.slice()
+            for (let item in previousClassrooms) {
+                if (previousClassrooms[item].id === changedClassroom.classroom.id)
+                previousClassrooms[item] = { ...changedClassroom?.classroom}
+            }
+            setClassrooms(previousClassrooms)
         }
     }
 
@@ -115,13 +115,14 @@ function ClassroomProvider({ children }: Children) {
 
     useEffect(() => {
         handleStatusChange()
+        updateClassroomData()
     }, [changedClassroom])
 
     useEffect(() => {
         socket.removeAllListeners()
-        socket.on('classroomStatus', (classroom: classroomStatus) => {
-            if (classroom.prevStatus !== classroom.status) {
-                setChangedClassroom(classroom)
+        socket.on('classroomStatus', (data: classroomStatus) => {
+            if (data.prevStatus !== data.classroom.status.name) {
+                setChangedClassroom(data)
             }
         })
     }, [])
