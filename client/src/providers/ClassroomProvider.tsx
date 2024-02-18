@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { Children } from '../types/props.type'
 import { Classroom, classroomStatus } from '../types/classroom.type'
-import { useToken, useUserData } from './AuthProvider'
+import { useLoggedIn, useUserData } from './AuthProvider'
 import ClassroomService from '../services/classroomService'
 import io from 'socket.io-client'
 import { API_URL } from '../config'
@@ -30,7 +30,7 @@ function ClassroomProvider({ children }: Children) {
     const [reservedClassrooms, setReservedClassrooms] = useState<number[]>([])
     const [busyClassrooms, setBusyClassrooms] = useState<number[]>([])
     const [changedClassroom, setChangedClassroom] = useState<classroomStatus>()
-    const token = useToken()
+    const loggedIn = useLoggedIn()
     const userData = useUserData()
 
     const setStatusClassrooms = {
@@ -102,8 +102,8 @@ function ClassroomProvider({ children }: Children) {
     }, [userData])
 
     useEffect(() => {
-        !token.error && classrooms.length === 0 && getClassrooms()
-    }, [token])
+        loggedIn && classrooms.length === 0 && getClassrooms()
+    }, [loggedIn])
 
     useEffect(() => {
         setParsedClassrooms({
@@ -119,7 +119,7 @@ function ClassroomProvider({ children }: Children) {
 
     useEffect(() => {
         socket.removeAllListeners()
-        socket.on('classroomStatuses', (classroom: classroomStatus) => {
+        socket.on('classroomStatus', (classroom: classroomStatus) => {
             if (classroom.prevStatus !== classroom.status) {
                 setChangedClassroom(classroom)
             }

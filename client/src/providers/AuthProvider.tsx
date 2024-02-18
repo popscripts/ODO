@@ -58,6 +58,7 @@ const RegisterContext = createContext<Function>(() => {})
 const UserDataContext = createContext<User>(userDataPlaceholder)
 const CredentialsContext = createContext({ username: '', password: '' })
 const UpdateNameContext = createContext((name: string, surname: string) => {})
+const LoggedInContext = createContext(false)
 
 export function useToken() {
     return useContext(TokenContext)
@@ -87,6 +88,10 @@ export function useUpdateName() {
     return useContext(UpdateNameContext)
 }
 
+export function useLoggedIn() {
+    return useContext(LoggedInContext)
+}
+
 export default function AuthProvider({ children }: Children) {
     const [token, setToken] = useState<apiLoginResponse>({
         error: 2,
@@ -94,23 +99,32 @@ export default function AuthProvider({ children }: Children) {
     })
     const [userData, setUserData] = useState<User>(userDataPlaceholder)
     const [credentials, setCredentials] = useState({ username: '', password: '' })
+    const [loggedIn, setLoggedIn] = useState(false)
 
     async function logIn(username: string, password: string) {
         const response = await AuthService.logIn(username, password).then((response) => {
-            setToken(response)
             storeCredentials(username, password)
-            storeLogIn(true)
+            storeLogIn(true)       
             return response
         })
 
-        if (response.error) return response
+        if (response.error) {
+            setToken(response)
+            return response
+        }
 
-        return await getUserData()
+        await getUserData().then(() => {
+            setLoggedIn(true)
+            setToken(response)
+        })
+
+        return response
     }
 
     async function logOut() {
         return await AuthService.logOut().then((response) => {
             setToken({ error: 1, result: '' })
+            setLoggedIn(false)
             setTimeout(() => setUserData(userDataPlaceholder), 300)
             storeLogIn(false)
             return response
@@ -164,7 +178,9 @@ export default function AuthProvider({ children }: Children) {
                         <CredentialsContext.Provider value={credentials}>
                             <UpdateNameContext.Provider value={handleUpdateName}>
                                 <RegisterContext.Provider value={register}>
-                                    {children}
+                                    <LoggedInContext.Provider value={loggedIn}>
+                                        {children}
+                                    </LoggedInContext.Provider>
                                 </RegisterContext.Provider>
                             </UpdateNameContext.Provider>
                         </CredentialsContext.Provider>

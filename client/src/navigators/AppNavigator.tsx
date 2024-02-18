@@ -1,5 +1,5 @@
 import { createStackNavigator, StackCardInterpolationProps } from '@react-navigation/stack'
-import { useToken, useUserData } from '../providers/AuthProvider'
+import { useLoggedIn, useToken, useUserData } from '../providers/AuthProvider'
 import { NavigationContainer } from '@react-navigation/native'
 import MainNavigator from './MainNavigator'
 import WelcomeScreen from '../screens/WelcomeScreen'
@@ -15,6 +15,7 @@ const Fade = ({ current }: StackCardInterpolationProps) => ({
 })
 
 function AppNavigator() {
+    const loggedIn = useLoggedIn()
     const token = useToken()
     const userData = useUserData()
 
@@ -22,21 +23,21 @@ function AppNavigator() {
         <NavigationContainer>
             <Stack.Navigator
                 screenOptions={{
-                    headerShown: false
+                    headerShown: false,
+                    cardOverlay: () => (
+                        <DefaultBackground />
+                      )
+                      
                 }}
             >
-                {!userData.name && userData.id && token.error === 0? (
+                {token.error === 2 ? (
+                    <Stack.Screen name="Placeholder" component={DefaultBackground} />
+                ) : !userData.name && loggedIn? (
                     <Stack.Screen
                         name="CompleteData"
                         component={CompleteDataScreen}
                         options={{ cardStyleInterpolator: Fade }}
                     /> 
-                ) : (token.error === 1 || !userData.id) && token.error !== 2? (
-                    <Stack.Screen
-                        name="Welcome"
-                        component={WelcomeScreen}
-                        options={{ cardStyleInterpolator: Fade }}
-                    />
                 ) : userData.name ? (
                     <Stack.Screen
                         name="MainNavigator"
@@ -44,8 +45,11 @@ function AppNavigator() {
                         options={{ cardStyleInterpolator: Fade }}
                     />
                 ) : (
-                    <Stack.Screen name="Placeholder" component={DefaultBackground} />
-                )}
+                    <Stack.Screen
+                        name="Welcome"
+                        component={WelcomeScreen}
+                        options={{ cardStyleInterpolator: Fade }}
+                />)}
             </Stack.Navigator>
         </NavigationContainer>
     )
