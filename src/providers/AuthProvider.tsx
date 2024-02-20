@@ -8,7 +8,10 @@ import { Classroom } from '../types/classroom.type'
 
 const storeCredentials = async (username: string, password: string) => {
     try {
-        await AsyncStorage.setItem('credentials', JSON.stringify({ username, password }))
+        await AsyncStorage.setItem(
+            'credentials',
+            JSON.stringify({ username, password })
+        )
     } catch (e) {
         console.error('Error saving to local storage')
     }
@@ -103,15 +106,20 @@ export default function AuthProvider({ children }: Children) {
         result: ''
     })
     const [userData, setUserData] = useState<User>(userDataPlaceholder)
-    const [credentials, setCredentials] = useState({ username: '', password: '' })
+    const [credentials, setCredentials] = useState({
+        username: '',
+        password: ''
+    })
     const [loggedIn, setLoggedIn] = useState(false)
 
     async function logIn(username: string, password: string) {
-        const response = await AuthService.logIn(username, password).then((response) => {
-            storeCredentials(username, password)
-            storeLogIn(true)       
-            return response
-        })
+        const response = await AuthService.logIn(username, password).then(
+            (response) => {
+                storeCredentials(username, password)
+                storeLogIn(true)
+                return response
+            }
+        )
 
         if (response.error) {
             setToken(response)
@@ -137,7 +145,11 @@ export default function AuthProvider({ children }: Children) {
     }
 
     async function register(key: number, username: string, password: string) {
-        const response = await AuthService.register(key, username, password).then((response) => {
+        const response = await AuthService.register(
+            key,
+            username,
+            password
+        ).then((response) => {
             return response
         })
         if (response.error) return response
@@ -166,7 +178,10 @@ export default function AuthProvider({ children }: Children) {
                 setCredentials(credentials)
                 getLogIn().then((response) => {
                     response
-                        ? logIn(credentials.username, credentials.password).then()
+                        ? logIn(
+                              credentials.username,
+                              credentials.password
+                          ).then()
                         : setToken({ error: 1, result: '' })
                 })
             } else {
@@ -181,10 +196,14 @@ export default function AuthProvider({ children }: Children) {
                 <LogOutContext.Provider value={logOut}>
                     <UserDataContext.Provider value={userData}>
                         <CredentialsContext.Provider value={credentials}>
-                            <UpdateNameContext.Provider value={handleUpdateName}>
+                            <UpdateNameContext.Provider
+                                value={handleUpdateName}
+                            >
                                 <RegisterContext.Provider value={register}>
                                     <LoggedInContext.Provider value={loggedIn}>
-                                        <GetUserDataContext.Provider value={getUserData}>
+                                        <GetUserDataContext.Provider
+                                            value={getUserData}
+                                        >
                                             {children}
                                         </GetUserDataContext.Provider>
                                     </LoggedInContext.Provider>

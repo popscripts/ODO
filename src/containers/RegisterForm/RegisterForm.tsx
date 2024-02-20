@@ -20,7 +20,7 @@ type Props = {
     setLoading: Function
 }
 
-function RegisterForm({setLoading}: Props) {
+function RegisterForm({ setLoading }: Props) {
     const [isSubmitted, setIsSubmitted] = useState<boolean>(false)
     const [key, setKey] = useState<string>('')
     const [login, setLogin] = useState<string>('')
@@ -54,7 +54,9 @@ function RegisterForm({setLoading}: Props) {
     }
 
     function ValidateRepeatPassword() {
-        setRepeatPasswordError(repeatPasswordValidation(password, repeatPassword))
+        setRepeatPasswordError(
+            repeatPasswordValidation(password, repeatPassword)
+        )
     }
 
     function ValidateKey() {
@@ -115,13 +117,15 @@ function RegisterForm({setLoading}: Props) {
         }
 
         setLoading(true)
-        register(parseInt(key), login, password).then((res: apiLoginResponse) => {
-            if (res.error) {
-                Vibration.vibrate(100)
-                setError(res?.result, res?.param)
-                setTimeout(() => setLoading(false), 200)
+        register(parseInt(key), login, password).then(
+            (res: apiLoginResponse) => {
+                if (res.error) {
+                    Vibration.vibrate(100)
+                    setError(res?.result, res?.param)
+                    setTimeout(() => setLoading(false), 200)
+                }
             }
-        })
+        )
     }
     return (
         <FormWrapper>

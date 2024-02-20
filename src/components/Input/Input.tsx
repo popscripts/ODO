@@ -37,7 +37,10 @@ function Input({
             {password && (
                 <InputIconWrapper onPress={handlePassword}>
                     {showPassword ? (
-                        <EyeClosedIcon color={colors.palette.neutral300} size={25} />
+                        <EyeClosedIcon
+                            color={colors.palette.neutral300}
+                            size={25}
+                        />
                     ) : (
                         <EyeIcon color={colors.palette.neutral300} size={25} />
                     )}

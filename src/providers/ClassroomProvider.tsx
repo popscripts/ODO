@@ -10,8 +10,14 @@ import { Status } from '../types/status.type'
 const socket = io(API_URL)
 
 const ClassroomContext = createContext<Classroom[]>([])
-const ParsedClassroomContext = createContext({ free: [0], reserved: [0], busy: [0] })
-const SetStatusContext = createContext((id: number, prevStatus: Status["name"], status: Status["name"]) => {})
+const ParsedClassroomContext = createContext({
+    free: [0],
+    reserved: [0],
+    busy: [0]
+})
+const SetStatusContext = createContext(
+    (id: number, prevStatus: Status['name'], status: Status['name']) => {}
+)
 
 export function useClassrooms() {
     return useContext(ClassroomContext)
@@ -59,7 +65,10 @@ function ClassroomProvider({ children }: Children) {
 
     function parseClassrooms(classrooms: Classroom[]) {
         classrooms.map((classroom) => {
-            setStatusClassrooms[classroom.status.name]((classrooms) => [...classrooms, classroom.id])
+            setStatusClassrooms[classroom.status.name]((classrooms) => [
+                ...classrooms,
+                classroom.id
+            ])
         })
     }
 
@@ -76,15 +85,28 @@ function ClassroomProvider({ children }: Children) {
 
     function handleStatusChange() {
         if (changedClassroom) {
-            const previousClassrooms = parsedClassrooms[changedClassroom?.prevStatus].slice()
-            const previousIndex = previousClassrooms.indexOf(changedClassroom?.classroom.id)
+            const previousClassrooms =
+                parsedClassrooms[changedClassroom?.prevStatus].slice()
+            const previousIndex = previousClassrooms.indexOf(
+                changedClassroom?.classroom.id
+            )
             previousIndex > -1 && previousClassrooms.splice(previousIndex, 1)
-            setStatusClassrooms[changedClassroom?.prevStatus](previousClassrooms)
+            setStatusClassrooms[changedClassroom?.prevStatus](
+                previousClassrooms
+            )
 
-            const currentClassrooms = parsedClassrooms[changedClassroom?.classroom.status.name].slice()
-            const currentIndex = currentClassrooms.indexOf(changedClassroom?.classroom.id)
-            currentIndex < 0 && currentClassrooms.unshift(changedClassroom?.classroom.id)
-            setStatusClassrooms[changedClassroom?.classroom.status.name](currentClassrooms)
+            const currentClassrooms =
+                parsedClassrooms[
+                    changedClassroom?.classroom.status.name
+                ].slice()
+            const currentIndex = currentClassrooms.indexOf(
+                changedClassroom?.classroom.id
+            )
+            currentIndex < 0 &&
+                currentClassrooms.unshift(changedClassroom?.classroom.id)
+            setStatusClassrooms[changedClassroom?.classroom.status.name](
+                currentClassrooms
+            )
         }
     }
 
@@ -92,8 +114,13 @@ function ClassroomProvider({ children }: Children) {
         if (changedClassroom) {
             const previousClassrooms = classrooms.slice()
             for (let item in previousClassrooms) {
-                if (previousClassrooms[item].id === changedClassroom.classroom.id)
-                previousClassrooms[item] = { ...changedClassroom?.classroom}
+                if (
+                    previousClassrooms[item].id ===
+                    changedClassroom.classroom.id
+                )
+                    previousClassrooms[item] = {
+                        ...changedClassroom?.classroom
+                    }
             }
             setClassrooms(previousClassrooms)
         }
@@ -128,7 +155,9 @@ function ClassroomProvider({ children }: Children) {
     return (
         <ClassroomContext.Provider value={classrooms}>
             <ParsedClassroomContext.Provider value={parsedClassrooms}>
-                <SetStatusContext.Provider value={setStatus}>{children}</SetStatusContext.Provider>
+                <SetStatusContext.Provider value={setStatus}>
+                    {children}
+                </SetStatusContext.Provider>
             </ParsedClassroomContext.Provider>
         </ClassroomContext.Provider>
     )

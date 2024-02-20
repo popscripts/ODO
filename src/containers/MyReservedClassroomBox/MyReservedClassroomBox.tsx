@@ -8,7 +8,10 @@ type Props = {
     classroom: Classroom
 }
 function ClassroomBox({ classroom }: Props) {
-    const colorPalette = [colors.palette.secondary200, colors.palette.secondary300]
+    const colorPalette = [
+        colors.palette.secondary200,
+        colors.palette.secondary300
+    ]
 
     return (
         <Wrapper colors={colorPalette}>

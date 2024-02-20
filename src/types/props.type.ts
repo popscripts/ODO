@@ -8,4 +8,3 @@ export type Children = {
 export type Navigation = {
     navigation: NavigationProp<any>
 }
-

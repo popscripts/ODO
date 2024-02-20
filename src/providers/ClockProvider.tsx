@@ -19,7 +19,9 @@ function ClockProvider({ children }: Children) {
         }
     }, [])
 
-    return <ClockContext.Provider value={clock}>{children}</ClockContext.Provider>
+    return (
+        <ClockContext.Provider value={clock}>{children}</ClockContext.Provider>
+    )
 }
 
 export default ClockProvider

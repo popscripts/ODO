@@ -7,7 +7,13 @@ type Props = {
     size: number
 }
 function ProfilePicture({ url, size }: Props) {
-    return <Picture source={getImageSource(url)} size={size} resizeMode={'cover'} />
+    return (
+        <Picture
+            source={getImageSource(url)}
+            size={size}
+            resizeMode={'cover'}
+        />
+    )
 }
 
 export default ProfilePicture

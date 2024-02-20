@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { FormWrapper } from './LoginFormStyle'
 import { useCredentials, useLogIn } from '../../providers/AuthProvider'
-import { loginValidation, passwordValidation } from '../../utils/inputValidators'
+import {
+    loginValidation,
+    passwordValidation
+} from '../../utils/inputValidators'
 import { apiLoginResponse } from '../../types/response.type'
 import { Heading } from '../../components/commonStyles'
 import Input from '../../components/Input/Input'
@@ -15,10 +18,10 @@ type Props = {
     setLoading: Function
 }
 
-function LoginForm({setLoading}: Props) {
+function LoginForm({ setLoading }: Props) {
     const credentials = useCredentials()
     const [isSubmitted, setIsSubmitted] = useState<boolean>(false)
-    
+
     const [login, setLogin] = useState<string>(credentials.username)
     const [password, setPassword] = useState<string>(credentials.password)
     const [loginError, setLoginError] = useState<Error>({
@@ -99,7 +102,11 @@ function LoginForm({setLoading}: Props) {
                 errorText={passwordError.errorText}
                 password={true}
             />
-            <Button content={'Zaloguj się'} onPress={LogInPress} color={colors.palette.secondary300} />
+            <Button
+                content={'Zaloguj się'}
+                onPress={LogInPress}
+                color={colors.palette.secondary300}
+            />
         </FormWrapper>
     )
 }

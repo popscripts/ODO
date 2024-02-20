@@ -1,5 +1,9 @@
 import React, { ReactNode } from 'react'
-import { ClassroomSectionHeader, ClassroomSectionWrapper, Gradient } from './ClassroomSectionStyle'
+import {
+    ClassroomSectionHeader,
+    ClassroomSectionWrapper,
+    Gradient
+} from './ClassroomSectionStyle'
 import { Heading } from '../commonStyles'
 import { colors } from '../../theme/colors'
 import { Dimensions, View } from 'react-native'
@@ -14,7 +18,9 @@ function ClassroomSection({ title, children }: Props) {
 
     return (
         <View>
-            <Gradient colors={[colors.transparent, colors.palette.neutral800]} />
+            <Gradient
+                colors={[colors.transparent, colors.palette.neutral800]}
+            />
             <ClassroomSectionHeader>
                 <Heading>{title}</Heading>
             </ClassroomSectionHeader>

@@ -10,7 +10,10 @@ function WelcomeScreen() {
     const height = Dimensions.get('screen').height
     const keyboardHeight = useKeyboardHeight()
     return (
-        <ImageBackground source={background} style={{ width: '100%', height: '100%' }}>
+        <ImageBackground
+            source={background}
+            style={{ width: '100%', height: '100%' }}
+        >
             <ScrollView>
                 <View style={{ height: height + keyboardHeight }}>
                     <WelcomeHeader />

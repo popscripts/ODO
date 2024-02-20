@@ -1,4 +1,7 @@
-import { createStackNavigator, StackCardInterpolationProps } from '@react-navigation/stack'
+import {
+    createStackNavigator,
+    StackCardInterpolationProps
+} from '@react-navigation/stack'
 import { useLoggedIn, useToken, useUserData } from '../providers/AuthProvider'
 import { NavigationContainer } from '@react-navigation/native'
 import MainNavigator from './MainNavigator'
@@ -24,20 +27,20 @@ function AppNavigator() {
             <Stack.Navigator
                 screenOptions={{
                     headerShown: false,
-                    cardOverlay: () => (
-                        <DefaultBackground />
-                      )
-                      
+                    cardOverlay: () => <DefaultBackground />
                 }}
             >
                 {token.error === 2 ? (
-                    <Stack.Screen name="Placeholder" component={DefaultBackground} />
-                ) : !userData.name && loggedIn? (
+                    <Stack.Screen
+                        name="Placeholder"
+                        component={DefaultBackground}
+                    />
+                ) : !userData.name && loggedIn ? (
                     <Stack.Screen
                         name="CompleteData"
                         component={CompleteDataScreen}
                         options={{ cardStyleInterpolator: Fade }}
-                    /> 
+                    />
                 ) : userData.name ? (
                     <Stack.Screen
                         name="MainNavigator"
@@ -49,7 +52,8 @@ function AppNavigator() {
                         name="Welcome"
                         component={WelcomeScreen}
                         options={{ cardStyleInterpolator: Fade }}
-                />)}
+                    />
+                )}
             </Stack.Navigator>
         </NavigationContainer>
     )

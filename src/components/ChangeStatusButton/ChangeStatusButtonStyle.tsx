@@ -24,7 +24,7 @@ export const ButtonText = styled.Text<ButtonTextProps>`
     font-size: ${spacing.md};
     padding: 10px;
     text-align: center;
-    opacity: ${props => props.dimText ? 0.5 : 1}
+    opacity: ${(props) => (props.dimText ? 0.5 : 1)};
 `
 
 export const DisabledButtonWrapper = styled.View<ButtonWrapperProps>`
@@ -37,7 +37,7 @@ export const DisabledButtonWrapper = styled.View<ButtonWrapperProps>`
 `
 
 export const BottomDrawer = styled.View`
-    background-color: ${colors.background + "66"};
+    background-color: ${colors.background + '66'};
     width: 100%;
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;

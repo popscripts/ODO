@@ -14,7 +14,9 @@ function MainHeader() {
             <ProfilePicture url={userData?.pictureName} size={100} />
             <View>
                 <Heading>{userData?.name}</Heading>
-                <SubHeading>{translateAccountType(userData?.accountType)}</SubHeading>
+                <SubHeading>
+                    {translateAccountType(userData?.accountType)}
+                </SubHeading>
                 <Button onPress={() => logOut()}>
                     <MediumText>Zakończ oprowadzanie</MediumText>
                 </Button>

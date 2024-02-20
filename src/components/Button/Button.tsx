@@ -8,7 +8,11 @@ type Props = {
     color?: string
 }
 
-function Button({ content, onPress, color = colors.palette.quinary400 }: Props) {
+function Button({
+    content,
+    onPress,
+    color = colors.palette.quinary400
+}: Props) {
     return (
         <ButtonWrapper onPress={() => onPress()} color={color}>
             <ButtonText>{content}</ButtonText>

@@ -7,11 +7,14 @@ type Props = {
     changedAt: string | null
 }
 function Timer({ changedAt }: Props) {
-
-    const changedAtDate = changedAt ? new Date(new Date(changedAt).getTime()) : null
+    const changedAtDate = changedAt
+        ? new Date(new Date(changedAt).getTime())
+        : null
     const now = new Date()
 
-    const timePassed = changedAtDate ? now.getTime() - changedAtDate.getTime() : null
+    const timePassed = changedAtDate
+        ? now.getTime() - changedAtDate.getTime()
+        : null
     let timeLeft = timePassed ? MAX_TIME - timePassed : null
     const clock = useClock()
 

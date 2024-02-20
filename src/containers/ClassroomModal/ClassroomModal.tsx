@@ -1,24 +1,35 @@
-import { Modal } from "react-native"
-import { Backdrop, Background, ClassroomManager, ClassroomNumber, ClassroomTitle } from "./ClassroomModalStyle";
-import { MediumText } from "../../components/commonStyles";
-import { Classroom } from "../../types/classroom.type";
-import ChangeStatusButton from "../../components/ChangeStatusButton/ChangeStatusButton";
-import { useState, useEffect } from "react";
-import { useClassModalSettings } from "../../hooks/useClassModalSettings";
-import { useUserData } from "../../providers/AuthProvider";
+import { Modal } from 'react-native'
+import {
+    Backdrop,
+    Background,
+    ClassroomManager,
+    ClassroomNumber,
+    ClassroomTitle
+} from './ClassroomModalStyle'
+import { MediumText } from '../../components/commonStyles'
+import { Classroom } from '../../types/classroom.type'
+import ChangeStatusButton from '../../components/ChangeStatusButton/ChangeStatusButton'
+import { useState, useEffect } from 'react'
+import { useClassModalSettings } from '../../hooks/useClassModalSettings'
+import { useUserData } from '../../providers/AuthProvider'
 
 type Props = {
-    visible: boolean;
-    handleVisible: () => void;
-    classroom: Classroom;
+    visible: boolean
+    handleVisible: () => void
+    classroom: Classroom
     color: string
 }
 
-const ClassroomModal = ({visible, handleVisible, classroom, color}: Props) => {
+const ClassroomModal = ({
+    visible,
+    handleVisible,
+    classroom,
+    color
+}: Props) => {
     const [settings, setSettings] = useState({
-        taken: {disabled: false},
-        reserved: {disabled: false},
-        free: {disabled: false}
+        taken: { disabled: false },
+        reserved: { disabled: false },
+        free: { disabled: false }
     })
 
     const userData = useUserData()
@@ -26,7 +37,7 @@ const ClassroomModal = ({visible, handleVisible, classroom, color}: Props) => {
     useEffect(() => {
         const temp = useClassModalSettings(classroom, userData)
         setSettings(temp)
-    },[userData])
+    }, [userData])
 
     return (
         <Modal
@@ -42,17 +53,29 @@ const ClassroomModal = ({visible, handleVisible, classroom, color}: Props) => {
                     <ClassroomNumber color={color}>
                         {classroom.classroom}
                     </ClassroomNumber>
-                    <ClassroomTitle>
-                        {classroom.title}
-                    </ClassroomTitle>
-                    <MediumText>
-                        {classroom.description}
-                    </MediumText>
-                    <ChangeStatusButton classroom={classroom} prevStatus={classroom.status.name} status='busy' disabled={settings.taken.disabled}/>
-                    <ChangeStatusButton classroom={classroom} prevStatus={classroom.status.name} status='reserved' disabled={settings.reserved.disabled}/>
-                    <ChangeStatusButton classroom={classroom} prevStatus={classroom.status.name} status='free' disabled={settings.free.disabled}/>
+                    <ClassroomTitle>{classroom.title}</ClassroomTitle>
+                    <MediumText>{classroom.description}</MediumText>
+                    <ChangeStatusButton
+                        classroom={classroom}
+                        prevStatus={classroom.status.name}
+                        status="busy"
+                        disabled={settings.taken.disabled}
+                    />
+                    <ChangeStatusButton
+                        classroom={classroom}
+                        prevStatus={classroom.status.name}
+                        status="reserved"
+                        disabled={settings.reserved.disabled}
+                    />
+                    <ChangeStatusButton
+                        classroom={classroom}
+                        prevStatus={classroom.status.name}
+                        status="free"
+                        disabled={settings.free.disabled}
+                    />
                     <ClassroomManager>
-                        {classroom.managedBy?.name  && "Zarządca klasy: " + classroom.managedBy?.name }
+                        {classroom.managedBy?.name &&
+                            'Zarządca klasy: ' + classroom.managedBy?.name}
                     </ClassroomManager>
                 </Background>
             </Backdrop>

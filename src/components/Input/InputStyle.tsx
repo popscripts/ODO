@@ -14,14 +14,19 @@ type TextInputProps = {
 }
 
 export const TextInput = styled.TextInput<TextInputProps>`
-    background-color: ${(props) => (props.error ? colors.palette.angry100 : colors.palette.overlay22)};
+    background-color: ${(props) =>
+        props.error ? colors.palette.angry100 : colors.palette.overlay22};
     color: ${colors.text};
     font-family: ${typography.primary.medium};
     font-size: ${spacing.md};
     padding: ${spacing.xs};
     padding-left: ${spacing.md};
     border-radius: 10px;
-    border: 1px ${(props) => (props.focused ? colors.palette.primary300 : colors.palette.neutral300)};
+    border: 1px
+        ${(props) =>
+            props.focused
+                ? colors.palette.primary300
+                : colors.palette.neutral300};
 `
 
 export const Wrapper = styled.View`

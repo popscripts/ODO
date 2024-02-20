@@ -20,64 +20,95 @@ function MainNavigator() {
 
     return (
         <DefaultBackground>
-        <Tab.Navigator
-            tabBarPosition="bottom"
-            initialRouteName="home"
-            screenOptions={{
-                tabBarShowLabel: false,
-                tabBarStyle: [$tabBar, { bottom: bottom + 10 }],
-                tabBarIndicatorStyle: [$tabBarIndicator, { marginLeft: (tabWidth - 50) / 2 }],
-                tabBarIconStyle: $tabBarIcon
-            }}
-        >
-            <Tab.Screen
-                name="settings"
-                component={PlaceholderScreen}
-                options={{
-                    tabBarIcon: ({ focused }) => (
-                        <UserIcon color={focused ? colors.palette.neutral200 : colors.palette.neutral800} />
-                    )
+            <Tab.Navigator
+                tabBarPosition="bottom"
+                initialRouteName="home"
+                screenOptions={{
+                    tabBarShowLabel: false,
+                    tabBarStyle: [$tabBar, { bottom: bottom + 10 }],
+                    tabBarIndicatorStyle: [
+                        $tabBarIndicator,
+                        { marginLeft: (tabWidth - 50) / 2 }
+                    ],
+                    tabBarIconStyle: $tabBarIcon
                 }}
-            ></Tab.Screen>
-            <Tab.Screen
-                name="info"
-                component={PlaceholderScreen}
-                options={{
-                    tabBarIcon: ({ focused }) => (
-                        <InfoIcon color={focused ? colors.palette.neutral200 : colors.palette.neutral800} />
-                    )
-                }}
-            ></Tab.Screen>
-            <Tab.Screen
-                name="home"
-                component={MainScreen}
-                options={{
-                    tabBarIcon: ({ focused }) => (
-                        <HomeIcon color={focused ? colors.palette.neutral200 : colors.palette.neutral800} />
-                    )
-                }}
-            ></Tab.Screen>
-            <Tab.Screen
-                name="list"
-                component={PlaceholderScreen}
-                options={{
-                    tabBarIcon: ({ focused }) => (
-                        <ListIcon color={focused ? colors.palette.neutral200 : colors.palette.neutral800} />
-                    )
-                }}
-            ></Tab.Screen>
-            <Tab.Screen
-                name="buffet"
-                component={PlaceholderScreen}
-                options={{
-                    tabBarIcon: ({ focused }) => (
-                        <CutleryIcon
-                            color={focused ? colors.palette.neutral200 : colors.palette.neutral800}
-                        />
-                    )
-                }}
-            ></Tab.Screen>
-        </Tab.Navigator>
+            >
+                <Tab.Screen
+                    name="settings"
+                    component={PlaceholderScreen}
+                    options={{
+                        tabBarIcon: ({ focused }) => (
+                            <UserIcon
+                                color={
+                                    focused
+                                        ? colors.palette.neutral200
+                                        : colors.palette.neutral800
+                                }
+                            />
+                        )
+                    }}
+                ></Tab.Screen>
+                <Tab.Screen
+                    name="info"
+                    component={PlaceholderScreen}
+                    options={{
+                        tabBarIcon: ({ focused }) => (
+                            <InfoIcon
+                                color={
+                                    focused
+                                        ? colors.palette.neutral200
+                                        : colors.palette.neutral800
+                                }
+                            />
+                        )
+                    }}
+                ></Tab.Screen>
+                <Tab.Screen
+                    name="home"
+                    component={MainScreen}
+                    options={{
+                        tabBarIcon: ({ focused }) => (
+                            <HomeIcon
+                                color={
+                                    focused
+                                        ? colors.palette.neutral200
+                                        : colors.palette.neutral800
+                                }
+                            />
+                        )
+                    }}
+                ></Tab.Screen>
+                <Tab.Screen
+                    name="list"
+                    component={PlaceholderScreen}
+                    options={{
+                        tabBarIcon: ({ focused }) => (
+                            <ListIcon
+                                color={
+                                    focused
+                                        ? colors.palette.neutral200
+                                        : colors.palette.neutral800
+                                }
+                            />
+                        )
+                    }}
+                ></Tab.Screen>
+                <Tab.Screen
+                    name="buffet"
+                    component={PlaceholderScreen}
+                    options={{
+                        tabBarIcon: ({ focused }) => (
+                            <CutleryIcon
+                                color={
+                                    focused
+                                        ? colors.palette.neutral200
+                                        : colors.palette.neutral800
+                                }
+                            />
+                        )
+                    }}
+                ></Tab.Screen>
+            </Tab.Navigator>
         </DefaultBackground>
     )
 }

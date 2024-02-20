@@ -10,7 +10,7 @@ export type NewClassroom = {
 }
 
 export type classroomStatus = {
-    classroom: Classroom,
+    classroom: Classroom
     prevStatus: Status['name']
 }
 

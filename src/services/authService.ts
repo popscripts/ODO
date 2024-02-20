@@ -53,12 +53,15 @@ class AuthService {
 
     async setUserName(userId: number, name: string) {
         try {
-            const response = await this.httpClient.post('api/auth/user/personal', {
-                userId,
-                name
-            })
+            const response = await this.httpClient.post(
+                'api/auth/user/personal',
+                {
+                    userId,
+                    name
+                }
+            )
             return response.json()
-        }  catch (e) {
+        } catch (e) {
             console.error(e)
             throw e
         }

@@ -8,7 +8,8 @@ type Props = {
 }
 
 function Loading({ show }: Props) {
-    if (show) {return (
+    if (show) {
+        return (
             <Background>
                 <Lottie
                     source={logoAnimation}
@@ -17,9 +18,9 @@ function Loading({ show }: Props) {
                     style={{ width: 80, height: 80 }}
                     speed={3}
                 />
-            </Background>   
-    )
-     } else {
+            </Background>
+        )
+    } else {
         return <></>
     }
 }

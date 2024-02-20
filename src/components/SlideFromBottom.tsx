@@ -14,7 +14,11 @@ function SlideFromBottom({ children }: Children) {
         }).start()
     }, [])
 
-    return <Animated.View style={{ transform: [{ translateY: animation }] }}>{children}</Animated.View>
+    return (
+        <Animated.View style={{ transform: [{ translateY: animation }] }}>
+            {children}
+        </Animated.View>
+    )
 }
 
 export default SlideFromBottom

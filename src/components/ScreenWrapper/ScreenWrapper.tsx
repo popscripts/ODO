@@ -21,7 +21,10 @@ function ScreenWrapper({ showGradient = true, children }: Props) {
                 </Wrapper>
             </ScrollView>
             {showGradient && (
-                <TabsGradient bottom={bottom} colors={[colors.transparent, colors.palette.neutral900]} />
+                <TabsGradient
+                    bottom={bottom}
+                    colors={[colors.transparent, colors.palette.neutral900]}
+                />
             )}
         </Background>
     )

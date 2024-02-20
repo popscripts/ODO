@@ -13,7 +13,9 @@ function FadeIn({ children }: Children) {
         }).start()
     }, [])
 
-    return <Animated.View style={{ opacity: animation }}>{children}</Animated.View>
+    return (
+        <Animated.View style={{ opacity: animation }}>{children}</Animated.View>
+    )
 }
 
 export default FadeIn

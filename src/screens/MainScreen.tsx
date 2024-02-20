@@ -22,7 +22,10 @@ function MainScreen() {
                     <MapClassrooms status={'busy'} filter={filters.busy} />
                 </ClassroomSection>
                 <ClassroomSection title={'Zarezerwowane Sale'}>
-                    <MapClassrooms status={'reserved'} filter={filters.reserved} />
+                    <MapClassrooms
+                        status={'reserved'}
+                        filter={filters.reserved}
+                    />
                 </ClassroomSection>
                 <Footer />
             </Scroll>

@@ -1,7 +1,7 @@
-import { styled } from "styled-components/native";
+import { styled } from 'styled-components/native'
 import { colors } from '../../theme/colors'
-import { spacing } from "../../theme/spacing";
-import { typography } from "../../theme/typography";
+import { spacing } from '../../theme/spacing'
+import { typography } from '../../theme/typography'
 
 export const Background = styled.View`
     width: 90%;
@@ -11,7 +11,7 @@ export const Background = styled.View`
     display: flex;
     align-items: center;
     padding: ${spacing.lg};
-    gap: ${spacing.md}
+    gap: ${spacing.md};
 `
 
 export const Backdrop = styled.Pressable`
@@ -25,12 +25,12 @@ export const Backdrop = styled.Pressable`
 
 type ClassroomNumberProps = {
     color: string
-} 
+}
 
 export const ClassroomNumber = styled.Text<ClassroomNumberProps>`
     font-size: ${spacing.xxxl};
     font-family: ${typography.primary.bold};
-    color: ${(props) => props.color}
+    color: ${(props) => props.color};
 `
 
 export const ClassroomTitle = styled.Text`
@@ -44,6 +44,3 @@ export const ClassroomManager = styled.Text`
     position: absolute;
     bottom: ${spacing.md};
 `
-
-
-

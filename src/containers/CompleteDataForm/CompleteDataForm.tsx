@@ -10,7 +10,10 @@ import { Platform, UIManager, Vibration } from 'react-native'
 import { useUpdateName } from '../../providers/AuthProvider'
 import SlideFromBottom from '../../components/SlideFromBottom'
 
-if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
+if (
+    Platform.OS === 'android' &&
+    UIManager.setLayoutAnimationEnabledExperimental
+) {
     UIManager.setLayoutAnimationEnabledExperimental(true)
 }
 
@@ -75,7 +78,9 @@ function CompleteDataForm({ done, setDone }: Props) {
                     <TopText>Dziękujemy!</TopText>
                 ) : (
                     <>
-                        <TopText>Prosimy cię jeszcze o uzupełnienie paru informacji</TopText>
+                        <TopText>
+                            Prosimy cię jeszcze o uzupełnienie paru informacji
+                        </TopText>
                         <Input
                             text={name}
                             setText={setName}

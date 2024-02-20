@@ -58,8 +58,6 @@ export type PictureName = {
     pictureName: string | null
 }
 
-
-
 export type Group = {
     id: number
     groupSize: number | null
