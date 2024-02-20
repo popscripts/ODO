@@ -13,7 +13,6 @@ function MainScreen() {
 
     return (
         <ScreenWrapper>
-            <SlideFromBottom>
             <Scroll>
                 <MainHeader />
                 <ClassroomSection title={'Wolne Sale'}>
@@ -27,7 +26,6 @@ function MainScreen() {
                 </ClassroomSection>
                 <Footer />
             </Scroll>
-            </SlideFromBottom>
         </ScreenWrapper>
     )
 }

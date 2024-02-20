@@ -1,10 +1,12 @@
 import React from 'react'
-import { BottomDrawer, BottomDrawerText, ButtonText, ButtonWrapper, DisabledButtonWrapper } from './ChangeStatusButtonStyle'
+import { BottomDrawer, BottomDrawerText, BottomDrawerTimerWrapper, ButtonText, ButtonWrapper, DisabledButtonWrapper, MemberView } from './ChangeStatusButtonStyle'
 import { colors } from '../../theme/colors'
 import { useSetStatus } from '../../providers/ClassroomProvider'
 import { Status } from '../../types/status.type'
 import { useButtonSettings } from '../../hooks/useButtonSettings'
 import { Classroom } from '../../types/classroom.type'
+import Timer from '../Timer'
+import ProfilePicture from '../ProfilePicture/ProfilePicture'
 
 type Props = {
     classroom: Classroom
@@ -16,7 +18,6 @@ type Props = {
 function ChangeStatusButton({ classroom, prevStatus, status, disabled}: Props) {
     const setStatus = useSetStatus()
     const settings = useButtonSettings(status)
-    console.log(classroom?.takenBy?.GroupMembers[0])
     if (!disabled)
         return (
             <ButtonWrapper onPress={() => setStatus(classroom.id, prevStatus, status)} color={settings.color}>
@@ -29,9 +30,27 @@ function ChangeStatusButton({ classroom, prevStatus, status, disabled}: Props) {
                 <DisabledButtonWrapper color={colors.palette.neutral700}>
                     <ButtonText dimText={true}>{settings.label}</ButtonText>
                 </DisabledButtonWrapper>
-                { classroom?.takenBy &&
+                { status === "busy" && classroom?.takenBy &&
                 <BottomDrawer>
-                    <BottomDrawerText>{classroom.takenBy.GroupMembers.map(member => member.username)}</BottomDrawerText>
+                        {classroom.takenBy?.GroupMembers?.map(member => 
+                            <MemberView>
+                                <ProfilePicture url={member.pictureName} size={25} />
+                                <BottomDrawerText key={member.id}>{member.name}</BottomDrawerText> 
+                            </MemberView>
+                        )}
+                        <BottomDrawerTimerWrapper><Timer changedAt={classroom.takenAt} /></BottomDrawerTimerWrapper>
+                </BottomDrawer>
+                }
+
+                { status === "reserved" && classroom?.reservedBy &&
+                <BottomDrawer>
+                    {classroom.reservedBy?.GroupMembers?.map(member => 
+                            <MemberView>
+                                <ProfilePicture url={member.pictureName} size={25} />
+                                <BottomDrawerText key={member.id}>{member.name}</BottomDrawerText> 
+                            </MemberView>
+                        )}
+                    <BottomDrawerTimerWrapper><Timer changedAt={classroom.reservedAt} /></BottomDrawerTimerWrapper>
                 </BottomDrawer>
                 }
             </>

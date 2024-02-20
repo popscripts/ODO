@@ -28,6 +28,17 @@ export type Classroom = {
     takenAt: string | null
 }
 
+export type ShortClassroom = {
+    id: number
+    openDayId: number
+    classroom: string
+    title: string
+    description: string
+    status: Status
+    reservedAt: string | null
+    takenAt: string | null
+}
+
 export type ManagedClassroom = {
     id: number
     classroom: string

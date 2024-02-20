@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { Children } from '../types/props.type'
 import { Classroom, classroomStatus } from '../types/classroom.type'
-import { useLoggedIn, useUserData } from './AuthProvider'
+import { useGetUserData, useLoggedIn, useUserData } from './AuthProvider'
 import ClassroomService from '../services/classroomService'
 import io from 'socket.io-client'
 import { API_URL } from '../config'
@@ -26,6 +26,8 @@ export function useSetStatus() {
 }
 
 function ClassroomProvider({ children }: Children) {
+    const getUserData = useGetUserData()
+
     const [classrooms, setClassrooms] = useState<Classroom[]>([])
     const [freeClassrooms, setFreeClassrooms] = useState<number[]>([])
     const [reservedClassrooms, setReservedClassrooms] = useState<number[]>([])
@@ -47,9 +49,8 @@ function ClassroomProvider({ children }: Children) {
     })
 
     function joinRoom() {
-        if (userData.name) {
+        if (userData.accountType) {
             let data = {
-                username: userData.username,
                 accountType: userData.accountType.name
             }
             socket.emit('joinRoomByAccountType', data)
@@ -98,26 +99,9 @@ function ClassroomProvider({ children }: Children) {
         }
     }
 
-    function handleClassroomChange(classroom: Classroom) {
-        let temp = classrooms
-        let prevClassroom = classrooms.find(item => item.id === classroom.id)
-        if (!prevClassroom) return
-        console.log(prevClassroom)
-
-        let id = classrooms.indexOf(prevClassroom)   
-        console.log("id: ", id,)
-        if (id > -1) {
-            temp[id] = classroom
-            setClassrooms({...temp})
-        }    
-    }
-
-    useEffect(() => {
-        joinRoom()
-    }, [userData])
-
     useEffect(() => {
         loggedIn && classrooms.length === 0 && getClassrooms()
+        loggedIn && joinRoom()
     }, [loggedIn])
 
     useEffect(() => {
@@ -138,6 +122,7 @@ function ClassroomProvider({ children }: Children) {
         socket.on('classroomStatus', (data: classroomStatus) => {
             if (data.prevStatus !== data.classroom.status.name) {
                 setChangedClassroom(data)
+                getUserData()
             }
         })
     }, [])

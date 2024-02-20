@@ -1,9 +1,11 @@
 import { Modal } from "react-native"
-import { Backdrop, Background, ClassroomNumber, ClassroomTitle } from "./ClassroomModalStyle";
+import { Backdrop, Background, ClassroomManager, ClassroomNumber, ClassroomTitle } from "./ClassroomModalStyle";
 import { MediumText } from "../../components/commonStyles";
 import { Classroom } from "../../types/classroom.type";
 import ChangeStatusButton from "../../components/ChangeStatusButton/ChangeStatusButton";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useClassModalSettings } from "../../hooks/useClassModalSettings";
+import { useUserData } from "../../providers/AuthProvider";
 
 type Props = {
     visible: boolean;
@@ -18,6 +20,13 @@ const ClassroomModal = ({visible, handleVisible, classroom, color}: Props) => {
         reserved: {disabled: false},
         free: {disabled: false}
     })
+
+    const userData = useUserData()
+
+    useEffect(() => {
+        const temp = useClassModalSettings(classroom, userData)
+        setSettings(temp)
+    },[userData])
 
     return (
         <Modal
@@ -42,9 +51,9 @@ const ClassroomModal = ({visible, handleVisible, classroom, color}: Props) => {
                     <ChangeStatusButton classroom={classroom} prevStatus={classroom.status.name} status='busy' disabled={settings.taken.disabled}/>
                     <ChangeStatusButton classroom={classroom} prevStatus={classroom.status.name} status='reserved' disabled={settings.reserved.disabled}/>
                     <ChangeStatusButton classroom={classroom} prevStatus={classroom.status.name} status='free' disabled={settings.free.disabled}/>
-                    <MediumText>
-                        {classroom.managedBy?.username && "Zarządca klasy: " + classroom.managedBy?.username }
-                    </MediumText>
+                    <ClassroomManager>
+                        {classroom.managedBy?.name  && "Zarządca klasy: " + classroom.managedBy?.name }
+                    </ClassroomManager>
                 </Background>
             </Backdrop>
         </Modal>

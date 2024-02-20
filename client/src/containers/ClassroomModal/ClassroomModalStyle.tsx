@@ -39,5 +39,11 @@ export const ClassroomTitle = styled.Text`
     color: ${colors.text};
 `
 
+export const ClassroomManager = styled.Text`
+    color: ${colors.text};
+    position: absolute;
+    bottom: ${spacing.md};
+`
+
 
 

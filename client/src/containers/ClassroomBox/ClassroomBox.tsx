@@ -13,7 +13,6 @@ type Props = {
     status: string
 }
 function ClassroomBox({ classroomId, colorPalette, status }: Props) {
-    const setStatus = useSetStatus()
     const [showModal, setShowModal] = useState(false)
     const handleVisible = () => {
         setShowModal(!showModal)
@@ -35,13 +34,13 @@ function ClassroomBox({ classroomId, colorPalette, status }: Props) {
 
     return (
         <>
-        <ClassroomModal visible={showModal} handleVisible={handleVisible} classroom={classroom} color={colorPalette[0]}/>
         <Press underlayColor={'#ffffff'} onPress={handleVisible}>
             <Wrapper colors={[colorPalette[0], colorPalette[1]]} width={width}>
                 {status !== 'free' && changedAt && (
                     <TimedGradient changedAt={changedAt} colors={[colorPalette[2], colorPalette[3]]} />
                 )}
                 <ContentWrapper>
+                <ClassroomModal visible={showModal} handleVisible={handleVisible} classroom={classroom} color={colorPalette[0]}/>
                     <Heading>{classroom?.classroom}</Heading>
                     <MediumText>{classroom?.title}</MediumText>
                     <TimerWrapper>
