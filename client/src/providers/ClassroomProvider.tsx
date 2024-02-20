@@ -1,16 +1,17 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { Children } from '../types/props.type'
 import { Classroom, classroomStatus } from '../types/classroom.type'
-import { useLoggedIn, useUserData } from './AuthProvider'
+import { useGetUserData, useLoggedIn, useUserData } from './AuthProvider'
 import ClassroomService from '../services/classroomService'
 import io from 'socket.io-client'
 import { API_URL } from '../config'
+import { Status } from '../types/status.type'
 
 const socket = io(API_URL)
 
 const ClassroomContext = createContext<Classroom[]>([])
 const ParsedClassroomContext = createContext({ free: [0], reserved: [0], busy: [0] })
-const SetStatusContext = createContext((id: number, prevStatus: string, status: string) => {})
+const SetStatusContext = createContext((id: number, prevStatus: Status["name"], status: Status["name"]) => {})
 
 export function useClassrooms() {
     return useContext(ClassroomContext)
@@ -25,6 +26,8 @@ export function useSetStatus() {
 }
 
 function ClassroomProvider({ children }: Children) {
+    const getUserData = useGetUserData()
+
     const [classrooms, setClassrooms] = useState<Classroom[]>([])
     const [freeClassrooms, setFreeClassrooms] = useState<number[]>([])
     const [reservedClassrooms, setReservedClassrooms] = useState<number[]>([])
@@ -46,9 +49,8 @@ function ClassroomProvider({ children }: Children) {
     })
 
     function joinRoom() {
-        if (userData.name) {
+        if (userData.accountType) {
             let data = {
-                username: userData.username,
                 accountType: userData.accountType.name
             }
             socket.emit('joinRoomByAccountType', data)
@@ -56,7 +58,7 @@ function ClassroomProvider({ children }: Children) {
     }
 
     function parseClassrooms(classrooms: Classroom[]) {
-        classrooms.map((classroom, index) => {
+        classrooms.map((classroom) => {
             setStatusClassrooms[classroom.status.name]((classrooms) => [...classrooms, classroom.id])
         })
     }
@@ -98,11 +100,8 @@ function ClassroomProvider({ children }: Children) {
     }
 
     useEffect(() => {
-        joinRoom()
-    }, [userData])
-
-    useEffect(() => {
         loggedIn && classrooms.length === 0 && getClassrooms()
+        loggedIn && joinRoom()
     }, [loggedIn])
 
     useEffect(() => {
@@ -123,6 +122,7 @@ function ClassroomProvider({ children }: Children) {
         socket.on('classroomStatus', (data: classroomStatus) => {
             if (data.prevStatus !== data.classroom.status.name) {
                 setChangedClassroom(data)
+                getUserData()
             }
         })
     }, [])

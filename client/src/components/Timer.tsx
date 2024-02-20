@@ -13,7 +13,6 @@ function Timer({ changedAt }: Props) {
 
     const timePassed = changedAtDate ? now.getTime() - changedAtDate.getTime() : null
     let timeLeft = timePassed ? MAX_TIME - timePassed : null
-    // Get time with timezone
     const clock = useClock()
 
     const [time, setTime] = useState(timeLeft || 0)

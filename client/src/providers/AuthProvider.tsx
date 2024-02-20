@@ -2,8 +2,9 @@ import React, { createContext, useContext, useEffect, useState } from 'react'
 import AuthService from '../services/authService'
 import { apiLoginResponse } from '../types/response.type'
 import { Children } from '../types/props.type'
-import { User } from '../types/auth.type'
+import { Group, User } from '../types/auth.type'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { Classroom } from '../types/classroom.type'
 
 const storeCredentials = async (username: string, password: string) => {
     try {
@@ -46,9 +47,8 @@ const userDataPlaceholder = {
     accountType: { id: 0, name: '' },
     pictureName: null,
     name: null,
-    ManagedClassroom: [],
-    ReservedClassroom: [],
-    TakenClassroom: []
+    ManagedClassroom: null,
+    Group: null
 }
 
 const TokenContext = createContext<apiLoginResponse>({ error: 2, result: '' })
@@ -59,6 +59,7 @@ const UserDataContext = createContext<User>(userDataPlaceholder)
 const CredentialsContext = createContext({ username: '', password: '' })
 const UpdateNameContext = createContext((name: string, surname: string) => {})
 const LoggedInContext = createContext(false)
+const GetUserDataContext = createContext(() => {})
 
 export function useToken() {
     return useContext(TokenContext)
@@ -90,6 +91,10 @@ export function useUpdateName() {
 
 export function useLoggedIn() {
     return useContext(LoggedInContext)
+}
+
+export function useGetUserData() {
+    return useContext(GetUserDataContext)
 }
 
 export default function AuthProvider({ children }: Children) {
@@ -179,7 +184,9 @@ export default function AuthProvider({ children }: Children) {
                             <UpdateNameContext.Provider value={handleUpdateName}>
                                 <RegisterContext.Provider value={register}>
                                     <LoggedInContext.Provider value={loggedIn}>
-                                        {children}
+                                        <GetUserDataContext.Provider value={getUserData}>
+                                            {children}
+                                        </GetUserDataContext.Provider>
                                     </LoggedInContext.Provider>
                                 </RegisterContext.Provider>
                             </UpdateNameContext.Provider>
