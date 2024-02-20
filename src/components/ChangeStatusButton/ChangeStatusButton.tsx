@@ -33,9 +33,9 @@ function ChangeStatusButton({ classroom, prevStatus, status, disabled}: Props) {
                 { status === "busy" && classroom?.takenBy &&
                 <BottomDrawer>
                         {classroom.takenBy?.GroupMembers?.map(member => 
-                            <MemberView>
+                            <MemberView key={member.id}>
                                 <ProfilePicture url={member.pictureName} size={25} />
-                                <BottomDrawerText key={member.id}>{member.name}</BottomDrawerText> 
+                                <BottomDrawerText>{member.name}</BottomDrawerText> 
                             </MemberView>
                         )}
                         <BottomDrawerTimerWrapper><Timer changedAt={classroom.takenAt} /></BottomDrawerTimerWrapper>
@@ -45,9 +45,9 @@ function ChangeStatusButton({ classroom, prevStatus, status, disabled}: Props) {
                 { status === "reserved" && classroom?.reservedBy &&
                 <BottomDrawer>
                     {classroom.reservedBy?.GroupMembers?.map(member => 
-                            <MemberView>
+                            <MemberView key={member.id}>
                                 <ProfilePicture url={member.pictureName} size={25} />
-                                <BottomDrawerText key={member.id}>{member.name}</BottomDrawerText> 
+                                <BottomDrawerText>{member.name}</BottomDrawerText> 
                             </MemberView>
                         )}
                     <BottomDrawerTimerWrapper><Timer changedAt={classroom.reservedAt} /></BottomDrawerTimerWrapper>

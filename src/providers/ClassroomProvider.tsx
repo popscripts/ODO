@@ -120,10 +120,8 @@ function ClassroomProvider({ children }: Children) {
     useEffect(() => {
         socket.removeAllListeners()
         socket.on('classroomStatus', (data: classroomStatus) => {
-            if (data.prevStatus !== data.classroom.status.name) {
-                setChangedClassroom(data)
-                getUserData()
-            }
+            setChangedClassroom(data)
+            getUserData()
         })
     }, [])
 

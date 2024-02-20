@@ -26,6 +26,8 @@ export function useClassModalSettings(classroom: Classroom, userData: User) {
 
     if (isClassroomReservedByMe(classroom, userData)) settings.free.disabled = false
 
+    if (isClassroomReservedByMe(classroom, userData) && isClassroomTaken(classroom, userData)) settings.taken.disabled = true
+
     if (!isMemeberOfGroup(userData)) settings = {
         taken: {disabled: true},
         reserved: {disabled: true},
