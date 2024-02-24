@@ -6,7 +6,6 @@ import ClassroomSection from '../components/ClassroomSection/ClassroomSection'
 import { Scroll } from '../components/commonStyles'
 import Footer from '../components/Footer/Footer'
 import { useParsedClassrooms } from '../providers/ClassroomProvider'
-import SlideFromBottom from '../components/SlideFromBottom'
 
 function MainScreen() {
     const filters = useParsedClassrooms()

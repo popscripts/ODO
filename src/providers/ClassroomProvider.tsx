@@ -57,9 +57,10 @@ function ClassroomProvider({ children }: Children) {
     function joinRoom() {
         if (userData.accountType) {
             let data = {
-                accountType: userData.accountType.name
+                accountType: userData.accountType.name,
+                id: userData.id
             }
-            socket.emit('joinRoomByAccountType', data)
+            socket.emit('joinRoom', data)
         }
     }
 

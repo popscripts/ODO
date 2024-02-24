@@ -6,7 +6,7 @@ type Props = {
     size: number
 }
 
-const SvgComponent = ({ color, size }: Props) => (
+const EyeClosedIcon = ({ color, size }: Props) => (
     <Svg width={size} height={size} fill="none" viewBox="0 0 100 100">
         <Path
             stroke={color}
@@ -16,4 +16,4 @@ const SvgComponent = ({ color, size }: Props) => (
         />
     </Svg>
 )
-export default SvgComponent
+export default EyeClosedIcon

@@ -50,7 +50,7 @@ function Input({
             <TextInput
                 placeholder={placeholder}
                 value={text}
-                onChangeText={(e) => setText(e)}
+                onChangeText={(e: string) => setText(e)}
                 onFocus={() => setFocused(true)}
                 onBlur={() => setFocused(false)}
                 focused={focused}

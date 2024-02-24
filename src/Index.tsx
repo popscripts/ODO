@@ -7,6 +7,7 @@ import * as NavigationBar from 'expo-navigation-bar'
 import { DefaultBackground } from './components/commonStyles'
 import ClassroomProvider from './providers/ClassroomProvider'
 import ClockProvider from './providers/ClockProvider'
+import GroupProvider from './providers/GroupProvider'
 
 export default function Index() {
     const [areFontsLoaded] = useFonts(customFontsToLoad)
@@ -22,7 +23,9 @@ export default function Index() {
                 <AuthProvider>
                     <ClassroomProvider>
                         <ClockProvider>
-                            <AppNavigator />
+                            <GroupProvider>
+                                <AppNavigator />
+                            </GroupProvider>
                         </ClockProvider>
                     </ClassroomProvider>
                 </AuthProvider>

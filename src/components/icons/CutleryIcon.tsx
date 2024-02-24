@@ -4,7 +4,7 @@ import Svg, { Path } from 'react-native-svg'
 type Props = {
     color: string
 }
-const SvgComponent = ({ color }: Props) => (
+const CutleryIcon = ({ color }: Props) => (
     <Svg width={30} height={30} fill="none" viewBox="0 0 89 98">
         <Path
             stroke={color}
@@ -14,4 +14,4 @@ const SvgComponent = ({ color }: Props) => (
         />
     </Svg>
 )
-export default SvgComponent
+export default CutleryIcon

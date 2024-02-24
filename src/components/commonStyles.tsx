@@ -67,3 +67,7 @@ export const StretchWrapper = styled.View`
     justify-content: center;
     align-items: center;
 `
+
+export const TextDim = styled.Text`
+    color: ${colors.textDim}
+`

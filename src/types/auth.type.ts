@@ -66,3 +66,8 @@ export type Group = {
     Reserved: ShortClassroom | null
     Taken: ShortClassroom | null
 }
+
+export type GroupMember = {
+    id: number
+    name: string
+}
