@@ -58,7 +58,7 @@ class GroupService {
     async searchMembers(member: string) {
         try {
             const response = await this.httpClient.get(
-                'api/dynamic-content/members/' + member
+                'api/dynamic-content/members?value=' + member
             )
             return response.json()
         } catch (e) {
