@@ -1,4 +1,4 @@
-import { Classroom, ManagedClassroom, ShortClassroom } from './classroom.type'
+import { ManagedClassroom, ShortClassroom } from './classroom.type'
 
 export type NewUser = {
     openDayId: number

@@ -21,7 +21,7 @@ function Timer({ changedAt }: Props) {
             ? now.getTime() - changedAtDate.getTime()
             : null
         let timeLeft = timePassed ? MAX_TIME - timePassed : 0
-        setTime((time) => timeLeft)
+        setTime(timeLeft)
     }, [clock])
 
     return <TimerDisplay time={time} />
