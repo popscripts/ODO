@@ -12,7 +12,7 @@ function MainScreen() {
 
     return (
         <ScreenWrapper>
-            <Scroll>
+            <Scroll keyboardShouldPersistTaps="handled">
                 <MainHeader />
                 <ClassroomSection title={'Wolne Sale'}>
                     <MapClassrooms status={'free'} filter={filters.free} />

@@ -4,20 +4,21 @@ import { spacing } from '../../theme/spacing'
 import { typography } from '../../theme/typography'
 
 export const Background = styled.View`
-    width: 90%;
-    height: 80%;
-    background-color: ${colors.palette.neutral600};
+    width: 100%;
+    height: 100%;
+    background-color: ${colors.palette.overlay50};
     border-radius: 20px;
     display: flex;
     align-items: center;
-    padding: ${spacing.lg};
+    justify-content: center;
+    padding: ${spacing.xxl};
     gap: ${spacing.md};
 `
 
 export const Backdrop = styled.Pressable`
     width: 100%;
     height: 100%;
-    background-color: ${colors.palette.blackoverlay60};
+    background-color: ${colors.palette.blackoverlay80};
     display: flex;
     align-items: center;
     justify-content: center;
@@ -41,6 +42,13 @@ export const ClassroomTitle = styled.Text`
 
 export const ClassroomManager = styled.Text`
     color: ${colors.text};
-    position: absolute;
     bottom: ${spacing.md};
+`
+
+export const Warning = styled.Text`
+    font-size: ${spacing.md};
+    font-family: ${typography.primary.normal};
+    color: ${colors.textDim};
+    text-align: center;
+    margin: ${spacing.xxl};
 `

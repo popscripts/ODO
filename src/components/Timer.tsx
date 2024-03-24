@@ -7,21 +7,21 @@ type Props = {
     changedAt: string | null
 }
 function Timer({ changedAt }: Props) {
-    const changedAtDate = changedAt
-        ? new Date(new Date(changedAt).getTime())
-        : null
-    const now = new Date()
-
-    const timePassed = changedAtDate
-        ? now.getTime() - changedAtDate.getTime()
-        : null
-    let timeLeft = timePassed ? MAX_TIME - timePassed : null
     const clock = useClock()
 
-    const [time, setTime] = useState(timeLeft || 0)
+    const [time, setTime] = useState(0)
 
     useEffect(() => {
-        setTime((time) => time - 1000)
+        const changedAtDate = changedAt
+            ? new Date(new Date(changedAt).getTime())
+            : null
+        const now = new Date()
+
+        const timePassed = changedAtDate
+            ? now.getTime() - changedAtDate.getTime()
+            : null
+        let timeLeft = timePassed ? MAX_TIME - timePassed : 0
+        setTime((time) => timeLeft)
     }, [clock])
 
     return <TimerDisplay time={time} />

@@ -1,7 +1,7 @@
-import styled from "styled-components/native";
-import { colors } from "../../theme/colors";
-import { typography } from "../../theme/typography";
-import { spacing } from "../../theme/spacing";
+import styled from 'styled-components/native'
+import { colors } from '../../theme/colors'
+import { typography } from '../../theme/typography'
+import { spacing } from '../../theme/spacing'
 
 type TextInputProps = {
     placeholder: string
@@ -13,7 +13,7 @@ type TextInputProps = {
 }
 
 export const TextInput = styled.TextInput<TextInputProps>`
-    background-color: ${colors.palette.neutral600};
+    background-color: ${colors.palette.overlay22};
     color: ${colors.text};
     font-family: ${typography.primary.medium};
     font-size: ${spacing.xl};
@@ -21,12 +21,11 @@ export const TextInput = styled.TextInput<TextInputProps>`
     padding: ${spacing.xs};
     width: 60px;
     text-align: center;
-    border-radius: 10px;
     border: 1px
         ${(props) =>
             props.focused
                 ? colors.palette.primary300
-                : colors.palette.neutral400};
+                : colors.palette.neutral600};
     position: relative;
     z-index: 3;
 `
@@ -39,12 +38,9 @@ export const LeftButton = styled.TouchableOpacity<ButtonProps>`
     border-bottom-left-radius: 10px;
     border-top-left-radius: 10px;
     padding: 15px;
-    padding-right: 20px;
     background-color: ${(props) =>
-            props.focused
-                ? colors.palette.primary300
-                : colors.palette.neutral400};
-    margin-right: -10px;
+        props.focused ? colors.palette.primary300 : colors.palette.neutral600};
+    margin-right: -1px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -54,12 +50,9 @@ export const RightButton = styled.TouchableOpacity<ButtonProps>`
     border-bottom-right-radius: 10px;
     border-top-right-radius: 10px;
     padding: 15px;
-    padding-left: 20px;
     background-color: ${(props) =>
-            props.focused
-                ? colors.palette.primary300
-                : colors.palette.neutral400};
-    margin-left: -10px;
+        props.focused ? colors.palette.primary300 : colors.palette.neutral600};
+    margin-left: -1px;
     display: flex;
     align-items: center;
     justify-content: center;

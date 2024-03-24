@@ -14,7 +14,7 @@ function WelcomeScreen() {
             source={background}
             style={{ width: '100%', height: '100%' }}
         >
-            <ScrollView>
+            <ScrollView keyboardShouldPersistTaps="handled">
                 <View style={{ height: height + keyboardHeight }}>
                     <WelcomeHeader />
                     <FormDrawer />

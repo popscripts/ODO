@@ -71,3 +71,9 @@ export type GroupMember = {
     id: number
     name: string
 }
+
+export type MembersListMember = {
+    id: number
+    name: string
+    groupId: number | null
+}

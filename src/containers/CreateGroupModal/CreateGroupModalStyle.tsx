@@ -4,19 +4,20 @@ import { spacing } from '../../theme/spacing'
 import { typography } from '../../theme/typography'
 
 export const Background = styled.View`
-    width: 90%;
-    background-color: ${colors.palette.neutral600};
-    border-radius: 20px;
+    width: 100%;
+    background-color: ${colors.palette.overlay50};
+    height: 100%;
     display: flex;
     align-items: center;
-    padding: ${spacing.lg};
+    justify-content: center;
+    padding: ${spacing.xxl};
     gap: ${spacing.sm};
 `
 
 export const Backdrop = styled.Pressable`
     width: 100%;
     height: 100%;
-    background-color: ${colors.palette.blackoverlay60};
+    background-color: ${colors.palette.blackoverlay80};
     display: flex;
     align-items: center;
     justify-content: center;
@@ -59,7 +60,7 @@ export const InputDescription = styled.Text`
     width: 100%;
     font-size: ${spacing.md};
     margin-top: ${spacing.sm};
-    color: ${colors.text}
+    color: ${colors.text};
 `
 
 export const MemberInputWrapper = styled.View`
@@ -69,6 +70,27 @@ export const MemberInputWrapper = styled.View`
     justify-content: center;
     gap: 10px;
     height: 50px;
+`
+
+export const MemberInputDrawer = styled.View`
+    width: 100%;
+    display: flex;
+    gap: ${spacing.sm};
+    position: relative;
+    z-index: 12;
+    padding: ${spacing.sm};
+`
+
+export const MemberInputDrawerWrapper = styled.ScrollView`
+    max-height: 160px;
+    width: 80%;
+    background-color: ${colors.background};
+    position: absolute;
+    display: flex;
+    top: 50px;
+    left: 0;
+    z-index: 10;
+    border-radius: ${spacing.sm};
 `
 
 export const CancelButtonWrapper = styled.TouchableOpacity`

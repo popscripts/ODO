@@ -14,36 +14,34 @@ function MainHeader() {
     const deleteGroup = useDeleteGroup()
 
     const handleVisible = () => {
-        setFormVisible(prev => !prev)
+        setFormVisible((prev) => !prev)
     }
 
     const handlePress = () => {
-        if (userData.Group)
-        {
-            Alert.alert(
-                'Czy na pewno hcesz zakończyć oprowadzniae?',
-                'CYc',
-                [
-                  {
+        if (userData.Group) {
+            Alert.alert('Czy na pewno chcesz zakończyć oprowadzniae?', '', [
+                {
                     text: 'Ok',
-                    onPress: () => {},
-                    style: 'cancel',
-                  },
-                  {
+                    onPress: () => {
+                        deleteGroup()
+                    },
+                    style: 'cancel'
+                },
+                {
                     text: 'Anuluj',
                     onPress: () => {},
-                    style: 'cancel',
-                  },
-                ]
-              );
-        }
-        else
-            handleVisible()
+                    style: 'cancel'
+                }
+            ])
+        } else handleVisible()
     }
 
     return (
         <Wrapper>
-            <CreateGroupModal visible={formVisible} handleVisible={handleVisible}/>
+            <CreateGroupModal
+                visible={formVisible}
+                handleVisible={handleVisible}
+            />
             <ProfilePicture url={userData?.pictureName} size={100} />
             <View>
                 <Heading>{userData?.name}</Heading>
@@ -51,7 +49,11 @@ function MainHeader() {
                     {translateAccountType(userData?.accountType)}
                 </SubHeading>
                 <Button onPress={handlePress}>
-                    <MediumText>{userData.Group ? "Zakończ oprowadzanie" : "Rozpocznij oprowadzanie"}</MediumText>
+                    <MediumText>
+                        {userData.Group
+                            ? 'Zakończ oprowadzanie'
+                            : 'Rozpocznij oprowadzanie'}
+                    </MediumText>
                 </Button>
             </View>
         </Wrapper>
