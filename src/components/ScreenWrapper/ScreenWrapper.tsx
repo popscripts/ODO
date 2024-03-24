@@ -14,7 +14,7 @@ function ScreenWrapper({ showGradient = true, children }: Props) {
     const { bottom } = useSafeAreaInsets()
     return (
         <Background>
-            <ScrollView>
+            <ScrollView keyboardShouldPersistTaps="handled">
                 <Wrapper>
                     {children}
                     <StatusBar style="light" />

@@ -1,4 +1,4 @@
-import { Classroom, ManagedClassroom, ShortClassroom } from './classroom.type'
+import { ManagedClassroom, ShortClassroom } from './classroom.type'
 
 export type NewUser = {
     openDayId: number
@@ -65,4 +65,15 @@ export type Group = {
     description: string | null
     Reserved: ShortClassroom | null
     Taken: ShortClassroom | null
+}
+
+export type GroupMember = {
+    id: number
+    name: string
+}
+
+export type MembersListMember = {
+    id: number
+    name: string
+    groupId: number | null
 }

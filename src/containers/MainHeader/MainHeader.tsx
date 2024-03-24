@@ -1,24 +1,59 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Button, Heading, SubHeading, Wrapper } from './MainHeaderStyle'
-import { useLogOut, useUserData } from '../../providers/AuthProvider'
+import { useUserData } from '../../providers/AuthProvider'
 import ProfilePicture from '../../components/ProfilePicture/ProfilePicture'
-import { View } from 'react-native'
+import { Alert, View } from 'react-native'
 import { translateAccountType } from '../../utils/userDataHelper'
 import { MediumText } from '../../components/commonStyles'
+import CreateGroupModal from '../CreateGroupModal/CreateGroupModal'
+import { useDeleteGroup } from '../../providers/GroupProvider'
 
 function MainHeader() {
     const userData = useUserData()
-    const logOut = useLogOut()
+    const [formVisible, setFormVisible] = useState(false)
+    const deleteGroup = useDeleteGroup()
+
+    const handleVisible = () => {
+        setFormVisible((prev) => !prev)
+    }
+
+    const handlePress = () => {
+        if (userData.Group) {
+            Alert.alert('Czy na pewno chcesz zakończyć oprowadzniae?', '', [
+                {
+                    text: 'Ok',
+                    onPress: () => {
+                        deleteGroup()
+                    },
+                    style: 'cancel'
+                },
+                {
+                    text: 'Anuluj',
+                    onPress: () => {},
+                    style: 'cancel'
+                }
+            ])
+        } else handleVisible()
+    }
+
     return (
         <Wrapper>
+            <CreateGroupModal
+                visible={formVisible}
+                handleVisible={handleVisible}
+            />
             <ProfilePicture url={userData?.pictureName} size={100} />
             <View>
                 <Heading>{userData?.name}</Heading>
                 <SubHeading>
                     {translateAccountType(userData?.accountType)}
                 </SubHeading>
-                <Button onPress={() => logOut()}>
-                    <MediumText>Zakończ oprowadzanie</MediumText>
+                <Button onPress={handlePress}>
+                    <MediumText>
+                        {userData.Group
+                            ? 'Zakończ oprowadzanie'
+                            : 'Rozpocznij oprowadzanie'}
+                    </MediumText>
                 </Button>
             </View>
         </Wrapper>

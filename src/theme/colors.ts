@@ -2,8 +2,8 @@ const palette = {
     neutral100: '#FFFFFF',
     neutral200: '#F6F6F6',
     neutral300: '#878794',
-    neutral400: '#505063',
-    neutral500: '#46465A',
+    neutral400: '#61617a',
+    neutral500: '#54546e',
     neutral600: '#48445c',
     neutral700: '#303041',
     neutral800: '#18181F',
@@ -37,7 +37,8 @@ const palette = {
     overlay22: '#00000022',
     overlay50: 'rgba(48,48,65, 0.5)',
     overlay85: 'rgba(48,48,65, 0.85)',
-    blackoverlay60: 'rgba(0,0,0, 0.60)'
+    blackoverlay60: 'rgba(0,0,0, 0.60)',
+    blackoverlay80: 'rgba(0,0,0, 0.80)'
 } as const
 
 export const colors = {

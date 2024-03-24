@@ -4,7 +4,7 @@ import Svg, { Mask, Path } from 'react-native-svg'
 type Props = {
     color: string
 }
-const SvgComponent = ({ color }: Props) => (
+const HomeIcon = ({ color }: Props) => (
     <Svg width={30} height={30} fill="none" viewBox="0 0 98 99">
         <Mask id="a" fill="#fff">
             <Path d="M13 50h72v33c0 8.837-7.163 16-16 16H29c-8.837 0-16-7.163-16-16V50Z" />
@@ -22,4 +22,4 @@ const SvgComponent = ({ color }: Props) => (
         />
     </Svg>
 )
-export default SvgComponent
+export default HomeIcon

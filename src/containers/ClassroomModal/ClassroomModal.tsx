@@ -4,7 +4,8 @@ import {
     Background,
     ClassroomManager,
     ClassroomNumber,
-    ClassroomTitle
+    ClassroomTitle,
+    Warning
 } from './ClassroomModalStyle'
 import { MediumText } from '../../components/commonStyles'
 import { Classroom } from '../../types/classroom.type'
@@ -55,24 +56,33 @@ const ClassroomModal = ({
                     </ClassroomNumber>
                     <ClassroomTitle>{classroom.title}</ClassroomTitle>
                     <MediumText>{classroom.description}</MediumText>
-                    <ChangeStatusButton
-                        classroom={classroom}
-                        prevStatus={classroom.status.name}
-                        status="busy"
-                        disabled={settings.taken.disabled}
-                    />
-                    <ChangeStatusButton
-                        classroom={classroom}
-                        prevStatus={classroom.status.name}
-                        status="reserved"
-                        disabled={settings.reserved.disabled}
-                    />
-                    <ChangeStatusButton
-                        classroom={classroom}
-                        prevStatus={classroom.status.name}
-                        status="free"
-                        disabled={settings.free.disabled}
-                    />
+                    {userData.Group?.id ? (
+                        <>
+                            <ChangeStatusButton
+                                classroom={classroom}
+                                prevStatus={classroom.status.name}
+                                status="busy"
+                                disabled={settings.taken.disabled}
+                            />
+                            <ChangeStatusButton
+                                classroom={classroom}
+                                prevStatus={classroom.status.name}
+                                status="reserved"
+                                disabled={settings.reserved.disabled}
+                            />
+                            <ChangeStatusButton
+                                classroom={classroom}
+                                prevStatus={classroom.status.name}
+                                status="free"
+                                disabled={settings.free.disabled}
+                            />
+                        </>
+                    ) : (
+                        <Warning>
+                            Aby zarządzać statusami musisz rozpocząć
+                            oprowadzanie
+                        </Warning>
+                    )}
                     <ClassroomManager>
                         {classroom.managedBy?.name &&
                             'Zarządca klasy: ' + classroom.managedBy?.name}

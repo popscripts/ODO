@@ -6,14 +6,13 @@ import ClassroomSection from '../components/ClassroomSection/ClassroomSection'
 import { Scroll } from '../components/commonStyles'
 import Footer from '../components/Footer/Footer'
 import { useParsedClassrooms } from '../providers/ClassroomProvider'
-import SlideFromBottom from '../components/SlideFromBottom'
 
 function MainScreen() {
     const filters = useParsedClassrooms()
 
     return (
         <ScreenWrapper>
-            <Scroll>
+            <Scroll keyboardShouldPersistTaps="handled">
                 <MainHeader />
                 <ClassroomSection title={'Wolne Sale'}>
                     <MapClassrooms status={'free'} filter={filters.free} />

@@ -28,7 +28,29 @@ const FetchClient = {
                 'Content-Type': 'application/json'
             }
         })
-    }
+    },
+
+    async delete(endpoint: string, body: object) {
+        return await fetch(API_URL + endpoint, {
+            method: 'DELETE',
+            body: JSON.stringify(body),
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+    },
+
+    async put(endpoint: string, body: object) {
+        return await fetch(API_URL + endpoint, {
+            method: 'PUT',
+            body: JSON.stringify(body),
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+    },
 }
 
 export default FetchClient

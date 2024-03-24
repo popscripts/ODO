@@ -1,11 +1,14 @@
 import React from 'react'
-import { Text } from 'react-native'
+import { Pressable, Text } from 'react-native'
 import ScreenWrapper from '../components/ScreenWrapper/ScreenWrapper'
+import Button from '../components/Button/Button'
+import { useLogOut } from '../providers/AuthProvider'
 
 function PlaceholderScreen() {
+    const logout = useLogOut()
     return (
         <ScreenWrapper>
-            <Text>test</Text>
+            <Button content="wyloguj" onPress={logout}/>       
         </ScreenWrapper>
     )
 }

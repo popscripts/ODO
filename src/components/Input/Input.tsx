@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { InputIconWrapper, TextInput, Wrapper } from './InputStyle'
 import { ErrorText } from '../commonStyles'
 import { colors } from '../../theme/colors'
@@ -15,6 +15,8 @@ type Props = {
     password?: boolean
     keyboardType?: KeyboardTypeOptions
     autoCapitalize?: boolean
+    onChange?: Function
+    handleFocused?: Function
 }
 function Input({
     text,
@@ -24,7 +26,9 @@ function Input({
     errorText,
     password = false,
     keyboardType = 'default',
-    autoCapitalize = false
+    autoCapitalize = false,
+    onChange,
+    handleFocused
 }: Props) {
     const [focused, setFocused] = useState<boolean>(false)
     const [showPassword, setShowPassword] = useState<boolean>(password)
@@ -32,6 +36,17 @@ function Input({
     function handlePassword() {
         setShowPassword((showPassword) => !showPassword)
     }
+
+    useEffect(() => {
+        if (onChange) onChange()
+    }, [text])
+
+    useEffect(() => {
+        if (handleFocused) {
+            handleFocused(focused)
+        }
+    }, [focused])
+
     return (
         <Wrapper>
             {password && (
@@ -50,7 +65,7 @@ function Input({
             <TextInput
                 placeholder={placeholder}
                 value={text}
-                onChangeText={(e) => setText(e)}
+                onChangeText={(e: string) => setText(e)}
                 onFocus={() => setFocused(true)}
                 onBlur={() => setFocused(false)}
                 focused={focused}
