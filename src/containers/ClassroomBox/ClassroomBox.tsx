@@ -4,6 +4,7 @@ import {
     ContentWrapper,
     Highlight,
     Press,
+    ReservedCorner,
     TimerWrapper,
     Wrapper
 } from './ClassroomBoxStyle'
@@ -68,6 +69,7 @@ function ClassroomBox({ classroomId, colorPalette, status }: Props) {
                         </TimerWrapper>
                     </ContentWrapper>
                     <Highlight colors={['#ffffff00', '#ffffff33']} />
+                    {status === 'busy' && classroom.reservedBy && <ReservedCorner/>}
                 </Wrapper>
             </Press>
         </>

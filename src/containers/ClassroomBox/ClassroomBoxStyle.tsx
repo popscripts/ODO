@@ -1,6 +1,7 @@
 import styled from 'styled-components/native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { spacing } from '../../theme/spacing'
+import { colors } from '../../theme/colors'
 
 export const Wrapper = styled(LinearGradient)`
     width: 100%;
@@ -35,4 +36,13 @@ export const Press = styled.TouchableHighlight`
     border-radius: 20px;
     width: 45%;
     max-width: 170px;
+`
+
+export const ReservedCorner = styled.View`
+   width: ${spacing.xl};
+   height: ${spacing.xl};
+   background-color: ${colors.palette.quinary100};
+   position: absolute;
+   right: 0;
+   elevation: 4;
 `
