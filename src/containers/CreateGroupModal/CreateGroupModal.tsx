@@ -76,7 +76,6 @@ function CreateGroupModal({ visible, handleVisible }: Props) {
     }, [memberValue])
 
     function handleCreateGroup() {
-        console.log(groupMember)
         createGroup(
             NullIfEmptyAndParseInt(numberValue),
             NullIfEmpty(descValue),
