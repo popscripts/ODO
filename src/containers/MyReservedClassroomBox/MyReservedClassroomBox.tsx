@@ -2,7 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { ShortClassroom } from '../../types/classroom.type'
 import { Heading, MediumText } from '../../components/commonStyles'
 import { colors } from '../../theme/colors'
-import { Wrapper, Press, ContentWrapper } from './MyReservedClassroomBoxStyle'
+import {
+    Wrapper,
+    Press,
+    ContentWrapper,
+    TakenCorner
+} from './MyReservedClassroomBoxStyle'
 import TimedGradient from '../TimedGradient/TimedGradient'
 import Timer from '../../components/Timer'
 import { useClassrooms } from '../../providers/ClassroomProvider'
@@ -64,6 +69,7 @@ function ClassroomBox({ classroom }: Props) {
                         <Timer changedAt={classroom.reservedAt} />
                     </MediumText>
                 </ContentWrapper>
+                {classroom.status.name === 'busy' && <TakenCorner />}
             </Wrapper>
         </Press>
     )
