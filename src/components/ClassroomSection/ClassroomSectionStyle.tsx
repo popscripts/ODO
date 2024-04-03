@@ -9,6 +9,7 @@ export const ClassroomSectionWrapper = styled.View`
     justify-content: center;
     align-items: center;
     gap: 15px;
+    padding: 15px;
 `
 
 export const ClassroomSectionHeader = styled.View`
