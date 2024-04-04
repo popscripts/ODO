@@ -40,6 +40,49 @@ class ClassroomService {
             throw e
         }
     }
+    async getVisitedClassrooms(GroupId: number) {
+        try {
+            const response = await this.httpClient.get(
+                'api/group/visited-classrooms/' + GroupId
+            )
+            return response.json()
+        } catch (e) {
+            console.error(e)
+            throw e
+        }
+    }
+
+    async addToVisitedClassrooms(groupId: number, classroomId: number) {
+        try {
+            const response = await this.httpClient.post(
+                'api/group/visited-classrooms',
+                {
+                    id: groupId,
+                    classroomId
+                }
+            )
+            return response.json()
+        } catch (e) {
+            console.error(e)
+            throw e
+        }
+    }
+
+    async removeFromVisitedClassrooms(groupId: number, classroomId: number) {
+        try {
+            const response = await this.httpClient.delete(
+                'api/group/visited-classrooms',
+                {
+                    id: groupId,
+                    classroomId
+                }
+            )
+            return response.json()
+        } catch (e) {
+            console.error(e)
+            throw e
+        }
+    }
 }
 
 export default new ClassroomService()

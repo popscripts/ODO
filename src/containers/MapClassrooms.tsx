@@ -33,9 +33,9 @@ function MapClassrooms({ status, filter }: Props) {
                     colors.palette.quinary300
                 ]
 
-    useEffect(() => {
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
-    }, [filter])
+    // useEffect(() => {
+    //     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
+    // }, [filter])
 
     const userData = useUserData()
 

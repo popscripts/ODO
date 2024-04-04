@@ -24,7 +24,6 @@ function ClassroomBox({ classroomId, colorPalette, status }: Props) {
     const handleVisible = () => {
         setShowModal(!showModal)
     }
-    const width = Dimensions.get('screen').width
     const classrooms = useClassrooms()
     const [classroom, setClassroom] = useState(
         classrooms.find((item) => item?.id === classroomId)
@@ -69,7 +68,9 @@ function ClassroomBox({ classroomId, colorPalette, status }: Props) {
                         </TimerWrapper>
                     </ContentWrapper>
                     <Highlight colors={['#ffffff00', '#ffffff33']} />
-                    {status === 'busy' && classroom.reservedBy && <ReservedCorner/>}
+                    {status === 'busy' && classroom?.reservedBy && (
+                        <ReservedCorner />
+                    )}
                 </Wrapper>
             </Press>
         </>
