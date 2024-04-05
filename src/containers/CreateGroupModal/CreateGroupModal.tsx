@@ -18,12 +18,18 @@ import InputNumber from '../../components/InputNumber/InputNumber'
 import { useEffect, useState } from 'react'
 import InputMultiline from '../../components/InputMultiline/InputMultiline'
 import Input from '../../components/Input/Input'
-import { GroupMember } from '../../types/auth.type'
-import { useCreateGroup, useMembers } from '../../providers/GroupProvider'
+import { Group, GroupMember } from '../../types/auth.type'
+import {
+    useCreateGroup,
+    useEditGroup,
+    useMembers
+} from '../../providers/GroupProvider'
+import { useUserData } from '../../providers/AuthProvider'
 
 type Props = {
     visible: boolean
     handleVisible: () => void
+    group?: Group | null
 }
 
 function NullIfEmpty(string: string) {
@@ -38,19 +44,28 @@ function NullIfEmptyAndParseInt(string: string) {
     return parseInt(string)
 }
 
-function CreateGroupModal({ visible, handleVisible }: Props) {
+function CreateGroupModal({ visible, handleVisible, group }: Props) {
     const createGroup = useCreateGroup()
+    const editGroup = useEditGroup()
+
+    const userData = useUserData()
+
+    const otherMember =
+        group?.GroupMembers?.length === 2 ? group.GroupMembers[0] : null
+
     const { membersList, searchMembers } = useMembers()
 
     const [focused, setFocused] = useState(false)
 
-    const [numberValue, setNumberValue] = useState('')
-    const [descValue, setDescValue] = useState('')
-    const [memberValue, setMemberValue] = useState('')
-    const [isInputVisible, setIsInputVisible] = useState(false)
+    const [numberValue, setNumberValue] = useState(
+        group?.groupSize?.toString() || ''
+    )
+    const [descValue, setDescValue] = useState(group?.description || '')
+    const [memberValue, setMemberValue] = useState(otherMember?.name || '')
+    const [isInputVisible, setIsInputVisible] = useState(!!otherMember)
     const [groupMember, setGroupMember] = useState<GroupMember | null>({
-        id: 0,
-        name: ''
+        id: otherMember?.id || 0,
+        name: otherMember?.name || ''
     })
 
     const handleIsInputVisible = () => {
@@ -76,8 +91,17 @@ function CreateGroupModal({ visible, handleVisible }: Props) {
     }, [memberValue])
 
     function handleCreateGroup() {
-        console.log(groupMember)
         createGroup(
+            NullIfEmptyAndParseInt(numberValue),
+            NullIfEmpty(descValue),
+            groupMember
+        )
+        handleVisible()
+    }
+
+    function handleEditGroup() {
+        editGroup(
+            group?.id || 0,
             NullIfEmptyAndParseInt(numberValue),
             NullIfEmpty(descValue),
             groupMember
@@ -105,7 +129,7 @@ function CreateGroupModal({ visible, handleVisible }: Props) {
         >
             <Backdrop>
                 <Background>
-                    <Title>Utwórz grupę</Title>
+                    <Title>{group ? 'Edytuj grupę' : 'Utwórz grupę'}</Title>
                     {!isInputVisible ? (
                         <AddButton onPress={handleIsInputVisible}>
                             <PlusIcon size={20} />
@@ -134,17 +158,34 @@ function CreateGroupModal({ visible, handleVisible }: Props) {
                                         keyboardShouldPersistTaps={'handled'}
                                     >
                                         <MemberInputDrawer>
-                                            {membersList?.map((member) => (
-                                                <MediumText
-                                                    onPress={() =>
-                                                        handleMemberClicked(
-                                                            member
-                                                        )
-                                                    }
-                                                >
-                                                    {member.name}
-                                                </MediumText>
-                                            ))}
+                                            {membersList?.map((member) => {
+                                                if (
+                                                    !member.groupId &&
+                                                    member.name !==
+                                                        userData.name
+                                                )
+                                                    return (
+                                                        <MediumText
+                                                            onPress={() =>
+                                                                handleMemberClicked(
+                                                                    member
+                                                                )
+                                                            }
+                                                        >
+                                                            {member.name}
+                                                            {member.groupId}
+                                                        </MediumText>
+                                                    )
+                                                else if (
+                                                    member.name !==
+                                                    userData.name
+                                                )
+                                                    return (
+                                                        <TextDim>
+                                                            {member.name}
+                                                        </TextDim>
+                                                    )
+                                            })}
                                         </MemberInputDrawer>
                                     </MemberInputDrawerWrapper>
                                 )}
@@ -163,8 +204,12 @@ function CreateGroupModal({ visible, handleVisible }: Props) {
                         Opis grupy <TextDim>(opcjonalne)</TextDim>
                     </InputDescription>
                     <InputMultiline value={descValue} setValue={setDescValue} />
-                    <SubmitButton onPress={handleCreateGroup}>
-                        <AddButtonText>Rozpocznij oprowadzanie</AddButtonText>
+                    <SubmitButton
+                        onPress={group ? handleEditGroup : handleCreateGroup}
+                    >
+                        <AddButtonText>
+                            {group ? 'Zatwierdź' : 'Rozpocznij oprowadzanie'}
+                        </AddButtonText>
                     </SubmitButton>
                 </Background>
             </Backdrop>

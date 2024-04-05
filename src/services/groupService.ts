@@ -30,12 +30,22 @@ class GroupService {
         groupMembers: GroupMember[]
     ) {
         try {
-            const response = await this.httpClient.put('api/group', {
+            type Props = {
+                id: number
+                groupSize?: number | null
+                description?: string | null
+                groupMembers?: GroupMember[]
+            }
+            let temp: Props = {
                 id,
                 groupSize,
-                description,
-                groupMembers
-            })
+                description
+            }
+
+            if (groupMembers.length > 0) {
+                temp.groupMembers = groupMembers
+            }
+            const response = await this.httpClient.put('api/group', temp)
             return response.json()
         } catch (e) {
             console.error(e)

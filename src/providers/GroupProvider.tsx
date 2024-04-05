@@ -16,6 +16,14 @@ const CreateGroupContext = createContext(
         groupMember: GroupMember | null
     ) => {}
 )
+const EditGroupContext = createContext(
+    (
+        id: number,
+        groupSize: number | null,
+        description: string | null,
+        groupMember: GroupMember | null
+    ) => {}
+)
 const DeleteGroupContext = createContext(() => {})
 const MembersContext = createContext<membersContextType>({
     membersList: [],
@@ -24,6 +32,10 @@ const MembersContext = createContext<membersContextType>({
 
 export function useCreateGroup() {
     return useContext(CreateGroupContext)
+}
+
+export function useEditGroup() {
+    return useContext(EditGroupContext)
 }
 
 export function useDeleteGroup() {
@@ -56,6 +68,25 @@ function GroupProvider({ children }: Children) {
         })
     }
 
+    function editGroup(
+        id: number,
+        groupSize: number | null,
+        description: string | null,
+        groupMember: GroupMember | null
+    ) {
+        let temp =
+            (userData?.Group?.GroupMembers &&
+                userData?.Group?.GroupMembers[0]?.id) ||
+            0
+        let members =
+            groupMember?.id !== temp && groupMember ? [groupMember] : []
+        groupService
+            .updateGroup(id, groupSize, description, members)
+            .then((res) => {
+                getUserData()
+            })
+    }
+
     function deleteGroup() {
         if (userData?.Group?.id)
             groupService.removeGroup(userData.Group.id).then(() => {
@@ -71,16 +102,18 @@ function GroupProvider({ children }: Children) {
 
     return (
         <CreateGroupContext.Provider value={createGroup}>
-            <DeleteGroupContext.Provider value={deleteGroup}>
-                <MembersContext.Provider
-                    value={{
-                        membersList: membersList,
-                        searchMembers: searchMembers
-                    }}
-                >
-                    {children}
-                </MembersContext.Provider>
-            </DeleteGroupContext.Provider>
+            <EditGroupContext.Provider value={editGroup}>
+                <DeleteGroupContext.Provider value={deleteGroup}>
+                    <MembersContext.Provider
+                        value={{
+                            membersList: membersList,
+                            searchMembers: searchMembers
+                        }}
+                    >
+                        {children}
+                    </MembersContext.Provider>
+                </DeleteGroupContext.Provider>
+            </EditGroupContext.Provider>
         </CreateGroupContext.Provider>
     )
 }

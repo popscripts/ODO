@@ -1,21 +1,23 @@
-import styled from "styled-components/native";
-import { spacing } from "../../theme/spacing";
-import { colors } from "../../theme/colors";
-import { typography } from "../../theme/typography";
+import styled from 'styled-components/native'
+import { spacing } from '../../theme/spacing'
+import { colors } from '../../theme/colors'
+import { typography } from '../../theme/typography'
 
-export const Background = styled.ImageBackground`
-    
-`
+export const Background = styled.ImageBackground``
 
 export const Wrapper = styled.View`
     width: 90%;
-    border-radius:${spacing.md};
+    border-radius: ${spacing.md};
+    margin-top: ${spacing.lg};
     overflow: hidden;
     elevation: 6;
 `
 
 export const Left = styled.View`
     width: 60%;
+    display: flex;
+    flex-direction: column;
+    gap: ${spacing.xs};
 `
 
 export const Right = styled.View`
@@ -40,9 +42,9 @@ export const Circle = styled.Text`
     color: ${colors.background};
     border-radius: 30px;
     text-align: center;
-    line-height:60px;
+    line-height: 60px;
     font-size: ${spacing.xxl};
-    font-family: ${typography.primary.bold}
+    font-family: ${typography.primary.bold};
 `
 
 export const Description = styled.View`
@@ -57,8 +59,19 @@ export const Description = styled.View`
 
 export const Press = styled.TouchableOpacity`
     padding: ${spacing.xs};
-    border-radius:20px;
+    border-radius: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
+`
+
+export const PencilPress = styled.TouchableOpacity`
+    padding: ${spacing.xs};
+`
+
+export const MediumTextShrink = styled.Text`
+    font-family: ${typography.primary.normal};
+    font-size: ${spacing.nm};
+    color: ${colors.text};
+    flex-shrink: 5;
 `

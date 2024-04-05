@@ -1,35 +1,57 @@
 import React, { useState } from 'react'
-import { Background, InsideWrapper, Left, Right, Wrapper, Circle, Description, Press } from './GroupBoxStyle'
-import { Heading, MediumText } from '../commonStyles'
+import {
+    Background,
+    InsideWrapper,
+    Left,
+    Right,
+    Wrapper,
+    Circle,
+    Description,
+    Press,
+    PencilPress,
+    MediumTextShrink
+} from './GroupBoxStyle'
+import { Heading, MediumText, SmallText, TextDim } from '../commonStyles'
 import { useUserData } from '../../providers/AuthProvider'
 import { Group } from '../../types/auth.type'
 import PencilIcon from '../icons/PencilIcon'
 import CreateGroupModal from '../../containers/CreateGroupModal/CreateGroupModal'
-import { View } from 'react-native'
 const background = require('../../../assets/background.png')
 
 type Props = {
     group: Group
+    handleVisible: Function
+    visible: boolean
 }
 
-function Inside({group}: Props) {
-    return (<>
-        <InsideWrapper>
-            <Left>
-                <Heading>Grupa nr {group.id}</Heading>
-                {group.GroupMembers?.map((member, id) => <MediumText key={id}>{member.name}</MediumText>)}
-            </Left>
-            {group.groupSize &&
-            <Right>
-                <Circle>{group.groupSize}</Circle>
-                <MediumText>osób w grupie</MediumText>
-            </Right>
-            }
-        </InsideWrapper>
-        <Description>
-            <MediumText>{group.description}</MediumText>
-            <PencilIcon/>
-        </Description>
+function Inside({ group, handleVisible, visible }: Props) {
+    return (
+        <>
+            <InsideWrapper>
+                <CreateGroupModal
+                    visible={visible}
+                    handleVisible={() => handleVisible()}
+                    group={group}
+                />
+                <Left>
+                    <Heading>Grupa nr {group.id}</Heading>
+                    {group.GroupMembers?.map((member, id) => (
+                        <MediumText key={id}>{member.name}</MediumText>
+                    ))}
+                </Left>
+                {group.groupSize && (
+                    <Right>
+                        <Circle>{group.groupSize}</Circle>
+                        <SmallText>osób w grupie</SmallText>
+                    </Right>
+                )}
+            </InsideWrapper>
+            <Description>
+                <MediumTextShrink>{group.description}</MediumTextShrink>
+                <PencilPress onPress={() => handleVisible()}>
+                    <PencilIcon />
+                </PencilPress>
+            </Description>
         </>
     )
 }
@@ -39,22 +61,32 @@ function GroupBox() {
     const [visible, setVisible] = useState(false)
 
     const handleVisible = () => {
-        setVisible(prev => !prev)
+        setVisible((prev) => !prev)
     }
 
     return (
-        <Wrapper>
-            <CreateGroupModal visible={visible} handleVisible={handleVisible}/>
-            <Background source={background}>
-                {userData.Group?.id ? <Inside group={userData.Group}/> : 
-
-                <Press onPress={handleVisible}>
-                    <MediumText>Rozpocznij oprowadzanie</MediumText>
-                </Press>
-                }
-            
-            </Background>
-        </Wrapper>
+        <>
+            {!userData.Group?.id && <TextDim>Brak aktywnej grupy</TextDim>}
+            <Wrapper>
+                <Background source={background}>
+                    {userData.Group?.id ? (
+                        <Inside
+                            group={userData.Group}
+                            handleVisible={handleVisible}
+                            visible={visible}
+                        />
+                    ) : (
+                        <Press onPress={handleVisible}>
+                            <CreateGroupModal
+                                visible={visible}
+                                handleVisible={() => handleVisible()}
+                            />
+                            <MediumText>Rozpocznij oprowadzanie</MediumText>
+                        </Press>
+                    )}
+                </Background>
+            </Wrapper>
+        </>
     )
 }
 

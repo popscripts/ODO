@@ -1,7 +1,7 @@
-import styled from "styled-components/native"
-import { colors } from "../../theme/colors"
-import { spacing } from "../../theme/spacing"
-import { typography } from "../../theme/typography"
+import styled from 'styled-components/native'
+import { colors } from '../../theme/colors'
+import { spacing } from '../../theme/spacing'
+import { typography } from '../../theme/typography'
 
 export const Heading = styled.Text`
     color: ${colors.text};
@@ -26,4 +26,5 @@ export const Wrapper = styled.View`
     flex-flow: column nowrap;
     gap: ${spacing.md};
     padding: ${spacing.md};
+    margin-bottom: ${spacing.xl};
 `
