@@ -12,6 +12,7 @@ import CutleryIcon from '../components/icons/CutleryIcon'
 import PlaceholderScreen from '../screens/PlaceholderScreen'
 import { DefaultBackground } from '../components/commonStyles'
 import VisitedScreen from '../screens/VisitedScreen'
+import SettingsScreen from '../screens/SettingsScreen'
 import InfoScreen from '../screens/InfoScreen'
 
 const Tab = createMaterialTopTabNavigator()
@@ -37,7 +38,7 @@ function MainNavigator() {
             >
                 <Tab.Screen
                     name="settings"
-                    component={PlaceholderScreen}
+                    component={SettingsScreen}
                     options={{
                         tabBarIcon: ({ focused }) => (
                             <UserIcon

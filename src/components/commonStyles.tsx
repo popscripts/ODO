@@ -31,6 +31,12 @@ export const MediumText = styled.Text`
     color: ${colors.text};
 `
 
+export const SmallText = styled.Text`
+    font-family: ${typography.primary.normal};
+    font-size: ${spacing.sm};
+    color: ${colors.text};
+`
+
 export const MediumTextCenter = styled.Text`
     font-family: ${typography.primary.normal};
     font-size: ${spacing.nm};
@@ -69,5 +75,5 @@ export const StretchWrapper = styled.View`
 `
 
 export const TextDim = styled.Text`
-    color: ${colors.textDim}
+    color: ${colors.textDim};
 `

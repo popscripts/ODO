@@ -1,8 +1,9 @@
-import React, { createContext, useContext, useState } from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 import { Children } from '../types/props.type'
 import { GroupMember, MembersListMember } from '../types/auth.type'
 import groupService from '../services/groupService'
-import { useGetUserData, useUserData } from './AuthProvider'
+import { useGetUserData, useLoggedIn, useUserData } from './AuthProvider'
+import { socket } from './AuthProvider'
 
 type membersContextType = {
     membersList: MembersListMember[]
@@ -16,7 +17,16 @@ const CreateGroupContext = createContext(
         groupMember: GroupMember | null
     ) => {}
 )
+const EditGroupContext = createContext(
+    (
+        id: number,
+        groupSize: number | null,
+        description: string | null,
+        groupMember: GroupMember | null
+    ) => {}
+)
 const DeleteGroupContext = createContext(() => {})
+const LeaveGroupContext = createContext(() => {})
 const MembersContext = createContext<membersContextType>({
     membersList: [],
     searchMembers: (member: string) => {}
@@ -26,8 +36,16 @@ export function useCreateGroup() {
     return useContext(CreateGroupContext)
 }
 
+export function useEditGroup() {
+    return useContext(EditGroupContext)
+}
+
 export function useDeleteGroup() {
     return useContext(DeleteGroupContext)
+}
+
+export function useLeaveGroup() {
+    return useContext(LeaveGroupContext)
 }
 
 export function useMembers() {
@@ -56,9 +74,32 @@ function GroupProvider({ children }: Children) {
         })
     }
 
+    function editGroup(
+        id: number,
+        groupSize: number | null,
+        description: string | null,
+        groupMember: GroupMember | null
+    ) {
+        let members = [
+            {
+                id: userData.id,
+                name: userData.name || ''
+            }
+        ]
+        if (groupMember) members.push(groupMember)
+        groupService.updateGroup(id, groupSize, description, members)
+    }
+
     function deleteGroup() {
         if (userData?.Group?.id)
             groupService.removeGroup(userData.Group.id).then(() => {
+                getUserData()
+            })
+    }
+
+    function leaveGroup() {
+        if (userData?.Group?.id)
+            groupService.leaveGroup(userData.Group.id).then(() => {
                 getUserData()
             })
     }
@@ -69,18 +110,36 @@ function GroupProvider({ children }: Children) {
         })
     }
 
+    const loggedIn = useLoggedIn()
+
+    useEffect(() => {
+        if (loggedIn) {
+            socket.on('groupUpdate', (res) => {
+                getUserData()
+            })
+
+            socket.on('groupAction', () => {
+                getUserData()
+            })
+        }
+    }, [loggedIn])
+
     return (
         <CreateGroupContext.Provider value={createGroup}>
-            <DeleteGroupContext.Provider value={deleteGroup}>
-                <MembersContext.Provider
-                    value={{
-                        membersList: membersList,
-                        searchMembers: searchMembers
-                    }}
-                >
-                    {children}
-                </MembersContext.Provider>
-            </DeleteGroupContext.Provider>
+            <EditGroupContext.Provider value={editGroup}>
+                <DeleteGroupContext.Provider value={deleteGroup}>
+                    <LeaveGroupContext.Provider value={leaveGroup}>
+                        <MembersContext.Provider
+                            value={{
+                                membersList: membersList,
+                                searchMembers: searchMembers
+                            }}
+                        >
+                            {children}
+                        </MembersContext.Provider>
+                    </LeaveGroupContext.Provider>
+                </DeleteGroupContext.Provider>
+            </EditGroupContext.Provider>
         </CreateGroupContext.Provider>
     )
 }

@@ -18,11 +18,15 @@ export function useHtml(info: string) {
         '            color: ' +
         colors.text +
         ';\n' +
-        '\t\t\tbackground-color: #505063;\n' +
+        '\t\t\tbackground-color: ' +
+        colors.palette.neutral600 +
+        ';\n' +
         '        }\n' +
         '\n' +
         '        body {\n' +
-        '            background-color: #505063;\n' +
+        '            background-color: ' +
+        colors.palette.neutral600 +
+        ';\n' +
         '            padding: 10px;\n' +
         '        }\n' +
         '    </style>\n' +

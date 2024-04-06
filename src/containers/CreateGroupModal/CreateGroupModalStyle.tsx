@@ -54,6 +54,16 @@ export const SubmitButton = styled.TouchableOpacity`
     text-align: center;
     margin-top: ${spacing.xxl};
     width: 100%;
+    flex-shrink: 5;
+`
+
+export const LeaveButton = styled.TouchableOpacity`
+    background-color: ${colors.palette.quaternary200};
+    border-radius: 20px;
+    text-align: center;
+    margin-top: ${spacing.xxl};
+    width: 100%;
+    flex-shrink: 5;
 `
 
 export const InputDescription = styled.Text`
@@ -102,4 +112,11 @@ export const CancelButtonWrapper = styled.TouchableOpacity`
     display: flex;
     align-items: center;
     justify-content: center;
+`
+
+export const ButtonsWrapper = styled.View`
+    width: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+    gap: ${spacing.md};
 `

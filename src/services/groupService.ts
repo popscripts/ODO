@@ -30,6 +30,12 @@ class GroupService {
         groupMembers: GroupMember[]
     ) {
         try {
+            type Props = {
+                id: number
+                groupSize?: number | null
+                description?: string | null
+                groupMembers?: GroupMember[]
+            }
             const response = await this.httpClient.put('api/group', {
                 id,
                 groupSize,
@@ -48,6 +54,19 @@ class GroupService {
             const response = await this.httpClient.delete('api/group', {
                 id
             })
+            return response.json()
+        } catch (e) {
+            console.error(e)
+            throw e
+        }
+    }
+
+    async leaveGroup(id: number) {
+        try {
+            const response = await this.httpClient.put(
+                'api/group/leave/' + id,
+                {}
+            )
             return response.json()
         } catch (e) {
             console.error(e)

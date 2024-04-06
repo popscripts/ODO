@@ -68,7 +68,7 @@ function CompleteDataForm({ done, setDone }: Props) {
         }
 
         setDone(true)
-        updateName(name, surname)
+        updateName(name.trim(), surname.trim())
     }
 
     return (

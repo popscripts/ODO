@@ -4,7 +4,7 @@ import { useUserData } from '../../providers/AuthProvider'
 import ProfilePicture from '../../components/ProfilePicture/ProfilePicture'
 import { Alert, View } from 'react-native'
 import { translateAccountType } from '../../utils/userDataHelper'
-import { MediumText } from '../../components/commonStyles'
+import { MediumTextCenter } from '../../components/commonStyles'
 import CreateGroupModal from '../CreateGroupModal/CreateGroupModal'
 import { useDeleteGroup } from '../../providers/GroupProvider'
 
@@ -49,11 +49,11 @@ function MainHeader() {
                     {translateAccountType(userData?.accountType)}
                 </SubHeading>
                 <Button onPress={handlePress}>
-                    <MediumText>
+                    <MediumTextCenter>
                         {userData.Group
                             ? 'Zakończ oprowadzanie'
                             : 'Rozpocznij oprowadzanie'}
-                    </MediumText>
+                    </MediumTextCenter>
                 </Button>
             </View>
         </Wrapper>
