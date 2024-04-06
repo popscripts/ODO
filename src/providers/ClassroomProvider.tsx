@@ -7,7 +7,7 @@ import io from 'socket.io-client'
 import { API_URL } from '../config'
 import { Status } from '../types/status.type'
 
-const socket = io(API_URL)
+export const socket = io(API_URL)
 
 const ClassroomContext = createContext<Classroom[]>([])
 const ParsedClassroomContext = createContext({
