@@ -64,7 +64,7 @@ function GroupBox() {
     }
 
     useEffect(() => {
-        if (userData.Group) setGroup(userData.Group)
+        setGroup(userData.Group)
     }, [userData])
 
     return (

@@ -7,11 +7,8 @@ import {
 } from '../types/classroom.type'
 import { useGetUserData, useLoggedIn, useUserData } from './AuthProvider'
 import ClassroomService from '../services/classroomService'
-import io from 'socket.io-client'
-import { API_URL } from '../config'
 import { Status } from '../types/status.type'
-
-export const socket = io(API_URL)
+import { socket } from './AuthProvider'
 
 type ParsedClassrooms = {
     free: Classroom[]

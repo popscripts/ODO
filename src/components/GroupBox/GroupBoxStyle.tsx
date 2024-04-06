@@ -2,7 +2,6 @@ import styled from 'styled-components/native'
 import { spacing } from '../../theme/spacing'
 import { colors } from '../../theme/colors'
 import { typography } from '../../theme/typography'
-import { LinearGradient } from 'expo-linear-gradient'
 
 export const Background = styled.View`
     background-color: ${colors.palette.neutral600};
@@ -17,14 +16,14 @@ export const Wrapper = styled.View`
 `
 
 export const Left = styled.View`
-    width: 60%;
+    width: 70%;
     display: flex;
     flex-direction: column;
     gap: ${spacing.xs};
 `
 
 export const Right = styled.View`
-    width: 40%;
+    width: 30%;
     display: flex;
     flex-direction: column;
     justify-content: center;

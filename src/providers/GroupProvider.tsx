@@ -2,8 +2,8 @@ import React, { createContext, useContext, useEffect, useState } from 'react'
 import { Children } from '../types/props.type'
 import { GroupMember, MembersListMember } from '../types/auth.type'
 import groupService from '../services/groupService'
-import { useGetUserData, useUserData } from './AuthProvider'
-import { socket } from './ClassroomProvider'
+import { useGetUserData, useLoggedIn, useUserData } from './AuthProvider'
+import { socket } from './AuthProvider'
 
 type membersContextType = {
     membersList: MembersListMember[]
@@ -87,12 +87,7 @@ function GroupProvider({ children }: Children) {
             }
         ]
         if (groupMember) members.push(groupMember)
-        console.log(id, groupSize, description, members)
-        groupService
-            .updateGroup(id, groupSize, description, members)
-            .then((res) => {
-                getUserData()
-            })
+        groupService.updateGroup(id, groupSize, description, members)
     }
 
     function deleteGroup() {
@@ -115,15 +110,19 @@ function GroupProvider({ children }: Children) {
         })
     }
 
-    useEffect(() => {
-        socket.on('groupUpdate', () => {
-            getUserData()
-        })
+    const loggedIn = useLoggedIn()
 
-        socket.on('groupAction', () => {
-            getUserData()
-        })
-    }, [])
+    useEffect(() => {
+        if (loggedIn) {
+            socket.on('groupUpdate', (res) => {
+                getUserData()
+            })
+
+            socket.on('groupAction', () => {
+                getUserData()
+            })
+        }
+    }, [loggedIn])
 
     return (
         <CreateGroupContext.Provider value={createGroup}>
