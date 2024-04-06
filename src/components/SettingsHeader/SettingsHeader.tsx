@@ -1,17 +1,15 @@
-import React, { useState } from 'react'
+import React from 'react'
 import {
     ColorSpan,
     Heading,
     Image,
     InsideWrapper,
     LogoutButton,
-    SubHeading,
     Wrapper
 } from './SettingsHeaderStyle'
 import { useLogOut, useUserData } from '../../providers/AuthProvider'
 import ProfilePicture from '../../components/ProfilePicture/ProfilePicture'
-import { ImageBackground, View } from 'react-native'
-import { translateAccountType } from '../../utils/userDataHelper'
+import { View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import LogoutIcon from '../icons/LogoutIcon'
 const background = require('../../../assets/background.png')

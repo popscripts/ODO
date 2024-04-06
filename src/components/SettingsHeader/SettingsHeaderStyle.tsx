@@ -2,7 +2,6 @@ import styled from 'styled-components/native'
 import { colors } from '../../theme/colors'
 import { spacing } from '../../theme/spacing'
 import { typography } from '../../theme/typography'
-import { ImageBackground } from 'react-native'
 
 export const Heading = styled.Text`
     color: ${colors.text};
