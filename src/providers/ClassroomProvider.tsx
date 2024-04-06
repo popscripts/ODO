@@ -1,6 +1,10 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { Children } from '../types/props.type'
-import { Classroom, classroomStatus } from '../types/classroom.type'
+import {
+    Classroom,
+    classroomStatus,
+    VisitedClassroom
+} from '../types/classroom.type'
 import { useGetUserData, useLoggedIn, useUserData } from './AuthProvider'
 import ClassroomService from '../services/classroomService'
 import io from 'socket.io-client'
@@ -9,15 +13,28 @@ import { Status } from '../types/status.type'
 
 export const socket = io(API_URL)
 
+type ParsedClassrooms = {
+    free: Classroom[]
+    reserved: Classroom[]
+    busy: Classroom[]
+    visited: VisitedClassroom[]
+}
+
 const ClassroomContext = createContext<Classroom[]>([])
-const ParsedClassroomContext = createContext({
-    free: [0],
-    reserved: [0],
-    busy: [0],
-    visited: [0]
+const ParsedClassroomContext = createContext<ParsedClassrooms>({
+    free: [],
+    reserved: [],
+    busy: [],
+    visited: []
 })
 const SetStatusContext = createContext(
-    (id: number, prevStatus: Status['name'], status: Status['name']) => {}
+    (
+        id: number,
+        prevStatus: Status['name'],
+        status: Status['name'],
+        classroom: string,
+        title: string
+    ) => {}
 )
 const HandleVisitedClassroomsContext = createContext({
     addToVisited: (classroomId: number) => {},
@@ -44,25 +61,14 @@ function ClassroomProvider({ children }: Children) {
     const getUserData = useGetUserData()
 
     const [classrooms, setClassrooms] = useState<Classroom[]>([])
-    const [freeClassrooms, setFreeClassrooms] = useState<number[]>([])
-    const [reservedClassrooms, setReservedClassrooms] = useState<number[]>([])
-    const [busyClassrooms, setBusyClassrooms] = useState<number[]>([])
-    const [visitedClassrooms, setVisitedClassrooms] = useState<number[]>([])
-    const [changedClassroom, setChangedClassroom] = useState<classroomStatus>()
     const loggedIn = useLoggedIn()
     const userData = useUserData()
 
-    const setStatusClassrooms = {
-        free: setFreeClassrooms,
-        reserved: setReservedClassrooms,
-        busy: setBusyClassrooms
-    }
-
-    const [parsedClassrooms, setParsedClassrooms] = useState({
-        free: freeClassrooms,
-        reserved: reservedClassrooms,
-        busy: busyClassrooms,
-        visited: visitedClassrooms
+    const [parsedClassrooms, setParsedClassrooms] = useState<ParsedClassrooms>({
+        free: [],
+        reserved: [],
+        busy: [],
+        visited: []
     })
 
     function joinRoom() {
@@ -75,77 +81,32 @@ function ClassroomProvider({ children }: Children) {
         }
     }
 
-    function parseClassrooms(classrooms: Classroom[]) {
-        setFreeClassrooms([])
-        setReservedClassrooms([])
-        setBusyClassrooms([])
-        classrooms.map((classroom) => {
-            setStatusClassrooms[classroom.status.name]((classrooms) => [
-                ...classrooms,
-                classroom.id
-            ])
-        })
-    }
-
     function getClassrooms() {
         ClassroomService.getClassrooms().then((response) => {
             setClassrooms(response.result)
-            if (userData?.Group?.id) {
-                ClassroomService.getVisitedClassrooms(userData.Group.id).then(
-                    (response) => setVisitedClassrooms(response.result)
-                )
-            }
         })
     }
 
-    function setStatus(id: number, prevStatus: string, status: string) {
-        ClassroomService.changeClassroomStatus(id, status, prevStatus)
-        if (prevStatus === 'busy' && status === 'free') {
-            addToVisited(id)
-        }
+    function getGroupedClassrooms() {
+        ClassroomService.getGroupedClassrooms().then((response) => {
+            setParsedClassrooms(response.result)
+        })
     }
 
-    function handleStatusChange() {
-        if (changedClassroom) {
-            const previousClassrooms =
-                parsedClassrooms[changedClassroom?.prevStatus].slice()
-            const previousIndex = previousClassrooms.indexOf(
-                changedClassroom?.classroom.id
-            )
-            previousIndex > -1 && previousClassrooms.splice(previousIndex, 1)
-            setStatusClassrooms[changedClassroom?.prevStatus](
-                previousClassrooms
-            )
-
-            const currentClassrooms =
-                parsedClassrooms[
-                    changedClassroom?.classroom.status.name
-                ].slice()
-            const currentIndex = currentClassrooms.indexOf(
-                changedClassroom?.classroom.id
-            )
-            currentIndex < 0 &&
-                currentClassrooms.unshift(changedClassroom?.classroom.id)
-            setStatusClassrooms[changedClassroom?.classroom.status.name](
-                currentClassrooms
-            )
-        }
-    }
-
-    function updateClassroomData() {
-        if (changedClassroom) {
-            const previousClassrooms = classrooms.slice()
-            for (let item in previousClassrooms) {
-                if (
-                    previousClassrooms[item].id ===
-                    changedClassroom.classroom.id
-                )
-                    previousClassrooms[item] = {
-                        ...changedClassroom?.classroom
-                    }
-            }
-            setClassrooms(previousClassrooms)
-        }
+    function setStatus(
+        id: number,
+        prevStatus: string,
+        status: string,
+        classroom: string,
+        title: string
+    ) {
+        ClassroomService.changeClassroomStatus(
+            id,
+            status,
+            prevStatus,
+            classroom,
+            title
+        )
     }
 
     function addToVisited(classroomId: number) {
@@ -166,50 +127,21 @@ function ClassroomProvider({ children }: Children) {
 
     useEffect(() => {
         if (loggedIn && classrooms.length === 0) {
-            getClassrooms()
+            getGroupedClassrooms()
         }
         loggedIn && joinRoom()
     }, [loggedIn])
 
     useEffect(() => {
-        setParsedClassrooms({
-            free: freeClassrooms,
-            reserved: reservedClassrooms,
-            busy: busyClassrooms,
-            visited: visitedClassrooms
-        })
-    }, [freeClassrooms, reservedClassrooms, busyClassrooms, visitedClassrooms])
-
-    useEffect(() => {
-        handleStatusChange()
-        updateClassroomData()
-    }, [changedClassroom])
-
-    useEffect(() => {
-        let temp = classrooms
-        for (let id in visitedClassrooms) {
-            temp = temp.filter(
-                (classroom) => classroom.id !== visitedClassrooms[id]
-            )
-        }
-        parseClassrooms(temp)
-    }, [classrooms, visitedClassrooms])
-
-    useEffect(() => {
         socket.removeAllListeners()
 
         socket.on('classroomStatus', (data: classroomStatus) => {
-            console.log('classroomStatus')
-            setChangedClassroom(data)
+            getGroupedClassrooms()
             getUserData()
         })
 
-        socket.on('groupVisitedClassroomAction', (data: classroomStatus) => {
-            console.log(userData.Group)
-            if (userData.Group)
-                ClassroomService.getVisitedClassrooms(userData.Group.id).then(
-                    (response) => setVisitedClassrooms(response.result)
-                )
+        socket.on('groupVisitedClassroom', (data: classroomStatus) => {
+            getGroupedClassrooms()
         })
     }, [])
 

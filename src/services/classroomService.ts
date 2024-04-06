@@ -14,9 +14,9 @@ class ClassroomService {
         }
     }
 
-    async getParsedClassrooms() {
+    async getGroupedClassrooms() {
         try {
-            const response = await this.httpClient.get('api/classroom/status')
+            const response = await this.httpClient.get('api/classroom/grouped')
             return response.json()
         } catch (e) {
             console.error(e)
@@ -27,12 +27,14 @@ class ClassroomService {
     async changeClassroomStatus(
         id: number,
         status: string,
-        prevStatus: string
+        prevStatus: string,
+        classroom: string,
+        title: string
     ) {
         try {
             const response = await this.httpClient.patch(
                 'api/classroom/status',
-                { id, status, prevStatus }
+                { id, status, prevStatus, classroom, title }
             )
             return response.json()
         } catch (e) {

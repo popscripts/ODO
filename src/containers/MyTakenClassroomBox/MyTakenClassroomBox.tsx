@@ -12,7 +12,11 @@ import {
 import TimedGradient from '../TimedGradient/TimedGradient'
 import Timer from '../../components/Timer'
 import ClassroomModal from '../ClassroomModal/ClassroomModal'
-import { useClassrooms, useSetStatus } from '../../providers/ClassroomProvider'
+import {
+    useClassrooms,
+    useParsedClassrooms,
+    useSetStatus
+} from '../../providers/ClassroomProvider'
 import FreeClassroomIcon from '../../components/icons/FreeClassroomIcon'
 
 type Props = {
@@ -22,9 +26,9 @@ function ClassroomBox({ classroom }: Props) {
     const setStatus = useSetStatus()
     const [modalVisible, setModalVisible] = useState<boolean>(false)
 
-    const classrooms = useClassrooms()
+    const classrooms = useParsedClassrooms()
     const [fullclassroom, setClassroom] = useState(
-        classrooms.find((item) => item?.id === classroom.id)
+        classrooms.busy.find((item) => item?.id === classroom.id)
     )
 
     const handleModalVisible = () => {
@@ -38,8 +42,8 @@ function ClassroomBox({ classroom }: Props) {
     const colorPalette = [colors.palette.primary200, colors.palette.primary300]
 
     useEffect(() => {
-        setClassroom(classrooms.find((item) => item?.id === classroom.id))
-    }, [classrooms])
+        console.log(fullclassroom)
+    }, [fullclassroom])
 
     return (
         <Press underlayColor={'#ffffff'} onPress={handleModalVisible}>
@@ -73,7 +77,15 @@ function ClassroomBox({ classroom }: Props) {
                     </TimerWrapper>
 
                     <IconWrapper
-                        onPress={() => setStatus(classroom.id, 'busy', 'free')}
+                        onPress={() =>
+                            setStatus(
+                                classroom.id,
+                                'busy',
+                                'free',
+                                classroom.classroom,
+                                classroom.title
+                            )
+                        }
                     >
                         <FreeClassroomIcon />
                     </IconWrapper>

@@ -34,7 +34,15 @@ function ChangeStatusButton({
     if (!disabled)
         return (
             <ButtonWrapper
-                onPress={() => setStatus(classroom.id, prevStatus, status)}
+                onPress={() =>
+                    setStatus(
+                        classroom.id,
+                        prevStatus,
+                        status,
+                        classroom.classroom,
+                        classroom.title
+                    )
+                }
                 color={settings.color}
             >
                 <ButtonText dimText={false}>{settings.label}</ButtonText>

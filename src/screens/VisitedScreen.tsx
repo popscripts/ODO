@@ -1,16 +1,26 @@
 import React from 'react'
 import ScreenWrapper from '../components/ScreenWrapper/ScreenWrapper'
-import { Scroll } from '../components/commonStyles'
+import { MediumTextCenter, Scroll } from '../components/commonStyles'
 import Footer from '../components/Footer/Footer'
 import { useParsedClassrooms } from '../providers/ClassroomProvider'
-import MapReserved from '../containers/MapReserved'
+import MapVisited from '../containers/MapVisited'
+import ClassroomSection from '../components/ClassroomSection/ClassroomSection'
+import { View } from 'react-native'
 
 function MainScreen() {
-    const filters = useParsedClassrooms()
+    const classrooms = useParsedClassrooms()
     return (
         <ScreenWrapper>
             <Scroll keyboardShouldPersistTaps="handled">
-                <MapReserved filter={filters.visited} />
+                <ClassroomSection title={'Odwiedzone klasy'}>
+                    <View />
+                </ClassroomSection>
+                <MapVisited classrooms={classrooms.visited} />
+                {classrooms.visited.length === 0 && (
+                    <MediumTextCenter>
+                        Brak sal do wyświetlenia
+                    </MediumTextCenter>
+                )}
                 <Footer />
             </Scroll>
         </ScreenWrapper>

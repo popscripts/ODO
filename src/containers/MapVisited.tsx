@@ -2,11 +2,12 @@ import React from 'react'
 import VisitedClassroomBox from './VisitedClassroomBox/VisitedClassroomBox'
 import { LinearGradient } from 'expo-linear-gradient'
 import { colors } from '../theme/colors'
+import { VisitedClassroom } from '../types/classroom.type'
 
 type Props = {
-    filter: number[]
+    classrooms: VisitedClassroom[]
 }
-function MapReserved({ filter }: Props) {
+function MapVisited({ classrooms }: Props) {
     return (
         <LinearGradient
             colors={[
@@ -15,12 +16,15 @@ function MapReserved({ filter }: Props) {
                 colors.palette.secondary200
             ]}
         >
-            {filter.length > 0 &&
-                filter.map((id) => (
-                    <VisitedClassroomBox classroomId={id} key={id} />
+            {classrooms.length > 0 &&
+                classrooms.map((classroom) => (
+                    <VisitedClassroomBox
+                        classroom={classroom}
+                        key={classroom.classroomId}
+                    />
                 ))}
         </LinearGradient>
     )
 }
 
-export default MapReserved
+export default MapVisited

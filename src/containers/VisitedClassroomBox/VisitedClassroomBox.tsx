@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Classroom } from '../../types/classroom.type'
+import { Classroom, VisitedClassroom } from '../../types/classroom.type'
 import { Heading, MediumText } from '../../components/commonStyles'
 import {
     useClassrooms,
@@ -17,16 +17,10 @@ import { Alert, View } from 'react-native'
 import PlusIcon from '../../components/icons/PlusIcon'
 
 type Props = {
-    classroomId: number
+    classroom: VisitedClassroom
 }
-function VisitedClassroomBox({ classroomId }: Props) {
-    const [classroom, setClassroom] = useState<Classroom | undefined>(undefined)
-    const classrooms = useClassrooms()
+function VisitedClassroomBox({ classroom }: Props) {
     const handleVisited = useHandleVisited()
-
-    useEffect(() => {
-        setClassroom(classrooms.find((item) => item?.id === classroomId))
-    }, [classrooms])
 
     function Delete() {
         Alert.alert(
@@ -41,7 +35,7 @@ function VisitedClassroomBox({ classroomId }: Props) {
                 {
                     text: 'Ok',
                     onPress: () => {
-                        handleVisited.removeFromVisited(classroomId)
+                        handleVisited.removeFromVisited(classroom.classroomId)
                     },
                     style: 'default'
                 }
