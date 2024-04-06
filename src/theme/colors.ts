@@ -9,11 +9,12 @@ const palette = {
     neutral800: '#18181F',
     neutral900: '#000000',
 
-    primary100: '#ABEFDF',
+    primary100: '#2cee81',
     primary200: '#2ad375',
     primary300: '#099848',
+    primary400: '#087c38',
 
-    secondary100: '#DDA4FF',
+    secondary100: '#b558ec',
     secondary200: '#9e43d3',
     secondary300: '#7723ad',
 
@@ -24,9 +25,9 @@ const palette = {
     quaternary200: '#d33a3a',
     quaternary300: '#b71818',
 
-    quinary100: '#ecb146',
-    quinary200: '#e08b0c',
-    quinary300: '#9d5e00',
+    quinary100: '#ffbc41',
+    quinary200: '#eea833',
+    quinary300: '#ee9e1d',
     quinary400: '#E5AD42',
 
     accent100: '#FFDC23',

@@ -5,8 +5,9 @@ import { MAX_TIME } from '../config'
 
 type Props = {
     changedAt: string | null
+    reverse?: boolean
 }
-function Timer({ changedAt }: Props) {
+function Timer({ changedAt, reverse = false }: Props) {
     const clock = useClock()
 
     const [time, setTime] = useState(0)
@@ -19,9 +20,9 @@ function Timer({ changedAt }: Props) {
 
         const timePassed = changedAtDate
             ? now.getTime() - changedAtDate.getTime()
-            : null
+            : 0
         let timeLeft = timePassed ? MAX_TIME - timePassed : 0
-        setTime(timeLeft)
+        setTime(reverse ? timePassed : timeLeft)
     }, [clock])
 
     return <TimerDisplay time={time} />

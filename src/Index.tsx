@@ -8,6 +8,7 @@ import { DefaultBackground } from './components/commonStyles'
 import ClassroomProvider from './providers/ClassroomProvider'
 import ClockProvider from './providers/ClockProvider'
 import GroupProvider from './providers/GroupProvider'
+import InfoProvider from './providers/InfoProvider'
 
 export default function Index() {
     const [areFontsLoaded] = useFonts(customFontsToLoad)
@@ -24,7 +25,9 @@ export default function Index() {
                     <ClassroomProvider>
                         <ClockProvider>
                             <GroupProvider>
-                                <AppNavigator />
+                                <InfoProvider>
+                                    <AppNavigator />
+                                </InfoProvider>
                             </GroupProvider>
                         </ClockProvider>
                     </ClassroomProvider>

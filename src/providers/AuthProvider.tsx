@@ -2,9 +2,8 @@ import React, { createContext, useContext, useEffect, useState } from 'react'
 import AuthService from '../services/authService'
 import { apiLoginResponse } from '../types/response.type'
 import { Children } from '../types/props.type'
-import { Group, User } from '../types/auth.type'
+import { User } from '../types/auth.type'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { Classroom } from '../types/classroom.type'
 
 const storeCredentials = async (username: string, password: string) => {
     try {

@@ -158,14 +158,14 @@ function CreateGroupModal({ visible, handleVisible, group }: Props) {
                                         keyboardShouldPersistTaps={'handled'}
                                     >
                                         <MemberInputDrawer>
-                                            {membersList?.map((member) => {
+                                            {membersList?.map((member, id) => {
                                                 if (
                                                     !member.groupId &&
                                                     member.name !==
                                                         userData.name
                                                 )
                                                     return (
-                                                        <MediumText
+                                                        <MediumText key={id}
                                                             onPress={() =>
                                                                 handleMemberClicked(
                                                                     member
@@ -181,7 +181,7 @@ function CreateGroupModal({ visible, handleVisible, group }: Props) {
                                                     userData.name
                                                 )
                                                     return (
-                                                        <TextDim>
+                                                        <TextDim key={id}>
                                                             {member.name}
                                                         </TextDim>
                                                     )

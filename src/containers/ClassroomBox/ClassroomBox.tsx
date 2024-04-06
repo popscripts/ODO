@@ -4,6 +4,7 @@ import {
     ContentWrapper,
     Highlight,
     Press,
+    ReservedCorner,
     TimerWrapper,
     Wrapper
 } from './ClassroomBoxStyle'
@@ -11,7 +12,7 @@ import TimedGradient from '../TimedGradient/TimedGradient'
 import Timer from '../../components/Timer'
 import { Dimensions } from 'react-native'
 import ClassroomModal from '../ClassroomModal/ClassroomModal'
-import { useClassrooms, useSetStatus } from '../../providers/ClassroomProvider'
+import { useClassrooms } from '../../providers/ClassroomProvider'
 
 type Props = {
     classroomId: number
@@ -26,7 +27,7 @@ function ClassroomBox({ classroomId, colorPalette, status }: Props) {
     const width = Dimensions.get('screen').width
     const classrooms = useClassrooms()
     const [classroom, setClassroom] = useState(
-        classrooms.filter((item) => item?.id === classroomId)[0]
+        classrooms.find((item) => item?.id === classroomId)
     )
     const [changedAt, setChangedAt] = useState<null | string>(null)
 
@@ -37,16 +38,13 @@ function ClassroomBox({ classroomId, colorPalette, status }: Props) {
     }, [classroom])
 
     useEffect(() => {
-        setClassroom(classrooms.filter((item) => item?.id === classroomId)[0])
+        setClassroom(classrooms.find((item) => item?.id === classroomId))
     }, [classrooms])
 
     return (
         <>
             <Press underlayColor={'#ffffff'} onPress={handleVisible}>
-                <Wrapper
-                    colors={[colorPalette[0], colorPalette[1]]}
-                    width={width}
-                >
+                <Wrapper colors={[colorPalette[0], colorPalette[1]]}>
                     {status !== 'free' && changedAt && (
                         <TimedGradient
                             changedAt={changedAt}
@@ -54,12 +52,14 @@ function ClassroomBox({ classroomId, colorPalette, status }: Props) {
                         />
                     )}
                     <ContentWrapper>
-                        <ClassroomModal
-                            visible={showModal}
-                            handleVisible={handleVisible}
-                            classroom={classroom}
-                            color={colorPalette[0]}
-                        />
+                        {classroom && (
+                            <ClassroomModal
+                                visible={showModal}
+                                handleVisible={handleVisible}
+                                classroom={classroom}
+                                color={colorPalette[0]}
+                            />
+                        )}
                         <Heading>{classroom?.classroom}</Heading>
                         <MediumText>{classroom?.title}</MediumText>
                         <TimerWrapper>
@@ -69,6 +69,9 @@ function ClassroomBox({ classroomId, colorPalette, status }: Props) {
                         </TimerWrapper>
                     </ContentWrapper>
                     <Highlight colors={['#ffffff00', '#ffffff33']} />
+                    {status === 'busy' && classroom?.reservedBy && (
+                        <ReservedCorner />
+                    )}
                 </Wrapper>
             </Press>
         </>

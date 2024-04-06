@@ -10,6 +10,6 @@ export const Gradient = styled(LinearGradient)`
 export const AnimatedStyle: ViewStyle = {
     position: 'absolute',
     width: '200%',
-    height: 500,
+    height: 150,
     right: 0
 }

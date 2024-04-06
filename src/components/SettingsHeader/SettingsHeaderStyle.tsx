@@ -2,6 +2,7 @@ import styled from 'styled-components/native'
 import { colors } from '../../theme/colors'
 import { spacing } from '../../theme/spacing'
 import { typography } from '../../theme/typography'
+import { ImageBackground } from 'react-native'
 
 export const Heading = styled.Text`
     color: ${colors.text};
@@ -20,11 +21,24 @@ export const SubHeading = styled.Text`
     font-family: ${typography.primary.normal};
 `
 
+type WrapperProps = {
+    top: number
+}
+
 export const Wrapper = styled.View`
     width: 100%;
-    display: flex;
-    flex-flow: column nowrap;
-    gap: ${spacing.md};
-    padding: ${spacing.md};
     margin-bottom: ${spacing.xl};
+`
+
+export const Image = styled.ImageBackground<WrapperProps>`
+    padding-top: ${(props) => props.top}px;
+    margin-top: ${(props) => -props.top}px;
+`
+
+export const InsideWrapper = styled.View`
+    padding: ${spacing.xxl} ${spacing.md};
+    width: 100%;
+    display: flex;
+    gap: ${spacing.md};
+    flex-flow: column nowrap;
 `

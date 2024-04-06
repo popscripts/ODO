@@ -2,13 +2,16 @@ import styled from 'styled-components/native'
 import { spacing } from '../../theme/spacing'
 import { colors } from '../../theme/colors'
 import { typography } from '../../theme/typography'
+import { LinearGradient } from 'expo-linear-gradient'
 
-export const Background = styled.ImageBackground``
+export const Background = styled.View`
+    background-color: ${colors.palette.neutral600};
+`
 
 export const Wrapper = styled.View`
     width: 90%;
     border-radius: ${spacing.md};
-    margin-top: ${spacing.lg};
+    margin: ${spacing.lg};
     overflow: hidden;
     elevation: 6;
 `
@@ -48,7 +51,8 @@ export const Circle = styled.Text`
 `
 
 export const Description = styled.View`
-    background-color: rgba(21, 145, 125, 0.8);
+    //background-color: rgba(21, 145, 125, 0.8);
+    background-color: ${colors.palette.neutral500};
     width: 100%;
     padding: ${spacing.md};
     display: flex;

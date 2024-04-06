@@ -16,7 +16,7 @@ import { useUserData } from '../../providers/AuthProvider'
 import { Group } from '../../types/auth.type'
 import PencilIcon from '../icons/PencilIcon'
 import CreateGroupModal from '../../containers/CreateGroupModal/CreateGroupModal'
-const background = require('../../../assets/background.png')
+import { colors } from '../../theme/colors'
 
 type Props = {
     group: Group
@@ -68,7 +68,7 @@ function GroupBox() {
         <>
             {!userData.Group?.id && <TextDim>Brak aktywnej grupy</TextDim>}
             <Wrapper>
-                <Background source={background}>
+                <Background>
                     {userData.Group?.id ? (
                         <Inside
                             group={userData.Group}

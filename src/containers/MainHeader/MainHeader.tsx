@@ -19,18 +19,18 @@ function MainHeader() {
 
     const handlePress = () => {
         if (userData.Group) {
-            Alert.alert('Czy na pewno chcesz zakończyć oprowadzniae?', '', [
+            Alert.alert('Czy na pewno chcesz zakończyć oprowadzanie?', '', [
+                {
+                    text: 'Anuluj',
+                    onPress: () => {},
+                    style: 'default'
+                },
                 {
                     text: 'Ok',
                     onPress: () => {
                         deleteGroup()
                     },
-                    style: 'cancel'
-                },
-                {
-                    text: 'Anuluj',
-                    onPress: () => {},
-                    style: 'cancel'
+                    style: 'default'
                 }
             ])
         } else handleVisible()

@@ -3,6 +3,7 @@ import ClassroomBox from './ClassroomBox/ClassroomBox'
 import { colors } from '../theme/colors'
 import { MediumTextCenter } from '../components/commonStyles'
 import { LayoutAnimation, Platform, UIManager } from 'react-native'
+import { useUserData } from '../providers/AuthProvider'
 
 if (Platform.OS === 'android') {
     if (UIManager.setLayoutAnimationEnabledExperimental) {
@@ -36,17 +37,23 @@ function MapClassrooms({ status, filter }: Props) {
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
     }, [filter])
 
+    const userData = useUserData()
+
     return (
         <>
             {filter.length > 0 ? (
-                filter.map((id) => (
-                    <ClassroomBox
-                        classroomId={id}
-                        key={id}
-                        colorPalette={colorPalette}
-                        status={status}
-                    />
-                ))
+                filter.map(
+                    (id) =>
+                        userData?.Group?.Taken?.id !== id &&
+                        userData?.Group?.Reserved?.id !== id && (
+                            <ClassroomBox
+                                classroomId={id}
+                                key={id}
+                                colorPalette={colorPalette}
+                                status={status}
+                            />
+                        )
+                )
             ) : (
                 <MediumTextCenter>Brak sal do wyświetlenia</MediumTextCenter>
             )}
