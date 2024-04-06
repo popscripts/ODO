@@ -36,16 +36,12 @@ class GroupService {
                 description?: string | null
                 groupMembers?: GroupMember[]
             }
-            let temp: Props = {
+            const response = await this.httpClient.put('api/group', {
                 id,
                 groupSize,
-                description
-            }
-
-            if (groupMembers.length > 0) {
-                temp.groupMembers = groupMembers
-            }
-            const response = await this.httpClient.put('api/group', temp)
+                description,
+                groupMembers
+            })
             return response.json()
         } catch (e) {
             console.error(e)
@@ -58,6 +54,19 @@ class GroupService {
             const response = await this.httpClient.delete('api/group', {
                 id
             })
+            return response.json()
+        } catch (e) {
+            console.error(e)
+            throw e
+        }
+    }
+
+    async leaveGroup(id: number) {
+        try {
+            const response = await this.httpClient.put(
+                'api/group/leave/' + id,
+                {}
+            )
             return response.json()
         } catch (e) {
             console.error(e)

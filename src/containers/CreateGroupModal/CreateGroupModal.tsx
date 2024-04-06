@@ -4,8 +4,10 @@ import {
     AddButtonText,
     Backdrop,
     Background,
+    ButtonsWrapper,
     CancelButtonWrapper,
     InputDescription,
+    LeaveButton,
     MemberInputDrawer,
     MemberInputDrawerWrapper,
     MemberInputWrapper,
@@ -22,6 +24,7 @@ import { Group, GroupMember } from '../../types/auth.type'
 import {
     useCreateGroup,
     useEditGroup,
+    useLeaveGroup,
     useMembers
 } from '../../providers/GroupProvider'
 import { useUserData } from '../../providers/AuthProvider'
@@ -47,11 +50,16 @@ function NullIfEmptyAndParseInt(string: string) {
 function CreateGroupModal({ visible, handleVisible, group }: Props) {
     const createGroup = useCreateGroup()
     const editGroup = useEditGroup()
+    const leaveGroup = useLeaveGroup()
 
     const userData = useUserData()
 
     const otherMember =
-        group?.GroupMembers?.length === 2 ? group.GroupMembers[0] : null
+        group?.GroupMembers?.length === 2
+            ? group.GroupMembers[0].id !== userData.id
+                ? group.GroupMembers[0]
+                : group.GroupMembers[1]
+            : null
 
     const { membersList, searchMembers } = useMembers()
 
@@ -89,6 +97,14 @@ function CreateGroupModal({ visible, handleVisible, group }: Props) {
             setGroupMember(data)
         }
     }, [memberValue])
+
+    useEffect(() => {
+        if (otherMember)
+            setGroupMember({
+                id: otherMember?.id,
+                name: otherMember.name
+            })
+    }, [])
 
     function handleCreateGroup() {
         createGroup(
@@ -165,7 +181,8 @@ function CreateGroupModal({ visible, handleVisible, group }: Props) {
                                                         userData.name
                                                 )
                                                     return (
-                                                        <MediumText key={id}
+                                                        <MediumText
+                                                            key={id}
                                                             onPress={() =>
                                                                 handleMemberClicked(
                                                                     member
@@ -182,7 +199,8 @@ function CreateGroupModal({ visible, handleVisible, group }: Props) {
                                                 )
                                                     return (
                                                         <TextDim key={id}>
-                                                            {member.name}
+                                                            {member.name}{' '}
+                                                            (oprowadza)
                                                         </TextDim>
                                                     )
                                             })}
@@ -204,13 +222,24 @@ function CreateGroupModal({ visible, handleVisible, group }: Props) {
                         Opis grupy <TextDim>(opcjonalne)</TextDim>
                     </InputDescription>
                     <InputMultiline value={descValue} setValue={setDescValue} />
-                    <SubmitButton
-                        onPress={group ? handleEditGroup : handleCreateGroup}
-                    >
-                        <AddButtonText>
-                            {group ? 'Zatwierdź' : 'Rozpocznij oprowadzanie'}
-                        </AddButtonText>
-                    </SubmitButton>
+                    <ButtonsWrapper>
+                        {group && (
+                            <LeaveButton onPress={leaveGroup}>
+                                <AddButtonText>Opuść grupę</AddButtonText>
+                            </LeaveButton>
+                        )}
+                        <SubmitButton
+                            onPress={
+                                group ? handleEditGroup : handleCreateGroup
+                            }
+                        >
+                            <AddButtonText>
+                                {group
+                                    ? 'Zatwierdź'
+                                    : 'Rozpocznij oprowadzanie'}
+                            </AddButtonText>
+                        </SubmitButton>
+                    </ButtonsWrapper>
                 </Background>
             </Backdrop>
         </Modal>

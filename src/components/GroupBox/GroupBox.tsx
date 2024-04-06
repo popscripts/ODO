@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     Background,
     InsideWrapper,
@@ -16,8 +16,6 @@ import { useUserData } from '../../providers/AuthProvider'
 import { Group } from '../../types/auth.type'
 import PencilIcon from '../icons/PencilIcon'
 import CreateGroupModal from '../../containers/CreateGroupModal/CreateGroupModal'
-import { colors } from '../../theme/colors'
-
 type Props = {
     group: Group
     handleVisible: Function
@@ -59,19 +57,24 @@ function Inside({ group, handleVisible, visible }: Props) {
 function GroupBox() {
     const userData = useUserData()
     const [visible, setVisible] = useState(false)
+    const [group, setGroup] = useState<Group | null>(null)
 
     const handleVisible = () => {
         setVisible((prev) => !prev)
     }
 
+    useEffect(() => {
+        if (userData.Group) setGroup(userData.Group)
+    }, [userData])
+
     return (
         <>
-            {!userData.Group?.id && <TextDim>Brak aktywnej grupy</TextDim>}
+            {!group?.id && <TextDim>Brak aktywnej grupy</TextDim>}
             <Wrapper>
                 <Background>
-                    {userData.Group?.id ? (
+                    {group?.id ? (
                         <Inside
-                            group={userData.Group}
+                            group={group}
                             handleVisible={handleVisible}
                             visible={visible}
                         />

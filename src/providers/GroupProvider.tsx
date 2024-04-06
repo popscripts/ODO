@@ -1,8 +1,9 @@
-import React, { createContext, useContext, useState } from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 import { Children } from '../types/props.type'
 import { GroupMember, MembersListMember } from '../types/auth.type'
 import groupService from '../services/groupService'
 import { useGetUserData, useUserData } from './AuthProvider'
+import { socket } from './ClassroomProvider'
 
 type membersContextType = {
     membersList: MembersListMember[]
@@ -25,6 +26,7 @@ const EditGroupContext = createContext(
     ) => {}
 )
 const DeleteGroupContext = createContext(() => {})
+const LeaveGroupContext = createContext(() => {})
 const MembersContext = createContext<membersContextType>({
     membersList: [],
     searchMembers: (member: string) => {}
@@ -40,6 +42,10 @@ export function useEditGroup() {
 
 export function useDeleteGroup() {
     return useContext(DeleteGroupContext)
+}
+
+export function useLeaveGroup() {
+    return useContext(LeaveGroupContext)
 }
 
 export function useMembers() {
@@ -74,12 +80,14 @@ function GroupProvider({ children }: Children) {
         description: string | null,
         groupMember: GroupMember | null
     ) {
-        let temp =
-            (userData?.Group?.GroupMembers &&
-                userData?.Group?.GroupMembers[0]?.id) ||
-            0
-        let members =
-            groupMember?.id !== temp && groupMember ? [groupMember] : []
+        let members = [
+            {
+                id: userData.id,
+                name: userData.name || ''
+            }
+        ]
+        if (groupMember) members.push(groupMember)
+        console.log(id, groupSize, description, members)
         groupService
             .updateGroup(id, groupSize, description, members)
             .then((res) => {
@@ -94,24 +102,43 @@ function GroupProvider({ children }: Children) {
             })
     }
 
+    function leaveGroup() {
+        if (userData?.Group?.id)
+            groupService.leaveGroup(userData.Group.id).then(() => {
+                getUserData()
+            })
+    }
+
     function searchMembers(member: string) {
         groupService.searchMembers(member).then((res) => {
             if (!res.error) setMembersList(res.result)
         })
     }
 
+    useEffect(() => {
+        socket.on('groupUpdate', () => {
+            getUserData()
+        })
+
+        socket.on('groupAction', () => {
+            getUserData()
+        })
+    }, [])
+
     return (
         <CreateGroupContext.Provider value={createGroup}>
             <EditGroupContext.Provider value={editGroup}>
                 <DeleteGroupContext.Provider value={deleteGroup}>
-                    <MembersContext.Provider
-                        value={{
-                            membersList: membersList,
-                            searchMembers: searchMembers
-                        }}
-                    >
-                        {children}
-                    </MembersContext.Provider>
+                    <LeaveGroupContext.Provider value={leaveGroup}>
+                        <MembersContext.Provider
+                            value={{
+                                membersList: membersList,
+                                searchMembers: searchMembers
+                            }}
+                        >
+                            {children}
+                        </MembersContext.Provider>
+                    </LeaveGroupContext.Provider>
                 </DeleteGroupContext.Provider>
             </EditGroupContext.Provider>
         </CreateGroupContext.Provider>

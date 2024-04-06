@@ -51,7 +51,6 @@ export const Circle = styled.Text`
 `
 
 export const Description = styled.View`
-    //background-color: rgba(21, 145, 125, 0.8);
     background-color: ${colors.palette.neutral500};
     width: 100%;
     padding: ${spacing.md};
