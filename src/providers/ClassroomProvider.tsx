@@ -28,13 +28,7 @@ const ParsedClassroomContext = createContext<ParsedClassrooms>({
     visited: []
 })
 const SetStatusContext = createContext(
-    (
-        id: number,
-        prevStatus: Status['name'],
-        status: Status['name'],
-        classroom: string,
-        title: string
-    ) => {}
+    (id: number, prevStatus: Status['name'], status: Status['name']) => {}
 )
 const HandleVisitedClassroomsContext = createContext({
     addToVisited: (classroomId: number) => {},
@@ -93,20 +87,8 @@ function ClassroomProvider({ children }: Children) {
         })
     }
 
-    function setStatus(
-        id: number,
-        prevStatus: string,
-        status: string,
-        classroom: string,
-        title: string
-    ) {
-        ClassroomService.changeClassroomStatus(
-            id,
-            status,
-            prevStatus,
-            classroom,
-            title
-        )
+    function setStatus(id: number, prevStatus: string, status: string) {
+        ClassroomService.changeClassroomStatus(id, status, prevStatus)
     }
 
     function addToVisited(classroomId: number) {

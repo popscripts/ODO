@@ -27,14 +27,12 @@ class ClassroomService {
     async changeClassroomStatus(
         id: number,
         status: string,
-        prevStatus: string,
-        classroom: string,
-        title: string
+        prevStatus: string
     ) {
         try {
             const response = await this.httpClient.patch(
                 'api/classroom/status',
-                { id, status, prevStatus, classroom, title }
+                { id, status, prevStatus }
             )
             return response.json()
         } catch (e) {

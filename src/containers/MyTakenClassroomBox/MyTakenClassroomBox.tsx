@@ -13,7 +13,6 @@ import TimedGradient from '../TimedGradient/TimedGradient'
 import Timer from '../../components/Timer'
 import ClassroomModal from '../ClassroomModal/ClassroomModal'
 import {
-    useClassrooms,
     useParsedClassrooms,
     useSetStatus
 } from '../../providers/ClassroomProvider'
@@ -77,15 +76,7 @@ function ClassroomBox({ classroom }: Props) {
                     </TimerWrapper>
 
                     <IconWrapper
-                        onPress={() =>
-                            setStatus(
-                                classroom.id,
-                                'busy',
-                                'free',
-                                classroom.classroom,
-                                classroom.title
-                            )
-                        }
+                        onPress={() => setStatus(classroom.id, 'busy', 'free')}
                     >
                         <FreeClassroomIcon />
                     </IconWrapper>
