@@ -13,7 +13,6 @@ import { apiLoginResponse } from '../../types/response.type'
 import { BottomWrapper, FormWrapper } from './RegisterFormStyle'
 import { colors } from '../../theme/colors'
 import { Vibration } from 'react-native'
-import Loading from '../../components/Loading/Loading'
 import { Error } from '../../types/response.type'
 
 type Props = {

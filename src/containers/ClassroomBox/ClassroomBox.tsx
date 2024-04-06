@@ -10,25 +10,20 @@ import {
 } from './ClassroomBoxStyle'
 import TimedGradient from '../TimedGradient/TimedGradient'
 import Timer from '../../components/Timer'
-import { Dimensions } from 'react-native'
 import ClassroomModal from '../ClassroomModal/ClassroomModal'
-import { useClassrooms } from '../../providers/ClassroomProvider'
+import { Classroom } from '../../types/classroom.type'
 
 type Props = {
-    classroomId: number
+    classroom: Classroom
     colorPalette: any[]
     status: string
 }
-function ClassroomBox({ classroomId, colorPalette, status }: Props) {
+function ClassroomBox({ classroom, colorPalette, status }: Props) {
     const [showModal, setShowModal] = useState(false)
     const handleVisible = () => {
         setShowModal(!showModal)
     }
-    const width = Dimensions.get('screen').width
-    const classrooms = useClassrooms()
-    const [classroom, setClassroom] = useState(
-        classrooms.find((item) => item?.id === classroomId)
-    )
+
     const [changedAt, setChangedAt] = useState<null | string>(null)
 
     useEffect(() => {
@@ -36,10 +31,6 @@ function ClassroomBox({ classroomId, colorPalette, status }: Props) {
             setChangedAt(classroom?.takenAt || classroom?.reservedAt)
         }
     }, [classroom])
-
-    useEffect(() => {
-        setClassroom(classrooms.find((item) => item?.id === classroomId))
-    }, [classrooms])
 
     return (
         <>

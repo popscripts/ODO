@@ -11,6 +11,7 @@ import HomeIcon from '../components/icons/HomeIcon'
 import CutleryIcon from '../components/icons/CutleryIcon'
 import PlaceholderScreen from '../screens/PlaceholderScreen'
 import { DefaultBackground } from '../components/commonStyles'
+import VisitedScreen from '../screens/VisitedScreen'
 import SettingsScreen from '../screens/SettingsScreen'
 import InfoScreen from '../screens/InfoScreen'
 
@@ -82,7 +83,7 @@ function MainNavigator() {
                 ></Tab.Screen>
                 <Tab.Screen
                     name="list"
-                    component={PlaceholderScreen}
+                    component={VisitedScreen}
                     options={{
                         tabBarIcon: ({ focused }) => (
                             <ListIcon

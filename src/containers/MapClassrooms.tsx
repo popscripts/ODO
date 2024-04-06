@@ -4,6 +4,7 @@ import { colors } from '../theme/colors'
 import { MediumTextCenter } from '../components/commonStyles'
 import { LayoutAnimation, Platform, UIManager } from 'react-native'
 import { useUserData } from '../providers/AuthProvider'
+import { Classroom } from '../types/classroom.type'
 
 if (Platform.OS === 'android') {
     if (UIManager.setLayoutAnimationEnabledExperimental) {
@@ -13,9 +14,9 @@ if (Platform.OS === 'android') {
 
 type Props = {
     status: string
-    filter: number[]
+    classrooms: Classroom[]
 }
-function MapClassrooms({ status, filter }: Props) {
+function MapClassrooms({ status, classrooms }: Props) {
     const colorPalette =
         status === 'free'
             ? [colors.palette.tertiary200, colors.palette.tertiary300]
@@ -33,22 +34,22 @@ function MapClassrooms({ status, filter }: Props) {
                     colors.palette.quinary300
                 ]
 
-    useEffect(() => {
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
-    }, [filter])
+    // useEffect(() => {
+    //     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
+    // }, [filter])
 
     const userData = useUserData()
 
     return (
         <>
-            {filter.length > 0 ? (
-                filter.map(
-                    (id) =>
-                        userData?.Group?.Taken?.id !== id &&
-                        userData?.Group?.Reserved?.id !== id && (
+            {classrooms.length > 0 ? (
+                classrooms.map(
+                    (classroom) =>
+                        userData?.Group?.Taken?.id !== classroom.id &&
+                        userData?.Group?.Reserved?.id !== classroom.id && (
                             <ClassroomBox
-                                classroomId={id}
-                                key={id}
+                                classroom={classroom}
+                                key={classroom.id}
                                 colorPalette={colorPalette}
                                 status={status}
                             />
