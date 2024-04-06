@@ -42,3 +42,10 @@ export const InsideWrapper = styled.View`
     gap: ${spacing.md};
     flex-flow: column nowrap;
 `
+
+export const LogoutButton = styled.TouchableOpacity`
+    position: absolute;
+    padding: 10px;
+    right: 10px;
+    top: 10px;
+`
