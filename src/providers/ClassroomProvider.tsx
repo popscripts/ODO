@@ -112,17 +112,21 @@ function ClassroomProvider({ children }: Children) {
     }, [loggedIn])
 
     useEffect(() => {
-        socket.removeAllListeners()
+        getGroupedClassrooms()
+    }, [userData.Group?.id])
 
-        socket.on('classroomStatus', (data: classroomStatus) => {
-            getGroupedClassrooms()
-            getUserData()
-        })
+    useEffect(() => {
+        if (loggedIn) {
+            socket.on('classroomStatus', (data: classroomStatus) => {
+                getUserData()
+                getGroupedClassrooms()
+            })
 
-        socket.on('groupVisitedClassroom', (data: classroomStatus) => {
-            getGroupedClassrooms()
-        })
-    }, [])
+            socket.on('groupVisitedClassroom', (data: classroomStatus) => {
+                getGroupedClassrooms()
+            })
+        }
+    }, [loggedIn])
 
     return (
         <ClassroomContext.Provider value={classrooms}>

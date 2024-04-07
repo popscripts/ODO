@@ -64,7 +64,7 @@ const UserDataContext = createContext<User>(userDataPlaceholder)
 const CredentialsContext = createContext({ username: '', password: '' })
 const UpdateNameContext = createContext((name: string, surname: string) => {})
 const LoggedInContext = createContext(false)
-const GetUserDataContext = createContext(() => {})
+const GetUserDataContext = createContext(async () => {})
 
 export function useToken() {
     return useContext(TokenContext)

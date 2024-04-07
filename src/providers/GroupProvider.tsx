@@ -117,10 +117,6 @@ function GroupProvider({ children }: Children) {
             socket.on('groupUpdate', (res) => {
                 getUserData()
             })
-
-            socket.on('groupAction', () => {
-                getUserData()
-            })
         }
     }, [loggedIn])
 
