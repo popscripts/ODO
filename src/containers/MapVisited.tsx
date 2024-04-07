@@ -1,15 +1,15 @@
 import React from 'react'
 import VisitedClassroomBox from './VisitedClassroomBox/VisitedClassroomBox'
-import { LinearGradient } from 'expo-linear-gradient'
 import { colors } from '../theme/colors'
 import { VisitedClassroom } from '../types/classroom.type'
+import { HigherLinearGradient } from '../components/commonStyles'
 
 type Props = {
     classrooms: VisitedClassroom[]
 }
 function MapVisited({ classrooms }: Props) {
     return (
-        <LinearGradient
+        <HigherLinearGradient
             colors={[
                 colors.palette.primary200,
                 colors.palette.tertiary200,
@@ -23,7 +23,7 @@ function MapVisited({ classrooms }: Props) {
                         key={classroom.classroomId}
                     />
                 ))}
-        </LinearGradient>
+        </HigherLinearGradient>
     )
 }
 
