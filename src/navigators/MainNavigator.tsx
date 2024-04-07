@@ -12,6 +12,7 @@ import CutleryIcon from '../components/icons/CutleryIcon'
 import PlaceholderScreen from '../screens/PlaceholderScreen'
 import { DefaultBackground } from '../components/commonStyles'
 import InfoScreen from '../screens/InfoScreen'
+import OrderScreen from '../screens/OrderScreen'
 
 const Tab = createMaterialTopTabNavigator()
 
@@ -96,7 +97,7 @@ function MainNavigator() {
                 ></Tab.Screen>
                 <Tab.Screen
                     name="buffet"
-                    component={PlaceholderScreen}
+                    component={OrderScreen}
                     options={{
                         tabBarIcon: ({ focused }) => (
                             <CutleryIcon
