@@ -4,6 +4,7 @@ import { colors } from '../theme/colors'
 import { spacing } from '../theme/spacing'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { LinearGradient } from 'expo-linear-gradient'
+import { ScrollView } from 'react-native'
 
 export const ErrorText = styled.Text`
     font-family: ${typography.primary.medium};
@@ -58,6 +59,10 @@ export const SafeArea = styled(SafeAreaView)`
 `
 
 export const Scroll = styled.ScrollView`
+    width: 100%;
+`
+
+export const Width100 = styled.View`
     width: 100%;
 `
 

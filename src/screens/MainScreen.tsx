@@ -3,7 +3,7 @@ import ScreenWrapper from '../components/ScreenWrapper/ScreenWrapper'
 import MainHeader from '../containers/MainHeader/MainHeader'
 import MapClassrooms from '../containers/MapClassrooms'
 import ClassroomSection from '../components/ClassroomSection/ClassroomSection'
-import { Scroll } from '../components/commonStyles'
+import { Scroll, Width100 } from '../components/commonStyles'
 import Footer from '../components/Footer/Footer'
 import { useParsedClassrooms } from '../providers/ClassroomProvider'
 import MyTakenClassroomBox from '../containers/MyTakenClassroomBox/MyTakenClassroomBox'
@@ -16,7 +16,7 @@ function MainScreen() {
     const userData = useUserData()
     return (
         <ScreenWrapper>
-            <Scroll keyboardShouldPersistTaps="handled">
+            <Width100>
                 <MainHeader />
                 <ClassroomSectionWrapper>
                     {userData.Group?.Taken && (
@@ -49,7 +49,7 @@ function MainScreen() {
                     />
                 </ClassroomSection>
                 <Footer />
-            </Scroll>
+            </Width100>
         </ScreenWrapper>
     )
 }

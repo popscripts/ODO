@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { ShortClassroom } from '../../types/classroom.type'
+import { Classroom, ShortClassroom } from '../../types/classroom.type'
 import { Heading, MediumText } from '../../components/commonStyles'
 import { colors } from '../../theme/colors'
 import {
@@ -26,9 +26,7 @@ function ClassroomBox({ classroom }: Props) {
     const [modalVisible, setModalVisible] = useState<boolean>(false)
 
     const classrooms = useParsedClassrooms()
-    const [fullclassroom, setFullClassroom] = useState(
-        classrooms.busy.find((item) => item?.id === classroom.id)
-    )
+    const [fullclassroom, setFullClassroom] = useState<Classroom | undefined>()
 
     const handleModalVisible = () => {
         setModalVisible((prev) => !prev)
@@ -42,7 +40,7 @@ function ClassroomBox({ classroom }: Props) {
 
     useEffect(() => {
         setFullClassroom(
-            classrooms.busy.find((item) => item?.id === classroom.id)
+            classrooms?.busy?.find((item) => item?.id === classroom.id)
         )
     }, [classrooms])
 
@@ -80,7 +78,7 @@ function ClassroomBox({ classroom }: Props) {
                     <IconWrapper
                         onPress={() => setStatus(classroom.id, 'busy', 'free')}
                     >
-                        <FreeClassroomIcon />
+                        <FreeClassroomIcon size={75} />
                     </IconWrapper>
                 </ContentWrapper>
             </Wrapper>

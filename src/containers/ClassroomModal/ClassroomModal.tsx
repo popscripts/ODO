@@ -38,7 +38,7 @@ const ClassroomModal = ({
     useEffect(() => {
         const temp = useClassModalSettings(classroom, userData)
         setSettings(temp)
-    }, [userData])
+    }, [userData, classroom])
 
     return (
         <Modal
