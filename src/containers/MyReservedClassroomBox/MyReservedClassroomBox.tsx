@@ -39,7 +39,7 @@ function ClassroomBox({ classroom }: Props) {
         setFullClassroom(
             classrooms.reserved.find((item) => item?.id === classroom.id)
         )
-    }, [classroom])
+    }, [classrooms])
 
     return (
         <Press underlayColor={'#ffffff'} onPress={handleModalVisible}>

@@ -26,7 +26,7 @@ function ClassroomBox({ classroom }: Props) {
     const [modalVisible, setModalVisible] = useState<boolean>(false)
 
     const classrooms = useParsedClassrooms()
-    const [fullclassroom, setClassroom] = useState(
+    const [fullclassroom, setFullClassroom] = useState(
         classrooms.busy.find((item) => item?.id === classroom.id)
     )
 
@@ -41,8 +41,10 @@ function ClassroomBox({ classroom }: Props) {
     const colorPalette = [colors.palette.primary200, colors.palette.primary300]
 
     useEffect(() => {
-        console.log(fullclassroom)
-    }, [fullclassroom])
+        setFullClassroom(
+            classrooms.busy.find((item) => item?.id === classroom.id)
+        )
+    }, [classrooms])
 
     return (
         <Press underlayColor={'#ffffff'} onPress={handleModalVisible}>

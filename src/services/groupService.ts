@@ -63,10 +63,9 @@ class GroupService {
 
     async leaveGroup(id: number) {
         try {
-            const response = await this.httpClient.put(
-                'api/group/leave/' + id,
-                {}
-            )
+            const response = await this.httpClient.put('api/group/leave', {
+                id
+            })
             return response.json()
         } catch (e) {
             console.error(e)

@@ -3,6 +3,7 @@ import { typography } from '../theme/typography'
 import { colors } from '../theme/colors'
 import { spacing } from '../theme/spacing'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { LinearGradient } from 'expo-linear-gradient'
 
 export const ErrorText = styled.Text`
     font-family: ${typography.primary.medium};
@@ -76,4 +77,8 @@ export const StretchWrapper = styled.View`
 
 export const TextDim = styled.Text`
     color: ${colors.textDim};
+`
+
+export const HigherLinearGradient = styled(LinearGradient)`
+    margin-top: -35px;
 `
