@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { ShortClassroom } from '../../types/classroom.type'
+import { Classroom, ShortClassroom } from '../../types/classroom.type'
 import { Heading, MediumText } from '../../components/commonStyles'
 import { colors } from '../../theme/colors'
 import {
@@ -10,7 +10,7 @@ import {
 } from './MyReservedClassroomBoxStyle'
 import TimedGradient from '../TimedGradient/TimedGradient'
 import Timer from '../../components/Timer'
-import { useClassrooms } from '../../providers/ClassroomProvider'
+import { useParsedClassrooms } from '../../providers/ClassroomProvider'
 import ClassroomModal from '../ClassroomModal/ClassroomModal'
 
 type Props = {
@@ -19,10 +19,8 @@ type Props = {
 function ClassroomBox({ classroom }: Props) {
     const [modalVisible, setModalVisible] = useState<boolean>(false)
 
-    const classrooms = useClassrooms()
-    const [fullclassroom, setClassroom] = useState(
-        classrooms.find((item) => item?.id === classroom.id)
-    )
+    const classrooms = useParsedClassrooms()
+    const [fullclassroom, setFullClassroom] = useState<Classroom | undefined>()
 
     const handleModalVisible = () => {
         setModalVisible((prev) => !prev)
@@ -38,7 +36,9 @@ function ClassroomBox({ classroom }: Props) {
     ]
 
     useEffect(() => {
-        setClassroom(classrooms.find((item) => item?.id === classroom.id))
+        setFullClassroom(
+            classrooms.reserved.find((item) => item?.id === classroom.id)
+        )
     }, [classrooms])
 
     return (

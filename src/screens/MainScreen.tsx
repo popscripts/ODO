@@ -12,7 +12,7 @@ import MyReservedClassroomBox from '../containers/MyReservedClassroomBox/MyReser
 import { ClassroomSectionWrapper } from '../components/ClassroomSection/ClassroomSectionStyle'
 
 function MainScreen() {
-    const filters = useParsedClassrooms()
+    const classrooms = useParsedClassrooms()
     const userData = useUserData()
     return (
         <ScreenWrapper>
@@ -31,15 +31,21 @@ function MainScreen() {
                     )}
                 </ClassroomSectionWrapper>
                 <ClassroomSection title={'Wolne Sale'}>
-                    <MapClassrooms status={'free'} filter={filters.free} />
+                    <MapClassrooms
+                        status={'free'}
+                        classrooms={classrooms.free}
+                    />
                 </ClassroomSection>
                 <ClassroomSection title={'Zajęte Sale'}>
-                    <MapClassrooms status={'busy'} filter={filters.busy} />
+                    <MapClassrooms
+                        status={'busy'}
+                        classrooms={classrooms.busy}
+                    />
                 </ClassroomSection>
                 <ClassroomSection title={'Zarezerwowane Sale'}>
                     <MapClassrooms
                         status={'reserved'}
-                        filter={filters.reserved}
+                        classrooms={classrooms.reserved}
                     />
                 </ClassroomSection>
                 <Footer />

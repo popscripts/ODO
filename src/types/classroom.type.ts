@@ -39,6 +39,12 @@ export type ShortClassroom = {
     takenAt: string | null
 }
 
+export type VisitedClassroom = {
+    classroomId: number
+    classroom: string
+    title: string
+}
+
 export type ManagedClassroom = {
     id: number
     classroom: string

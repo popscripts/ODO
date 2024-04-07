@@ -4,6 +4,9 @@ import { apiLoginResponse } from '../types/response.type'
 import { Children } from '../types/props.type'
 import { User } from '../types/auth.type'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import io from 'socket.io-client'
+import { API_URL } from '../config'
+export const socket = io(API_URL)
 
 const storeCredentials = async (username: string, password: string) => {
     try {
@@ -61,7 +64,7 @@ const UserDataContext = createContext<User>(userDataPlaceholder)
 const CredentialsContext = createContext({ username: '', password: '' })
 const UpdateNameContext = createContext((name: string, surname: string) => {})
 const LoggedInContext = createContext(false)
-const GetUserDataContext = createContext(() => {})
+const GetUserDataContext = createContext(async () => {})
 
 export function useToken() {
     return useContext(TokenContext)
@@ -139,6 +142,7 @@ export default function AuthProvider({ children }: Children) {
             setLoggedIn(false)
             setTimeout(() => setUserData(userDataPlaceholder), 300)
             storeLogIn(false)
+            socket.removeAllListeners()
             return response
         })
     }

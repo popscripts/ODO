@@ -28,7 +28,8 @@ export const Corner = styled.View`
 export const Radius = styled.View`
     height: 20px;
     width: 100%;
-    background-color: #505063;
+    background-color: ${colors.palette.neutral600};
+    padding: 2px;
 `
 
 export const Web = styled(WebView)`
