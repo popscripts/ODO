@@ -37,7 +37,11 @@ function ClassroomBox({ classroom }: Props) {
 
     useEffect(() => {
         setFullClassroom(
-            classrooms.reserved.find((item) => item?.id === classroom.id)
+            classroom.status.name === 'reserved'
+                ? classrooms?.reserved?.find(
+                      (item) => item?.id === classroom.id
+                  )
+                : classrooms?.busy?.find((item) => item?.id === classroom.id)
         )
     }, [classrooms])
 

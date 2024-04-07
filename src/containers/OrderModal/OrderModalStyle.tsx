@@ -1,26 +1,51 @@
-import styled from "styled-components/native"
-import { colors } from "../../theme/colors"
-import { SafeAreaView } from "react-native-safe-area-context"
-import { spacing } from "../../theme/spacing"
+import styled from 'styled-components/native'
+import { colors } from '../../theme/colors'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { spacing } from '../../theme/spacing'
+import { typography } from '../../theme/typography'
 
-export const Background = styled(SafeAreaView)`
+export const Background = styled.View`
     width: 100%;
-    height: 100%;
     background-color: ${colors.background};
     display: flex;
     align-items: center;
+    gap: ${spacing.lg};
+    padding-top: ${spacing.xxxl};
 `
 
-export const OrderWrapper = styled.View`
+export const WidthWrapper = styled.View`
     width: 90%;
-    background-color: ${colors.palette.neutral500};
-    padding: ${spacing.md};
-    border-radius: ${spacing.md};
-    display: flex;
-    flex-direction: row;
+    gap: ${spacing.xs};
 `
 
-export const InputWrapper = styled.View`
-    transform: scale(0.6);
-    transform-origin: right;
+export const PaddingLeft = styled.View`
+    padding-left: ${spacing.xs};
+`
+
+type ScrollType = {
+    ref: any
+}
+
+export const Scroll = styled.ScrollView<ScrollType>`
+    width: 100%;
+    background-color: ${colors.background};
+`
+
+export const AddButton = styled.TouchableOpacity`
+    background-color: ${colors.palette.quinary200};
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    padding: 0 40px;
+    margin: 20px;
+`
+
+export const AddButtonText = styled.Text`
+    font-family: ${typography.primary.semiBold};
+    color: ${colors.text};
+    font-size: ${spacing.lg};
+    padding: 10px;
+    text-align: center;
 `

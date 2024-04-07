@@ -16,7 +16,7 @@ function MapVisited({ classrooms }: Props) {
                 colors.palette.secondary200
             ]}
         >
-            {classrooms.length > 0 &&
+            {classrooms?.length > 0 &&
                 classrooms.map((classroom) => (
                     <VisitedClassroomBox
                         classroom={classroom}

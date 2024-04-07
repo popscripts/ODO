@@ -9,6 +9,7 @@ import ClassroomProvider from './providers/ClassroomProvider'
 import ClockProvider from './providers/ClockProvider'
 import GroupProvider from './providers/GroupProvider'
 import InfoProvider from './providers/InfoProvider'
+import BuffetProvider from './providers/BuffetProvider'
 
 export default function Index() {
     const [areFontsLoaded] = useFonts(customFontsToLoad)
@@ -26,7 +27,9 @@ export default function Index() {
                         <ClockProvider>
                             <GroupProvider>
                                 <InfoProvider>
-                                    <AppNavigator />
+                                    <BuffetProvider>
+                                        <AppNavigator />
+                                    </BuffetProvider>
                                 </InfoProvider>
                             </GroupProvider>
                         </ClockProvider>

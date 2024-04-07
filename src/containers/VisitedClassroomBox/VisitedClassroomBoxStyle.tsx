@@ -7,6 +7,7 @@ export const ContentWrapper = styled.View`
     position: relative;
     border-radius: 30px;
     width: 100%;
+    background-color: ${colors.palette.overlay22};
     border: 10px solid ${colors.background};
     display: flex;
     flex-direction: row;

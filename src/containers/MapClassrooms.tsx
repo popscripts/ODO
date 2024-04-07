@@ -42,7 +42,7 @@ function MapClassrooms({ status, classrooms }: Props) {
 
     return (
         <>
-            {classrooms.length > 0 ? (
+            {classrooms && classrooms.length > 0 ? (
                 classrooms.map(
                     (classroom) =>
                         userData?.Group?.Taken?.id !== classroom.id &&

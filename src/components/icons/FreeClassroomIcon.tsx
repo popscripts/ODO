@@ -1,7 +1,12 @@
 import * as React from 'react'
 import Svg, { G, Path, Defs } from 'react-native-svg'
-const FreeClassroomIcon = () => (
-    <Svg width={76} height={75} fill="none">
+
+type Props = {
+    size: number
+}
+
+const FreeClassroomIcon = ({ size }: Props) => (
+    <Svg width={size} height={size} viewBox="0 0 75 75" fill="none">
         <G filter="url(#a)">
             <Path
                 fill="#F6F6F6"
