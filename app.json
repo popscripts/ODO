@@ -28,6 +28,21 @@
             "splash": {
                 "backgroundColor": "#303041"
             }
-        }
+        },
+        "extra": {
+            "eas": {
+                "projectId": "5580fe4e-a108-40aa-8d5f-a60b05d07d61"
+            }
+        },
+        "plugins": [
+            [
+                "expo-build-properties",
+                {
+                    "android": {
+                        "usesCleartextTraffic": true
+                    }
+                }
+            ]
+        ]
     }
 }
