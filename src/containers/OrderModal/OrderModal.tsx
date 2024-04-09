@@ -1,4 +1,4 @@
-import { Dimensions, Modal, ScrollView } from 'react-native'
+import { Dimensions, Modal, ScrollView, TouchableOpacity } from 'react-native'
 import {
     Background,
     PaddingLeft,
@@ -14,6 +14,8 @@ import InputMultiline from '../../components/InputMultiline/InputMultiline'
 import { useKeyboardHeight } from '../../hooks/useKeyboardHeight'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { usePlaceOrder } from '../../providers/BuffetProvider'
+import XIcon from '../../components/icons/XIcon'
+import CloseModal from '../../components/CloseModal/CloseModal'
 
 type Props = {
     visible: boolean
@@ -55,6 +57,7 @@ function OrderModal({ visible, handleVisible }: Props) {
                             : '100%'
                     }}
                 >
+                   <CloseModal />
                     <Heading>Złóż zamówienie</Heading>
                     <OrderBox
                         value={chValue}

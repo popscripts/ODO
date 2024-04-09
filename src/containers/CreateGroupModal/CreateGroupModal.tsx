@@ -1,4 +1,4 @@
-import { Modal, Keyboard } from 'react-native'
+import { Modal, Keyboard, TouchableOpacity } from 'react-native'
 import {
     AddButton,
     AddButtonText,
@@ -28,6 +28,8 @@ import {
     useMembers
 } from '../../providers/GroupProvider'
 import { useUserData } from '../../providers/AuthProvider'
+import XIcon from '../../components/icons/XIcon'
+import CloseModal from '../../components/CloseModal/CloseModal'
 
 type Props = {
     visible: boolean
@@ -145,6 +147,7 @@ function CreateGroupModal({ visible, handleVisible, group }: Props) {
         >
             <Backdrop>
                 <Background>
+                <CloseModal />
                     <Title>{group ? 'Edytuj grupę' : 'Utwórz grupę'}</Title>
                     {!isInputVisible ? (
                         <AddButton onPress={handleIsInputVisible}>
