@@ -1,10 +1,7 @@
-import React, { useEffect, useState } from 'react'
-import { Classroom, VisitedClassroom } from '../../types/classroom.type'
+import React from 'react'
+import { VisitedClassroom } from '../../types/classroom.type'
 import { Heading, MediumText } from '../../components/commonStyles'
-import {
-    useClassrooms,
-    useHandleVisited
-} from '../../providers/ClassroomProvider'
+import { useHandleVisited } from '../../providers/ClassroomProvider'
 import {
     ContentWrapper,
     FillerBottom,
@@ -15,6 +12,7 @@ import {
 } from './VisitedClassroomBoxStyle'
 import { Alert, View } from 'react-native'
 import PlusIcon from '../../components/icons/PlusIcon'
+import { useConjugated } from '../../hooks/useConjugated'
 
 type Props = {
     classroom: VisitedClassroom
@@ -24,8 +22,8 @@ function VisitedClassroomBox({ classroom }: Props) {
 
     function Delete() {
         Alert.alert(
-            `Czy na pewno chcesz przywrócić klasę ${classroom?.classroom} do głównego widoku?`,
-            '',
+            ``,
+            `Czy na pewno chcesz przywrócić ${useConjugated(classroom?.classroom)} do głównego widoku?`,
             [
                 {
                     text: 'Anuluj',

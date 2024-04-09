@@ -61,7 +61,7 @@ function BuffetProvider({ children }: Children) {
             })
         }
         BuffetService.placeOrder(orderPositions, comment).then((res) => {
-            if (res.error) Alert.alert(res.result)
+            if (res.error) Alert.alert('Błąd', res.result)
         })
     }
 
@@ -73,7 +73,7 @@ function BuffetProvider({ children }: Children) {
 
     function changeOrderStatus(id: number, statusId: number) {
         BuffetService.changeOrderStatus(id, statusId).then((res) => {
-            if (res?.error) Alert.alert(res.result)
+            if (res?.error) Alert.alert('Błąd', res.result)
         })
     }
 
