@@ -13,6 +13,7 @@ import ChangeStatusButton from '../../components/ChangeStatusButton/ChangeStatus
 import { useState, useEffect } from 'react'
 import { useClassModalSettings } from '../../hooks/useClassModalSettings'
 import { useUserData } from '../../providers/AuthProvider'
+import CloseModal from '../../components/CloseModal/CloseModal'
 
 type Props = {
     visible: boolean
@@ -49,8 +50,9 @@ const ClassroomModal = ({
             presentationStyle="overFullScreen"
             statusBarTranslucent={true}
         >
-            <Backdrop onPress={handleVisible}>
+            <Backdrop>
                 <Background>
+                    <CloseModal handleVisible={handleVisible} />
                     <ClassroomNumber color={color}>
                         {classroom.classroom}
                     </ClassroomNumber>

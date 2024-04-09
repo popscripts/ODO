@@ -21,12 +21,6 @@ type Props = {
     order: OrderType
 }
 
-export enum DishEnum {
-    toastWithCheese = 1,
-    toastWithHam = 2,
-    toastWithCheeseAndHam = 3
-}
-
 export enum OrderStatusEnum {
     ordered = 4,
     inProgress = 5,
@@ -130,7 +124,7 @@ function Order({ order }: Props) {
                         </Number>
                         <View>
                             {order.OrderPosition.map((position, id) => (
-                                <OrderText>
+                                <OrderText key={id}>
                                     • {getDishName(position.dish.id)} x
                                     {position.amount}
                                 </OrderText>

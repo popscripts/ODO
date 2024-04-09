@@ -1,12 +1,20 @@
-import XIcon from "../icons/XIcon"
-import { XWrapper } from "./CloseModalStyle"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
+import XIcon from '../icons/XIcon'
+import { XWrapper, Press } from './CloseModalStyle'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
-function CloseModal() {
+type Props = {
+    handleVisible: Function
+}
+
+function CloseModal({ handleVisible }: Props) {
     const insets = useSafeAreaInsets()
-    return <XWrapper top={insets.top}>
-        <XIcon size={20}/>
-    </XWrapper>
+    return (
+        <XWrapper top={insets.top}>
+            <Press onPress={() => handleVisible()}>
+                <XIcon size={20} />
+            </Press>
+        </XWrapper>
+    )
 }
 
 export default CloseModal

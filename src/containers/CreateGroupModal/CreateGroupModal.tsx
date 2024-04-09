@@ -1,4 +1,4 @@
-import { Modal, Keyboard, TouchableOpacity } from 'react-native'
+import { Modal, Keyboard } from 'react-native'
 import {
     AddButton,
     AddButtonText,
@@ -6,11 +6,13 @@ import {
     Background,
     ButtonsWrapper,
     CancelButtonWrapper,
+    InactiveMemberWrapper,
     InputDescription,
     LeaveButton,
     MemberInputDrawer,
     MemberInputDrawerWrapper,
     MemberInputWrapper,
+    MemberWrapper,
     SubmitButton,
     Title
 } from './CreateGroupModalStyle'
@@ -28,7 +30,6 @@ import {
     useMembers
 } from '../../providers/GroupProvider'
 import { useUserData } from '../../providers/AuthProvider'
-import XIcon from '../../components/icons/XIcon'
 import CloseModal from '../../components/CloseModal/CloseModal'
 
 type Props = {
@@ -146,8 +147,8 @@ function CreateGroupModal({ visible, handleVisible, group }: Props) {
             statusBarTranslucent={true}
         >
             <Backdrop>
-                <Background>
-                <CloseModal />
+                <Background onPress={() => Keyboard.dismiss()}>
+                    <CloseModal handleVisible={handleVisible} />
                     <Title>{group ? 'Edytuj grupę' : 'Utwórz grupę'}</Title>
                     {!isInputVisible ? (
                         <AddButton onPress={handleIsInputVisible}>
@@ -184,7 +185,7 @@ function CreateGroupModal({ visible, handleVisible, group }: Props) {
                                                         userData.name
                                                 )
                                                     return (
-                                                        <MediumText
+                                                        <MemberWrapper
                                                             key={id}
                                                             onPress={() =>
                                                                 handleMemberClicked(
@@ -192,19 +193,23 @@ function CreateGroupModal({ visible, handleVisible, group }: Props) {
                                                                 )
                                                             }
                                                         >
-                                                            {member.name}
-                                                            {member.groupId}
-                                                        </MediumText>
+                                                            <MediumText>
+                                                                {member.name}
+                                                                {member.groupId}
+                                                            </MediumText>
+                                                        </MemberWrapper>
                                                     )
                                                 else if (
                                                     member.name !==
                                                     userData.name
                                                 )
                                                     return (
-                                                        <TextDim key={id}>
-                                                            {member.name}{' '}
-                                                            (oprowadza)
-                                                        </TextDim>
+                                                        <InactiveMemberWrapper>
+                                                            <TextDim key={id}>
+                                                                {member.name}{' '}
+                                                                (oprowadza)
+                                                            </TextDim>
+                                                        </InactiveMemberWrapper>
                                                     )
                                             })}
                                         </MemberInputDrawer>
