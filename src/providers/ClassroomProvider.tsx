@@ -62,16 +62,6 @@ function ClassroomProvider({ children }: Children) {
         visited: []
     })
 
-    function joinRoom() {
-        if (userData.accountType) {
-            let data = {
-                accountType: userData.accountType.name,
-                id: userData.id
-            }
-            socket.emit('joinRoom', data)
-        }
-    }
-
     function getClassrooms() {
         ClassroomService.getClassrooms().then((response) => {
             setClassrooms(response.result)
@@ -108,11 +98,10 @@ function ClassroomProvider({ children }: Children) {
         if (loggedIn && classrooms.length === 0) {
             getGroupedClassrooms()
         }
-        loggedIn && joinRoom()
     }, [loggedIn])
 
     useEffect(() => {
-        getGroupedClassrooms()
+        loggedIn && getGroupedClassrooms()
     }, [userData.Group?.id])
 
     useEffect(() => {

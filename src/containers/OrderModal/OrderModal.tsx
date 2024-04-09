@@ -12,8 +12,8 @@ import OrderBox from '../../components/OrderBox/OrderBox'
 import { Heading, MediumText, TextDim } from '../../components/commonStyles'
 import InputMultiline from '../../components/InputMultiline/InputMultiline'
 import { useKeyboardHeight } from '../../hooks/useKeyboardHeight'
-import { SafeAreaView } from 'react-native-safe-area-context'
 import { usePlaceOrder } from '../../providers/BuffetProvider'
+import CloseModal from '../../components/CloseModal/CloseModal'
 
 type Props = {
     visible: boolean
@@ -55,6 +55,7 @@ function OrderModal({ visible, handleVisible }: Props) {
                             : '100%'
                     }}
                 >
+                    <CloseModal handleVisible={handleVisible} />
                     <Heading>Złóż zamówienie</Heading>
                     <OrderBox
                         value={chValue}

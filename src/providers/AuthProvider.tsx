@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useEffect, useState } from 'react'
+import React, {
+    createContext,
+    useContext,
+    useEffect,
+    useRef,
+    useState
+} from 'react'
 import AuthService from '../services/authService'
 import { apiLoginResponse } from '../types/response.type'
 import { Children } from '../types/props.type'
@@ -6,6 +12,7 @@ import { User } from '../types/auth.type'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import io from 'socket.io-client'
 import { API_URL } from '../config'
+import { AppState } from 'react-native'
 export const socket = io(API_URL)
 
 const storeCredentials = async (username: string, password: string) => {
@@ -119,6 +126,7 @@ export default function AuthProvider({ children }: Children) {
             (response) => {
                 storeCredentials(username, password)
                 storeLogIn(true)
+                setCredentials({ username: username, password: password })
                 return response
             }
         )
@@ -175,6 +183,20 @@ export default function AuthProvider({ children }: Children) {
         }, 1500)
     }
 
+    function joinRoom() {
+        if (userData.accountType) {
+            let data = {
+                accountType: userData.accountType.name,
+                id: userData.id
+            }
+            socket.emit('joinRoom', data)
+        }
+    }
+
+    useEffect(() => {
+        loggedIn && joinRoom()
+    }, [loggedIn])
+
     useEffect(() => {
         getCredentials().then((credentials) => {
             if (credentials) {
@@ -191,6 +213,28 @@ export default function AuthProvider({ children }: Children) {
                 setToken({ error: 1, result: '' })
             }
         })
+    }, [])
+
+    const appState = useRef(AppState.currentState)
+
+    useEffect(() => {
+        const subscription = AppState.addEventListener(
+            'change',
+            (nextAppState) => {
+                if (
+                    appState.current.match(/inactive|background/) &&
+                    nextAppState === 'active'
+                ) {
+                    loggedIn && joinRoom()
+                }
+
+                appState.current = nextAppState
+            }
+        )
+
+        return () => {
+            subscription.remove()
+        }
     }, [])
 
     return (

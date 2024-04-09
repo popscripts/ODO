@@ -12,7 +12,7 @@ function MainScreen() {
     return (
         <ScreenWrapper>
             <Width100>
-                <ClassroomSection title={'Odwiedzone klasy'}>
+                <ClassroomSection title={'Odwiedzone Sale'}>
                     <View />
                 </ClassroomSection>
                 <MapVisited classrooms={classrooms?.visited} />

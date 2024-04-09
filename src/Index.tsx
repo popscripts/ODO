@@ -10,12 +10,15 @@ import ClockProvider from './providers/ClockProvider'
 import GroupProvider from './providers/GroupProvider'
 import InfoProvider from './providers/InfoProvider'
 import BuffetProvider from './providers/BuffetProvider'
+import { Platform } from 'react-native'
 
 export default function Index() {
     const [areFontsLoaded] = useFonts(customFontsToLoad)
 
-    NavigationBar.setPositionAsync('absolute')
-    NavigationBar.setBackgroundColorAsync('#00000001')
+    if (Platform.OS === 'android') {
+        NavigationBar.setPositionAsync('absolute')
+        NavigationBar.setBackgroundColorAsync('#00000001')
+    }
 
     if (!areFontsLoaded) return <DefaultBackground />
 

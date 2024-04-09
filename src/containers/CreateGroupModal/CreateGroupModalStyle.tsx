@@ -3,7 +3,7 @@ import { colors } from '../../theme/colors'
 import { spacing } from '../../theme/spacing'
 import { typography } from '../../theme/typography'
 
-export const Background = styled.View`
+export const Background = styled.Pressable`
     width: 100%;
     background-color: ${colors.palette.overlay50};
     height: 100%;
@@ -85,10 +85,8 @@ export const MemberInputWrapper = styled.View`
 export const MemberInputDrawer = styled.View`
     width: 100%;
     display: flex;
-    gap: ${spacing.sm};
     position: relative;
     z-index: 12;
-    padding: ${spacing.sm};
 `
 
 export const MemberInputDrawerWrapper = styled.ScrollView`
@@ -101,6 +99,14 @@ export const MemberInputDrawerWrapper = styled.ScrollView`
     left: 0;
     z-index: 10;
     border-radius: ${spacing.sm};
+`
+
+export const MemberWrapper = styled.TouchableOpacity`
+    padding: ${spacing.xxs} ${spacing.sm};
+`
+
+export const InactiveMemberWrapper = styled.View`
+    padding: ${spacing.xxs} ${spacing.sm};
 `
 
 export const CancelButtonWrapper = styled.TouchableOpacity`
