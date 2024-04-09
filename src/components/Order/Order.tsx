@@ -77,7 +77,7 @@ function Order({ order }: Props) {
     const changeStatus = useChangeOrderStatus()
 
     const cancelOrder = () => {
-        Alert.alert('Czy na pewno chcesz anulować zamówienie?', '', [
+        Alert.alert('', 'Czy na pewno chcesz anulować zamówienie?', [
             {
                 text: 'Nie',
                 onPress: () => {},
@@ -94,7 +94,7 @@ function Order({ order }: Props) {
     }
 
     const pickUpOrder = () => {
-        Alert.alert('Czy na pewno chcesz odebrać zamówienie?', '', [
+        Alert.alert('', 'Czy na pewno chcesz odebrać zamówienie?', [
             {
                 text: 'Nie',
                 onPress: () => {},

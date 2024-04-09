@@ -19,7 +19,7 @@ function MainHeader() {
 
     const handlePress = () => {
         if (userData.Group) {
-            Alert.alert('Czy na pewno chcesz zakończyć oprowadzanie?', '', [
+            Alert.alert('', 'Czy na pewno chcesz zakończyć oprowadzanie?', [
                 {
                     text: 'Anuluj',
                     onPress: () => {},
