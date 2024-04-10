@@ -19,6 +19,14 @@ const FetchClient = {
         })
     },
 
+    async postFormData(endpoint: string, body: FormData) {
+        return await fetch(API_URL + endpoint, {
+            method: 'POST',
+            body: body,
+            credentials: 'include'
+        })
+    },
+
     async patch(endpoint: string, body: object) {
         return await fetch(API_URL + endpoint, {
             method: 'PATCH',

@@ -48,3 +48,17 @@ export const LogoutButton = styled.TouchableOpacity`
     right: 10px;
     top: 10px;
 `
+
+export const PictureWrapper = styled.TouchableOpacity`
+    height: 100px;
+    width: 100px;
+`
+
+export const PictureText = styled.View`
+    position: absolute;
+    bottom: 0;
+    z-index: 2;
+    width: 110px;
+    display: flex;
+    align-items: flex-end;
+`
