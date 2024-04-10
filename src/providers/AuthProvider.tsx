@@ -72,6 +72,7 @@ const CredentialsContext = createContext({ username: '', password: '' })
 const UpdateNameContext = createContext((name: string, surname: string) => {})
 const LoggedInContext = createContext(false)
 const GetUserDataContext = createContext(async () => {})
+const SetPictureContext = createContext((formData: FormData) => {})
 
 export function useToken() {
     return useContext(TokenContext)
@@ -107,6 +108,10 @@ export function useLoggedIn() {
 
 export function useGetUserData() {
     return useContext(GetUserDataContext)
+}
+
+export function useSetPicture() {
+    return useContext(SetPictureContext)
 }
 
 export default function AuthProvider({ children }: Children) {
@@ -193,6 +198,12 @@ export default function AuthProvider({ children }: Children) {
         }
     }
 
+    function setPicture(formData: FormData) {
+        AuthService.setPicture(formData).then(() => {
+            getUserData()
+        })
+    }
+
     useEffect(() => {
         loggedIn && joinRoom()
     }, [loggedIn])
@@ -251,7 +262,9 @@ export default function AuthProvider({ children }: Children) {
                                         <GetUserDataContext.Provider
                                             value={getUserData}
                                         >
-                                            {children}
+                                            <SetPictureContext.Provider value={setPicture} >
+                                                {children}
+                                            </SetPictureContext.Provider>
                                         </GetUserDataContext.Provider>
                                     </LoggedInContext.Provider>
                                 </RegisterContext.Provider>

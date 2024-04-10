@@ -66,6 +66,19 @@ class AuthService {
             throw e
         }
     }
+
+    async setPicture(formdata: FormData) {
+        try {
+            const response = await this.httpClient.postFormData(
+                'api/auth/picture',
+                formdata
+            )
+            return response.json()
+        } catch (e) {
+            console.error(e)
+            throw e
+        }
+    }
 }
 
 export default new AuthService()
