@@ -6,7 +6,8 @@
         "buildType": "apk"
       },
       "env": {
-        "EXPO_PUBLIC_API_URL": "http://3.71.185.166:3000/"
+        "EXPO_PUBLIC_API_URL": "https://api.organizer-dni-otwartych.pl",
+        "EXPO_PUBLIC_API_VERSION": "v3"
       }
     },
     "production": {}

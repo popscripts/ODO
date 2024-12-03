@@ -1,15 +1,15 @@
-import { API_URL } from '../config'
+import { API_URL, API_VERSION } from '../config'
 
 const FetchClient = {
     async get(endpoint: string) {
-        return await fetch(API_URL + endpoint, {
+        return await fetch(`${API_URL}/${API_VERSION}/` + endpoint, {
             method: 'GET',
             credentials: 'include'
         })
     },
 
     async post(endpoint: string, body: object) {
-        return await fetch(API_URL + endpoint, {
+        return await fetch(`${API_URL}/${API_VERSION}/` + endpoint, {
             method: 'POST',
             body: JSON.stringify(body),
             credentials: 'include',
@@ -20,7 +20,7 @@ const FetchClient = {
     },
 
     async postFormData(endpoint: string, body: FormData) {
-        return await fetch(API_URL + endpoint, {
+        return await fetch(`${API_URL}/${API_VERSION}/` + endpoint, {
             method: 'POST',
             body: body,
             credentials: 'include'
@@ -28,7 +28,7 @@ const FetchClient = {
     },
 
     async patch(endpoint: string, body: object) {
-        return await fetch(API_URL + endpoint, {
+        return await fetch(`${API_URL}/${API_VERSION}/` + endpoint, {
             method: 'PATCH',
             body: JSON.stringify(body),
             credentials: 'include',
@@ -39,7 +39,7 @@ const FetchClient = {
     },
 
     async delete(endpoint: string, body: object) {
-        return await fetch(API_URL + endpoint, {
+        return await fetch(`${API_URL}/${API_VERSION}/` + endpoint, {
             method: 'DELETE',
             body: JSON.stringify(body),
             credentials: 'include',
@@ -50,7 +50,7 @@ const FetchClient = {
     },
 
     async put(endpoint: string, body: object) {
-        return await fetch(API_URL + endpoint, {
+        return await fetch(`${API_URL}/${API_VERSION}/` + endpoint, {
             method: 'PUT',
             body: JSON.stringify(body),
             credentials: 'include',
@@ -58,7 +58,7 @@ const FetchClient = {
                 'Content-Type': 'application/json'
             }
         })
-    },
+    }
 }
 
 export default FetchClient
