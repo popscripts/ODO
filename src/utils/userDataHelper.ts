@@ -1,8 +1,8 @@
-import { API_URL } from '../config'
+import { API_URL, API_VERSION } from '../config'
 
 export function getImageSource(url: string | null) {
     return url
-        ? { uri: API_URL + 'api/auth/picture/' + url }
+        ? { uri: `${API_URL}/${API_VERSION}/` + 'api/auth/picture/' + url }
         : require('../../assets/profile-picture.png')
 }
 

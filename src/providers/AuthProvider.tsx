@@ -11,9 +11,14 @@ import { Children } from '../types/props.type'
 import { User } from '../types/auth.type'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import io from 'socket.io-client'
-import { API_URL } from '../config'
+import { API_URL, API_VERSION } from '../config'
 import { AppState } from 'react-native'
-export const socket = io(API_URL)
+export const socket = io(API_URL, {
+    path: `/${API_VERSION}/socket.io`,
+    transports: ['websocket'], // Use WebSocket transport explicitly (you can remove if not necessary)
+    forceNew: true, // Ensures a new connection
+    timeout: 5000 // Set a timeout for connection
+})
 
 const storeCredentials = async (username: string, password: string) => {
     try {
@@ -49,6 +54,22 @@ const getLogIn = async () => {
         return jsonValue != null ? JSON.parse(jsonValue) : null
     } catch (e) {
         console.error('Error reading from local storage')
+    }
+}
+
+const storeAccessToken = async (access_token: string) => {
+    try {
+        await AsyncStorage.setItem('access_token', access_token)
+    } catch (e) {
+        console.error('Error saving to local storage')
+    }
+}
+
+const getAccessToken = async () => {
+    try {
+        await AsyncStorage.getItem('access_token')
+    } catch (e) {
+        console.error('Error saving to local storage')
     }
 }
 
@@ -189,6 +210,7 @@ export default function AuthProvider({ children }: Children) {
     }
 
     function joinRoom() {
+        // TODO... delete this
         if (userData.accountType) {
             let data = {
                 accountType: userData.accountType.name,
@@ -262,7 +284,9 @@ export default function AuthProvider({ children }: Children) {
                                         <GetUserDataContext.Provider
                                             value={getUserData}
                                         >
-                                            <SetPictureContext.Provider value={setPicture} >
+                                            <SetPictureContext.Provider
+                                                value={setPicture}
+                                            >
                                                 {children}
                                             </SetPictureContext.Provider>
                                         </GetUserDataContext.Provider>
