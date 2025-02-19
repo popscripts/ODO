@@ -2,13 +2,13 @@ import React from 'react'
 import ScreenWrapper from '../components/ScreenWrapper/ScreenWrapper'
 import { MediumTextCenter, Width100 } from '../components/commonStyles'
 import Footer from '../components/Footer/Footer'
-import { useParsedClassrooms } from '../providers/ClassroomProvider'
+import { useClassroomContext } from '../providers/ClassroomProvider'
 import MapVisited from '../containers/MapVisited'
 import ClassroomSection from '../components/ClassroomSection/ClassroomSection'
 import { View } from 'react-native'
 
-function MainScreen() {
-    const classrooms = useParsedClassrooms()
+function VisitedScreen() {
+    const { classrooms } = useClassroomContext()
     return (
         <ScreenWrapper>
             <Width100>
@@ -27,4 +27,4 @@ function MainScreen() {
     )
 }
 
-export default MainScreen
+export default VisitedScreen

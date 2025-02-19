@@ -3,8 +3,8 @@ import ClassroomBox from './ClassroomBox/ClassroomBox'
 import { colors } from '../theme/colors'
 import { MediumTextCenter } from '../components/commonStyles'
 import { LayoutAnimation, Platform, UIManager } from 'react-native'
-import { useUserData } from '../providers/AuthProvider'
 import { Classroom } from '../types/classroom.type'
+import { useUserContext } from '../providers/UserProvider'
 
 if (Platform.OS === 'android') {
     if (UIManager.setLayoutAnimationEnabledExperimental) {
@@ -38,7 +38,7 @@ function MapClassrooms({ status, classrooms }: Props) {
     //     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
     // }, [filter])
 
-    const userData = useUserData()
+    const { userData } = useUserContext()
 
     return (
         <>

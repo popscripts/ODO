@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { FormWrapper } from './LoginFormStyle'
-import { useCredentials, useLogIn } from '../../providers/AuthProvider'
+import { useAuthContext } from '../../providers/AuthProvider'
 import {
     loginValidation,
     passwordValidation
 } from '../../utils/inputValidators'
-import { apiLoginResponse } from '../../types/response.type'
+import { ApiResponse } from '../../types/response.type'
 import { Heading } from '../../components/commonStyles'
 import Input from '../../components/Input/Input'
 import Button from '../../components/Button/Button'
@@ -19,11 +19,10 @@ type Props = {
 }
 
 function LoginForm({ setLoading }: Props) {
-    const credentials = useCredentials()
     const [isSubmitted, setIsSubmitted] = useState<boolean>(false)
 
-    const [login, setLogin] = useState<string>(credentials.username)
-    const [password, setPassword] = useState<string>(credentials.password)
+    const [login, setLogin] = useState<string>('')
+    const [password, setPassword] = useState<string>('')
     const [loginError, setLoginError] = useState<Error>({
         error: false,
         errorText: ''
@@ -33,7 +32,7 @@ function LoginForm({ setLoading }: Props) {
         errorText: ''
     })
 
-    const logIn = useLogIn()
+    const { logIn } = useAuthContext()
 
     function ValidateLogin() {
         setLoginError(loginValidation(login))
@@ -76,10 +75,10 @@ function LoginForm({ setLoading }: Props) {
         }
 
         setLoading(true)
-        logIn(login, password).then((res: apiLoginResponse) => {
+        logIn(login, password).then((res: ApiResponse) => {
             if (res.error) {
                 Vibration.vibrate(100)
-                setError(res?.result, res?.param)
+                setError(res?.result as string, res?.param)
                 setTimeout(() => setLoading(false), 200)
             }
         })

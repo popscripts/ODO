@@ -39,10 +39,10 @@ export const Press = styled.TouchableHighlight`
 `
 
 export const ReservedCorner = styled.View`
-   width: ${spacing.xl};
-   height: ${spacing.xl};
-   background-color: ${colors.palette.quinary100};
-   position: absolute;
-   right: 0;
-   elevation: 4;
+    width: ${spacing.xl};
+    height: ${spacing.xl};
+    background-color: ${colors.palette.quinary100};
+    position: absolute;
+    right: 0;
+    elevation: 4;
 `

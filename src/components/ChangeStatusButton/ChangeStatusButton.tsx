@@ -9,7 +9,7 @@ import {
     MemberView
 } from './ChangeStatusButtonStyle'
 import { colors } from '../../theme/colors'
-import { useSetStatus } from '../../providers/ClassroomProvider'
+import { useClassroomContext } from '../../providers/ClassroomProvider'
 import { Status } from '../../types/status.type'
 import { useButtonSettings } from '../../hooks/useButtonSettings'
 import { Classroom } from '../../types/classroom.type'
@@ -29,7 +29,7 @@ function ChangeStatusButton({
     status,
     disabled
 }: Props) {
-    const setStatus = useSetStatus()
+    const { setStatus } = useClassroomContext()
     const settings = useButtonSettings(status)
     if (!disabled)
         return (

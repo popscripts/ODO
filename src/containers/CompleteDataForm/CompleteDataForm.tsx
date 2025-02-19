@@ -7,8 +7,8 @@ import { Error } from '../../types/response.type'
 import { useKeyboardHeight } from '../../hooks/useKeyboardHeight'
 import { nameValidation, surnameValidation } from '../../utils/inputValidators'
 import { Platform, UIManager, Vibration } from 'react-native'
-import { useUpdateName } from '../../providers/AuthProvider'
 import SlideFromBottom from '../../components/SlideFromBottom'
+import { useUserContext } from '../../providers/UserProvider'
 
 if (
     Platform.OS === 'android' &&
@@ -36,7 +36,7 @@ function CompleteDataForm({ done, setDone }: Props) {
     })
     const { bottom } = useSafeAreaInsets()
     const keyboard = useKeyboardHeight()
-    const updateName = useUpdateName()
+    const { updateName } = useUserContext()
 
     function ValidateName() {
         setNameError(nameValidation(name))

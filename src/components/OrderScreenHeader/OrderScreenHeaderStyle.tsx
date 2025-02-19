@@ -1,7 +1,7 @@
-import styled from "styled-components/native"
-import { colors } from "../../theme/colors"
-import { typography } from "../../theme/typography"
-import { spacing } from "../../theme/spacing"
+import styled from 'styled-components/native'
+import { colors } from '../../theme/colors'
+import { typography } from '../../theme/typography'
+import { spacing } from '../../theme/spacing'
 
 export const AddButton = styled.TouchableOpacity`
     background-color: ${colors.palette.quinary200};

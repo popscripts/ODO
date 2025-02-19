@@ -1,61 +1,19 @@
-import React, {
-    createContext,
-    useContext,
-    useEffect,
-    useRef,
-    useState
-} from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 import AuthService from '../services/authService'
-import { apiLoginResponse } from '../types/response.type'
+import { ApiResponse } from '../types/response.type'
 import { Children } from '../types/props.type'
 import { User } from '../types/auth.type'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import io from 'socket.io-client'
-import { API_URL, API_VERSION } from '../config'
-import { AppState } from 'react-native'
-export const socket = io(API_URL, {
-    path: `/${API_VERSION}/socket.io`,
+import { useUserContext } from './UserProvider'
+
+export const socket = io(process.env.EXPO_PUBLIC_API_URL || '', {
+    path: `/socket.io`,
+    // path: `/${process.env.EXPO_PUBLIC_API_VERSION || ''}/socket.io`,
     transports: ['websocket'], // Use WebSocket transport explicitly (you can remove if not necessary)
     forceNew: true, // Ensures a new connection
     timeout: 5000 // Set a timeout for connection
 })
-
-const storeCredentials = async (username: string, password: string) => {
-    try {
-        await AsyncStorage.setItem(
-            'credentials',
-            JSON.stringify({ username, password })
-        )
-    } catch (e) {
-        console.error('Error saving to local storage')
-    }
-}
-
-const storeLogIn = async (login: boolean) => {
-    try {
-        await AsyncStorage.setItem('login', String(login))
-    } catch (e) {
-        console.error('Error saving to local storage')
-    }
-}
-
-const getCredentials = async () => {
-    try {
-        const jsonValue = await AsyncStorage.getItem('credentials')
-        return jsonValue != null ? JSON.parse(jsonValue) : null
-    } catch (e) {
-        console.error('Error reading from local storage')
-    }
-}
-
-const getLogIn = async () => {
-    try {
-        const jsonValue = await AsyncStorage.getItem('login')
-        return jsonValue != null ? JSON.parse(jsonValue) : null
-    } catch (e) {
-        console.error('Error reading from local storage')
-    }
-}
 
 const storeAccessToken = async (access_token: string) => {
     try {
@@ -67,7 +25,7 @@ const storeAccessToken = async (access_token: string) => {
 
 const getAccessToken = async () => {
     try {
-        await AsyncStorage.getItem('access_token')
+        return await AsyncStorage.getItem('access_token')
     } catch (e) {
         console.error('Error saving to local storage')
     }
@@ -84,98 +42,60 @@ const userDataPlaceholder = {
     Group: null
 }
 
-const TokenContext = createContext<apiLoginResponse>({ error: 2, result: '' })
-const LogInContext = createContext<Function>(() => {})
-const LogOutContext = createContext<Function>(() => {})
-const RegisterContext = createContext<Function>(() => {})
-const UserDataContext = createContext<User>(userDataPlaceholder)
-const CredentialsContext = createContext({ username: '', password: '' })
-const UpdateNameContext = createContext((name: string, surname: string) => {})
-const LoggedInContext = createContext(false)
-const GetUserDataContext = createContext(async () => {})
-const SetPictureContext = createContext((formData: FormData) => {})
-
-export function useToken() {
-    return useContext(TokenContext)
+interface AuthContextType {
+    token: string
+    logIn: Function
+    logOut: Function
+    register: Function
+    loggedIn: boolean
 }
 
-export function useLogIn() {
-    return useContext(LogInContext)
-}
+const AuthContext = createContext<AuthContextType>({
+    token: '',
+    logIn: () => {},
+    logOut: () => {},
+    register: () => {},
+    loggedIn: false
+})
 
-export function useLogOut() {
-    return useContext(LogOutContext)
-}
-
-export function useRegister() {
-    return useContext(RegisterContext)
-}
-
-export function useUserData() {
-    return useContext(UserDataContext)
-}
-
-export function useCredentials() {
-    return useContext(CredentialsContext)
-}
-
-export function useUpdateName() {
-    return useContext(UpdateNameContext)
-}
-
-export function useLoggedIn() {
-    return useContext(LoggedInContext)
-}
-
-export function useGetUserData() {
-    return useContext(GetUserDataContext)
-}
-
-export function useSetPicture() {
-    return useContext(SetPictureContext)
+export function useAuthContext() {
+    return useContext(AuthContext)
 }
 
 export default function AuthProvider({ children }: Children) {
-    const [token, setToken] = useState<apiLoginResponse>({
-        error: 2,
-        result: ''
-    })
+    const [token, setToken] = useState<string>('')
     const [userData, setUserData] = useState<User>(userDataPlaceholder)
-    const [credentials, setCredentials] = useState({
-        username: '',
-        password: ''
-    })
     const [loggedIn, setLoggedIn] = useState(false)
+    const { getUserData } = useUserContext()
 
     async function logIn(username: string, password: string) {
         const response = await AuthService.logIn(username, password).then(
             (response) => {
-                storeCredentials(username, password)
-                storeLogIn(true)
-                setCredentials({ username: username, password: password })
                 return response
             }
         )
 
         if (response.error) {
-            setToken(response)
             return response
         }
 
-        await getUserData().then(() => {
-            setLoggedIn(true)
-            setToken(response)
-        })
+        if (response.access_token) {
+            storeAccessToken(response.access_token)
+
+            await getUserData().then(() => {
+                setLoggedIn(true)
+                setToken(response.access_token || '')
+            })
+        }
 
         return response
     }
 
     async function logOut() {
         return await AuthService.logOut().then((response) => {
-            setToken({ error: 1, result: '' })
+            setToken('')
             setLoggedIn(false)
             setTimeout(() => setUserData(userDataPlaceholder), 300)
-            storeLogIn(false)
             socket.removeAllListeners()
             return response
         })
@@ -194,109 +114,28 @@ export default function AuthProvider({ children }: Children) {
         return await logIn(username, password)
     }
 
-    async function getUserData() {
-        return await AuthService.getUserData().then((response) => {
-            setUserData(response.result)
-            return response
-        })
-    }
-
-    function handleUpdateName(name: string, surname: string) {
-        AuthService.setUserName(userData.id, `${name} ${surname}`)
-        setTimeout(() => {
-            const data = { ...userData, name: `${name} ${surname}` }
-            setUserData(data)
-        }, 1500)
-    }
-
-    function joinRoom() {
-        // TODO... delete this
-        if (userData.accountType) {
-            let data = {
-                accountType: userData.accountType.name,
-                id: userData.id
-            }
-            socket.emit('joinRoom', data)
+    async function connectToSocket() {
+        const loadedToken = await getAccessToken()
+        if (loadedToken && loadedToken.length > 0) {
+                // TODO.. connect to socket
         }
     }
 
-    function setPicture(formData: FormData) {
-        AuthService.setPicture(formData).then(() => {
-            getUserData()
-        })
+    useEffect(() => {
+        connectToSocket()
+    }, [])
+
+    const contextValue: AuthContextType = {
+        token,
+        logIn,
+        logOut,
+        register,
+        loggedIn
     }
-
-    useEffect(() => {
-        loggedIn && joinRoom()
-    }, [loggedIn])
-
-    useEffect(() => {
-        getCredentials().then((credentials) => {
-            if (credentials) {
-                setCredentials(credentials)
-                getLogIn().then((response) => {
-                    response
-                        ? logIn(
-                              credentials.username,
-                              credentials.password
-                          ).then()
-                        : setToken({ error: 1, result: '' })
-                })
-            } else {
-                setToken({ error: 1, result: '' })
-            }
-        })
-    }, [])
-
-    const appState = useRef(AppState.currentState)
-
-    useEffect(() => {
-        const subscription = AppState.addEventListener(
-            'change',
-            (nextAppState) => {
-                if (
-                    appState.current.match(/inactive|background/) &&
-                    nextAppState === 'active'
-                ) {
-                    loggedIn && joinRoom()
-                }
-
-                appState.current = nextAppState
-            }
-        )
-
-        return () => {
-            subscription.remove()
-        }
-    }, [])
 
     return (
-        <TokenContext.Provider value={token}>
-            <LogInContext.Provider value={logIn}>
-                <LogOutContext.Provider value={logOut}>
-                    <UserDataContext.Provider value={userData}>
-                        <CredentialsContext.Provider value={credentials}>
-                            <UpdateNameContext.Provider
-                                value={handleUpdateName}
-                            >
-                                <RegisterContext.Provider value={register}>
-                                    <LoggedInContext.Provider value={loggedIn}>
-                                        <GetUserDataContext.Provider
-                                            value={getUserData}
-                                        >
-                                            <SetPictureContext.Provider
-                                                value={setPicture}
-                                            >
-                                                {children}
-                                            </SetPictureContext.Provider>
-                                        </GetUserDataContext.Provider>
-                                    </LoggedInContext.Provider>
-                                </RegisterContext.Provider>
-                            </UpdateNameContext.Provider>
-                        </CredentialsContext.Provider>
-                    </UserDataContext.Provider>
-                </LogOutContext.Provider>
-            </LogInContext.Provider>
-        </TokenContext.Provider>
+        <AuthContext.Provider value={contextValue}>
+            {children}
+        </AuthContext.Provider>
     )
 }

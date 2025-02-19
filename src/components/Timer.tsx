@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { useClock } from '../providers/ClockProvider'
+import { useClockContext } from '../providers/ClockProvider'
 import TimerDisplay from './TimerDisplay'
-import { MAX_TIME } from '../config'
 
 type Props = {
     changedAt: string | null
     reverse?: boolean
 }
 function Timer({ changedAt, reverse = false }: Props) {
-    const clock = useClock()
+    const MAX_TIME = parseInt(process.env.EXPO_APP_MAX_TIME || '600000')
+    const clock = useClockContext()
 
     const [time, setTime] = useState(0)
 

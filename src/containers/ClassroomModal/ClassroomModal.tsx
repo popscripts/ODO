@@ -12,8 +12,8 @@ import { Classroom } from '../../types/classroom.type'
 import ChangeStatusButton from '../../components/ChangeStatusButton/ChangeStatusButton'
 import { useState, useEffect } from 'react'
 import { useClassModalSettings } from '../../hooks/useClassModalSettings'
-import { useUserData } from '../../providers/AuthProvider'
 import CloseModal from '../../components/CloseModal/CloseModal'
+import { useUserContext } from '../../providers/UserProvider'
 
 type Props = {
     visible: boolean
@@ -34,7 +34,7 @@ const ClassroomModal = ({
         free: { disabled: false }
     })
 
-    const userData = useUserData()
+    const { userData } = useUserContext()
 
     useEffect(() => {
         const temp = useClassModalSettings(classroom, userData)
@@ -58,28 +58,25 @@ const ClassroomModal = ({
                     </ClassroomNumber>
                     <ClassroomTitle>{classroom.title}</ClassroomTitle>
                     <MediumText>{classroom.description}</MediumText>
-                    {userData.Group?.id ? (
-                        <>
-                            <ChangeStatusButton
-                                classroom={classroom}
-                                prevStatus={classroom.status.name}
-                                status="busy"
-                                disabled={settings.taken.disabled}
-                            />
-                            <ChangeStatusButton
-                                classroom={classroom}
-                                prevStatus={classroom.status.name}
-                                status="reserved"
-                                disabled={settings.reserved.disabled}
-                            />
-                            <ChangeStatusButton
-                                classroom={classroom}
-                                prevStatus={classroom.status.name}
-                                status="free"
-                                disabled={settings.free.disabled}
-                            />
-                        </>
-                    ) : (
+                    <ChangeStatusButton
+                        classroom={classroom}
+                        prevStatus={classroom.status.name}
+                        status="busy"
+                        disabled={settings.taken.disabled}
+                    />
+                    <ChangeStatusButton
+                        classroom={classroom}
+                        prevStatus={classroom.status.name}
+                        status="reserved"
+                        disabled={settings.reserved.disabled}
+                    />
+                    <ChangeStatusButton
+                        classroom={classroom}
+                        prevStatus={classroom.status.name}
+                        status="free"
+                        disabled={settings.free.disabled}
+                    />
+                    {!userData.Group?.id && (
                         <Warning>
                             Aby zarządzać statusami musisz rozpocząć
                             oprowadzanie

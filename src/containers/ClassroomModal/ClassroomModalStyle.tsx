@@ -31,7 +31,7 @@ type ClassroomNumberProps = {
 export const ClassroomNumber = styled.Text<ClassroomNumberProps>`
     font-size: ${spacing.xxxl};
     font-family: ${typography.primary.bold};
-    color: ${(props) => props.color};
+    color: ${(props: ClassroomNumberProps) => props.color};
 `
 
 export const ClassroomTitle = styled.Text`
@@ -51,5 +51,5 @@ export const Warning = styled.Text`
     font-family: ${typography.primary.normal};
     color: ${colors.textDim};
     text-align: center;
-    margin: ${spacing.xxl};
+    margin: ${spacing.md};
 `

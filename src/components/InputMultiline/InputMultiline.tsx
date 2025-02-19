@@ -1,20 +1,19 @@
-import { useState } from "react"
-import { TextInput, Wrapper } from "./InputMultilineStyle"
-import { colors } from "../../theme/colors"
-
+import { useState } from 'react'
+import { TextInput, Wrapper } from './InputMultilineStyle'
+import { colors } from '../../theme/colors'
 
 type Props = {
     value: string
     setValue: Function
 }
 
-function InputMultiline({value, setValue}: Props) {
+function InputMultiline({ value, setValue }: Props) {
     const [focused, setFocused] = useState<boolean>(false)
 
     const handleSetValue = (text: string) => {
         setValue(text)
     }
-    
+
     return (
         <Wrapper>
             <TextInput
@@ -28,7 +27,7 @@ function InputMultiline({value, setValue}: Props) {
                 multiline={true}
                 maxLength={255}
                 numberOfLines={5}
-                style={{textAlignVertical: 'top'}}
+                style={{ textAlignVertical: 'top' }}
             />
         </Wrapper>
     )

@@ -3,7 +3,7 @@ import { Children } from '../types/props.type'
 
 const ClockContext = createContext<boolean>(false)
 
-export function useClock() {
+export function useClockContext() {
     return useContext(ClockContext)
 }
 

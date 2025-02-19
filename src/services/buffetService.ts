@@ -3,44 +3,27 @@ import FetchClient from '../utils/FetchClient'
 import { OrderPosition, OrderStatus } from '../types/buffet.type'
 
 class BuffetService {
+    private ENDPOINT = 'api/buffet'
     private httpClient: FetchClientType = FetchClient
 
     async getOrders() {
-        try {
-            const response = await this.httpClient.get('api/buffet/user')
-            return response.json()
-        } catch (e) {
-            console.error(e)
-            throw e
-        }
+        return await this.httpClient.get('api/buffet/user') // TODO: nie wiem jaki
     }
 
     async placeOrder(orderPositions: OrderPosition[], comment: string) {
-        try {
-            const response = await this.httpClient.post('api/buffet', {
-                order: {
-                    orderPositions,
-                    comment
-                }
-            })
-            return response.json()
-        } catch (e) {
-            console.error(e)
-            throw e
-        }
+        return await this.httpClient.post(this.ENDPOINT, {
+            order: {
+                orderPositions,
+                comment
+            }
+        })
     }
 
     async changeOrderStatus(id: number, statusId: number) {
-        try {
-            const response = await this.httpClient.patch('api/buffet', {
-                id,
-                statusId
-            })
-            return response.json()
-        } catch (e) {
-            console.error(e)
-            throw e
-        }
+        return await this.httpClient.patch(this.ENDPOINT, {
+            id,
+            statusId
+        })
     }
 }
 
