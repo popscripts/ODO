@@ -4,7 +4,7 @@
     "main": "node_modules/expo/AppEntry.js",
     "scripts": {
         "start": "expo start",
-        "android": "expo start --android",
+        "android": "watchman watch-del-all && expo start --android",
         "ios": "expo start --ios",
         "web": "expo start --web",
         "update": "yarn upgrade-interactive --latest",
@@ -34,6 +34,7 @@
         "react-native-screens": "~4.4.0",
         "react-native-svg": "15.8.0",
         "react-native-tab-view": "^4.0.5",
+        "react-native-toast-notifications": "^3.4.0",
         "react-native-webview": "13.12.5",
         "socket.io-client": "^4.8.1",
         "styled-components": "^6.1.15"

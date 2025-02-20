@@ -1,3 +1,5 @@
+import { Toast } from "react-native-toast-notifications";
+
 const API_URL = process.env.EXPO_PUBLIC_API_URL
 const API_VERSION = process.env.EXPO_PUBLIC_API_VERSION
 
@@ -9,16 +11,16 @@ const FetchClient = {
             const data = await response.json().catch(() => null);
     
             if (!response.ok && data.error) {
-                console.error("Fetch error:", data);
-                // TODO.. toast
+                console.log("Fetch error:", data)
+                if (!data.param) Toast?.show(data.result, {type: 'danger'})
                 return data
             }
     
             return data;
     
         } catch (error) {
-            console.error("Fetch error:", error);
-    
+            console.log("Fetch error:", error)
+            Toast?.show("Nieznany błąd", {type: 'danger'})
             return {
                 error: 1,
                 result: error instanceof Error ? error.message : "Unknown error",
@@ -76,7 +78,7 @@ const FetchClient = {
         return await this.fetchWrapper(() =>
             fetch(`${API_URL}/${API_VERSION}` + endpoint, {
                 method: 'DELETE',
-                body: JSON.stringify(body),
+                ...(body && {body: JSON.stringify(body)}),
                 credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json'

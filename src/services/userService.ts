@@ -20,7 +20,7 @@ class UserService {
 
     async setPicture(userId: number, formdata: FormData) {
         return await this.httpClient.postFormData(
-            `${this.ENDPOINT}/${userId}/personal-data`,
+            `${this.ENDPOINT}/${userId}/picture`,
             formdata
         )
     }
