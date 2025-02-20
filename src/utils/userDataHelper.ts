@@ -3,7 +3,7 @@ export function getImageSource(url: string | null) {
     const API_VERSION = process.env.EXPO_PUBLIC_API_VERSION
 
     return url
-        ? { uri: `${API_URL}/${API_VERSION}/` + 'api/auth/picture/' + url }
+        ? { uri: `${API_URL}/${API_VERSION}` + 'api/auth/picture/' + url }
         : require('../../assets/profile-picture.png')
 }
 

@@ -3,6 +3,7 @@ import { FetchClientType } from '../types/fetchClient.type'
 import FetchClient from '../utils/FetchClient'
 
 class GroupService {
+    private ENDPOINT = 'api/groups'
     private httpClient: FetchClientType = FetchClient
 
     async createGroup(
@@ -10,7 +11,7 @@ class GroupService {
         description: string | null,
         groupMembers: GroupMember[]
     ) {
-        return await this.httpClient.post('api/group', {
+        return await this.httpClient.post(this.ENDPOINT, {
             groupSize,
             description,
             groupMembers
@@ -23,8 +24,7 @@ class GroupService {
         description: string | null,
         groupMembers: GroupMember[]
     ) {
-        return await this.httpClient.put('api/group', {
-            id,
+        return await this.httpClient.put(`${this.ENDPOINT}/${id}`, {
             groupSize,
             description,
             groupMembers
@@ -32,15 +32,11 @@ class GroupService {
     }
 
     async removeGroup(id: number) {
-        return await this.httpClient.delete('api/group', {
-            id
-        })
+        return await this.httpClient.delete(`${this.ENDPOINT}/${id}`)
     }
 
     async leaveGroup(id: number) {
-        return await this.httpClient.put('api/group/leave', {
-            id
-        })
+        return await this.httpClient.get(`${this.ENDPOINT}/${id}/leave`)
     }
 
     async searchMembers(member: string) {

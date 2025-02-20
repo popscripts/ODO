@@ -5,7 +5,7 @@ class InfoService {
     private httpClient: FetchClientType = FetchClient
 
     async getInfo() {
-        return await this.httpClient.get('api/info')
+        return await this.httpClient.get('api/infos')
     }
 }
 

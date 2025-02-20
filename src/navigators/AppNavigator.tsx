@@ -22,8 +22,6 @@ function AppNavigator() {
     const { loggedIn } = useAuthContext()
     const { userData } = useUserContext()
 
-    console.log(userData.name)
-
     return (
         <NavigationContainer>
             <Stack.Navigator
@@ -38,7 +36,7 @@ function AppNavigator() {
                         component={CompleteDataScreen}
                         options={{ cardStyleInterpolator: Fade }}
                     />
-                ) : userData.name ? (
+                ) : userData.name && loggedIn ? (
                     <Stack.Screen
                         name="MainNavigator"
                         component={MainNavigator}
