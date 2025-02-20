@@ -8,6 +8,14 @@ export function useClassModalSettings(classroom: Classroom, userData: User) {
         free: { disabled: true }
     }
 
+    if (!userData.Group?.id) {
+        return {
+            taken: { disabled: true },
+            reserved: { disabled: true },
+            free: { disabled: true }
+        }
+    }
+
     if (isClassroomTaken(classroom, userData)) settings.taken.disabled = true
 
     if (isDifferentClassroomTakenByMe(classroom, userData))

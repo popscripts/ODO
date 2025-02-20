@@ -2,60 +2,49 @@ import React, { createContext, useContext, useEffect, useState } from 'react'
 import { Children } from '../types/props.type'
 import { GroupMember, MembersListMember } from '../types/auth.type'
 import groupService from '../services/groupService'
-import { useGetUserData, useLoggedIn, useUserData } from './AuthProvider'
-import { socket } from './AuthProvider'
+import { socket, useAuthContext } from './AuthProvider'
+import { useUserContext } from './UserProvider'
 
 type membersContextType = {
     membersList: MembersListMember[]
     searchMembers: Function
 }
 
-const CreateGroupContext = createContext(
-    (
+interface GroupContextType {
+    createGroup: Function
+    editGroup: Function
+    deleteGroup: Function
+    leaveGroup: Function
+    members: membersContextType
+}
+
+const GroupContext = createContext<GroupContextType>({
+    createGroup: (
         groupSize: number | null,
         description: string | null,
         groupMember: GroupMember | null
-    ) => {}
-)
-const EditGroupContext = createContext(
-    (
+    ) => {},
+    editGroup: (
         id: number,
         groupSize: number | null,
         description: string | null,
         groupMember: GroupMember | null
-    ) => {}
-)
-const DeleteGroupContext = createContext(() => {})
-const LeaveGroupContext = createContext(() => {})
-const MembersContext = createContext<membersContextType>({
-    membersList: [],
-    searchMembers: (member: string) => {}
+    ) => {},
+    deleteGroup: () => {},
+    leaveGroup: () => {},
+    members: {
+        membersList: [],
+        searchMembers: (member: string) => {}
+    }
 })
 
-export function useCreateGroup() {
-    return useContext(CreateGroupContext)
-}
-
-export function useEditGroup() {
-    return useContext(EditGroupContext)
-}
-
-export function useDeleteGroup() {
-    return useContext(DeleteGroupContext)
-}
-
-export function useLeaveGroup() {
-    return useContext(LeaveGroupContext)
-}
-
-export function useMembers() {
-    return useContext(MembersContext)
+export function useGroupContext() {
+    return useContext(GroupContext)
 }
 
 function GroupProvider({ children }: Children) {
     const [membersList, setMembersList] = useState<MembersListMember[]>([])
-    const userData = useUserData()
-    const getUserData = useGetUserData()
+    const { userData, getUserData } = useUserContext()
 
     function createGroup(
         groupSize: number | null,
@@ -106,37 +95,35 @@ function GroupProvider({ children }: Children) {
 
     function searchMembers(member: string) {
         groupService.searchMembers(member).then((res) => {
-            if (!res.error) setMembersList(res.result)
+            if (!res.error) setMembersList(res.result as MembersListMember[])
         })
     }
 
-    const loggedIn = useLoggedIn()
+    const { loggedIn } = useAuthContext()
 
     useEffect(() => {
         if (loggedIn) {
-            socket.on('groupUpdate', (res) => {
+            socket.on('groupUpdate', () => {
                 getUserData()
             })
         }
     }, [loggedIn])
 
+    const contextValue: GroupContextType = {
+        createGroup,
+        editGroup,
+        deleteGroup,
+        leaveGroup,
+        members: {
+            membersList,
+            searchMembers
+        }
+    }
+
     return (
-        <CreateGroupContext.Provider value={createGroup}>
-            <EditGroupContext.Provider value={editGroup}>
-                <DeleteGroupContext.Provider value={deleteGroup}>
-                    <LeaveGroupContext.Provider value={leaveGroup}>
-                        <MembersContext.Provider
-                            value={{
-                                membersList: membersList,
-                                searchMembers: searchMembers
-                            }}
-                        >
-                            {children}
-                        </MembersContext.Provider>
-                    </LeaveGroupContext.Provider>
-                </DeleteGroupContext.Provider>
-            </EditGroupContext.Provider>
-        </CreateGroupContext.Provider>
+        <GroupContext.Provider value={contextValue}>
+            {children}
+        </GroupContext.Provider>
     )
 }
 

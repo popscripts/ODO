@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react'
 import { Heading } from '../../components/commonStyles'
 import Input from '../../components/Input/Input'
 import Button from '../../components/Button/Button'
-import { useRegister } from '../../providers/AuthProvider'
+import { useAuthContext } from '../../providers/AuthProvider'
 import {
     keyValidation,
     loginValidation,
     passwordValidation,
     repeatPasswordValidation
 } from '../../utils/inputValidators'
-import { apiLoginResponse } from '../../types/response.type'
+import { ApiResponse } from '../../types/response.type'
 import { BottomWrapper, FormWrapper } from './RegisterFormStyle'
 import { colors } from '../../theme/colors'
 import { Vibration } from 'react-native'
@@ -42,7 +42,7 @@ function RegisterForm({ setLoading }: Props) {
         errorText: ''
     })
 
-    const register = useRegister()
+    const { register } = useAuthContext()
 
     function ValidateLogin() {
         setLoginError(loginValidation(login))
@@ -117,10 +117,10 @@ function RegisterForm({ setLoading }: Props) {
 
         setLoading(true)
         register(parseInt(key), login, password).then(
-            (res: apiLoginResponse) => {
+            (res: ApiResponse) => {
                 if (res.error) {
                     Vibration.vibrate(100)
-                    setError(res?.result, res?.param)
+                    setError(res?.result as string, res?.param)
                     setTimeout(() => setLoading(false), 200)
                 }
             }

@@ -10,17 +10,11 @@ class GroupService {
         description: string | null,
         groupMembers: GroupMember[]
     ) {
-        try {
-            const response = await this.httpClient.post('api/group', {
-                groupSize,
-                description,
-                groupMembers
-            })
-            return response.json()
-        } catch (e) {
-            console.error(e)
-            throw e
-        }
+        return await this.httpClient.post('api/group', {
+            groupSize,
+            description,
+            groupMembers
+        })
     }
 
     async updateGroup(
@@ -29,60 +23,30 @@ class GroupService {
         description: string | null,
         groupMembers: GroupMember[]
     ) {
-        try {
-            type Props = {
-                id: number
-                groupSize?: number | null
-                description?: string | null
-                groupMembers?: GroupMember[]
-            }
-            const response = await this.httpClient.put('api/group', {
-                id,
-                groupSize,
-                description,
-                groupMembers
-            })
-            return response.json()
-        } catch (e) {
-            console.error(e)
-            throw e
-        }
+        return await this.httpClient.put('api/group', {
+            id,
+            groupSize,
+            description,
+            groupMembers
+        })
     }
 
     async removeGroup(id: number) {
-        try {
-            const response = await this.httpClient.delete('api/group', {
-                id
-            })
-            return response.json()
-        } catch (e) {
-            console.error(e)
-            throw e
-        }
+        return await this.httpClient.delete('api/group', {
+            id
+        })
     }
 
     async leaveGroup(id: number) {
-        try {
-            const response = await this.httpClient.put('api/group/leave', {
-                id
-            })
-            return response.json()
-        } catch (e) {
-            console.error(e)
-            throw e
-        }
+        return await this.httpClient.put('api/group/leave', {
+            id
+        })
     }
 
     async searchMembers(member: string) {
-        try {
-            const response = await this.httpClient.get(
-                'api/dynamic-content/members?value=' + member
-            )
-            return response.json()
-        } catch (e) {
-            console.error(e)
-            throw e
-        }
+        return await this.httpClient.get(
+            'api/dynamic-content/members?value=' + member
+        )
     }
 }
 

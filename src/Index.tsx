@@ -11,6 +11,7 @@ import GroupProvider from './providers/GroupProvider'
 import InfoProvider from './providers/InfoProvider'
 import BuffetProvider from './providers/BuffetProvider'
 import { Platform } from 'react-native'
+import UserProvider from './providers/UserProvider'
 
 export default function Index() {
     const [areFontsLoaded] = useFonts(customFontsToLoad)
@@ -25,19 +26,21 @@ export default function Index() {
     return (
         <DefaultBackground>
             <SafeAreaProvider>
-                <AuthProvider>
-                    <ClassroomProvider>
-                        <ClockProvider>
-                            <GroupProvider>
-                                <InfoProvider>
-                                    <BuffetProvider>
-                                        <AppNavigator />
-                                    </BuffetProvider>
-                                </InfoProvider>
-                            </GroupProvider>
-                        </ClockProvider>
-                    </ClassroomProvider>
-                </AuthProvider>
+                <UserProvider>
+                    <AuthProvider>
+                        <ClassroomProvider>
+                            <ClockProvider>
+                                <GroupProvider>
+                                    <InfoProvider>
+                                        <BuffetProvider>
+                                            <AppNavigator />
+                                        </BuffetProvider>
+                                    </InfoProvider>
+                                </GroupProvider>
+                            </ClockProvider>
+                        </ClassroomProvider>
+                    </AuthProvider>
+                </UserProvider>
             </SafeAreaProvider>
         </DefaultBackground>
     )

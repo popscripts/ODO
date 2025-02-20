@@ -12,10 +12,10 @@ import {
     MediumTextShrink
 } from './GroupBoxStyle'
 import { Heading, MediumText, SmallText, TextDim } from '../commonStyles'
-import { useUserData } from '../../providers/AuthProvider'
 import { Group } from '../../types/auth.type'
 import PencilIcon from '../icons/PencilIcon'
 import CreateGroupModal from '../../containers/CreateGroupModal/CreateGroupModal'
+import { useUserContext } from '../../providers/UserProvider'
 type Props = {
     group: Group
     handleVisible: Function
@@ -55,7 +55,7 @@ function Inside({ group, handleVisible, visible }: Props) {
 }
 
 function GroupBox() {
-    const userData = useUserData()
+    const { userData } = useUserContext()
     const [visible, setVisible] = useState(false)
     const [group, setGroup] = useState<Group | null>(null)
 

@@ -5,13 +5,7 @@ class InfoService {
     private httpClient: FetchClientType = FetchClient
 
     async getInfo() {
-        try {
-            const response = await this.httpClient.get('api/info')
-            return response.json()
-        } catch (e) {
-            console.error(e)
-            throw e
-        }
+        return await this.httpClient.get('api/info')
     }
 }
 

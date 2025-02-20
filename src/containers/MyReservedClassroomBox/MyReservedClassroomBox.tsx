@@ -10,7 +10,7 @@ import {
 } from './MyReservedClassroomBoxStyle'
 import TimedGradient from '../TimedGradient/TimedGradient'
 import Timer from '../../components/Timer'
-import { useParsedClassrooms } from '../../providers/ClassroomProvider'
+import { useClassroomContext } from '../../providers/ClassroomProvider'
 import ClassroomModal from '../ClassroomModal/ClassroomModal'
 
 type Props = {
@@ -19,7 +19,7 @@ type Props = {
 function ClassroomBox({ classroom }: Props) {
     const [modalVisible, setModalVisible] = useState<boolean>(false)
 
-    const classrooms = useParsedClassrooms()
+    const { classrooms } = useClassroomContext()
     const [fullclassroom, setFullClassroom] = useState<Classroom | undefined>()
 
     const handleModalVisible = () => {

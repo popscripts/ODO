@@ -1,0 +1,73 @@
+import React, { createContext, useContext, useState } from 'react'
+import { Children } from '../types/props.type'
+import { User } from '../types/auth.type'
+import UserService from '../services/userService'
+
+const userDataPlaceholder = {
+    id: 0,
+    username: '',
+    openDayId: 1,
+    accountType: { id: 0, name: '' },
+    pictureName: null,
+    name: null,
+    ManagedClassroom: null,
+    Group: null
+}
+
+interface UserContextType {
+    userData: User
+    updateName: Function
+    getUserData: Function
+    setPicture: Function
+}
+
+const UserContext = createContext<UserContextType>({
+    userData: userDataPlaceholder,
+    updateName: (name: string, surname: string) => {},
+    getUserData: async () => {},
+    setPicture: (userId: number, formData: FormData) => {}
+})
+
+export function useUserContext() {
+    return useContext(UserContext)
+}
+
+export default function UserProvider({ children }: Children) {
+    const [userData, setUserData] = useState<User>(userDataPlaceholder)
+
+    async function getUserData() {
+        return await UserService.getUserData().then((response) => {
+            setUserData(response.result as User)
+            return response
+        })
+    }
+
+    async function updateName(name: string, surname: string) {
+        const response = await UserService.setUserName(userData.id, `${name} ${surname}`)
+        if (response.error) return false
+        setTimeout(() => {
+            const data = { ...userData, name: `${name} ${surname}` }
+            setUserData(data)
+        }, 1500)
+        return true
+    }
+
+    function setPicture(userId: number, formData: FormData) {
+        UserService.setPicture(userId, formData).then(() => {
+            getUserData()
+        })
+    }
+
+    const contextValue: UserContextType = {
+        userData,
+        updateName,
+        getUserData,
+        setPicture
+    }
+
+    return (
+        <UserContext.Provider value={contextValue}>
+            {children}
+        </UserContext.Provider>
+    )
+}

@@ -5,15 +5,15 @@ import MapClassrooms from '../containers/MapClassrooms'
 import ClassroomSection from '../components/ClassroomSection/ClassroomSection'
 import { Scroll, Width100 } from '../components/commonStyles'
 import Footer from '../components/Footer/Footer'
-import { useParsedClassrooms } from '../providers/ClassroomProvider'
+import { useClassroomContext } from '../providers/ClassroomProvider'
 import MyTakenClassroomBox from '../containers/MyTakenClassroomBox/MyTakenClassroomBox'
-import { useUserData } from '../providers/AuthProvider'
 import MyReservedClassroomBox from '../containers/MyReservedClassroomBox/MyReservedClassroomBox'
 import { ClassroomSectionWrapper } from '../components/ClassroomSection/ClassroomSectionStyle'
+import { useUserContext } from '../providers/UserProvider'
 
 function MainScreen() {
-    const classrooms = useParsedClassrooms()
-    const userData = useUserData()
+    const { classrooms } = useClassroomContext()
+    const { userData } = useUserContext()
     return (
         <ScreenWrapper>
             <Width100>

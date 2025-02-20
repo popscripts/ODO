@@ -24,13 +24,10 @@ import InputMultiline from '../../components/InputMultiline/InputMultiline'
 import Input from '../../components/Input/Input'
 import { Group, GroupMember } from '../../types/auth.type'
 import {
-    useCreateGroup,
-    useEditGroup,
-    useLeaveGroup,
-    useMembers
+    useGroupContext,
 } from '../../providers/GroupProvider'
-import { useUserData } from '../../providers/AuthProvider'
 import CloseModal from '../../components/CloseModal/CloseModal'
+import { useUserContext } from '../../providers/UserProvider'
 
 type Props = {
     visible: boolean
@@ -51,11 +48,9 @@ function NullIfEmptyAndParseInt(string: string) {
 }
 
 function CreateGroupModal({ visible, handleVisible, group }: Props) {
-    const createGroup = useCreateGroup()
-    const editGroup = useEditGroup()
-    const leaveGroup = useLeaveGroup()
+    const { createGroup, members, editGroup, leaveGroup } = useGroupContext()
 
-    const userData = useUserData()
+    const { userData } = useUserContext()
 
     const otherMember =
         group?.GroupMembers?.length === 2
@@ -64,7 +59,7 @@ function CreateGroupModal({ visible, handleVisible, group }: Props) {
                 : group.GroupMembers[1]
             : null
 
-    const { membersList, searchMembers } = useMembers()
+    const { membersList, searchMembers } = members
 
     const [focused, setFocused] = useState(false)
 

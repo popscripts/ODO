@@ -1,7 +1,6 @@
 import React, { useRef } from 'react'
 import { Animated, Easing } from 'react-native'
 import { AnimatedStyle, Gradient } from './TimedGradientStyle'
-import { MAX_TIME } from '../../config'
 
 type Props = {
     changedAt: string
@@ -9,7 +8,8 @@ type Props = {
 }
 
 function TimedGradient({ changedAt, colors }: Props) {
-    // Get time with timezone
+    const MAX_TIME = parseInt(process.env.EXPO_APP_MAX_TIME || '600000')
+
     const changedAtDate = new Date(new Date(changedAt).getTime())
     const now = new Date()
 

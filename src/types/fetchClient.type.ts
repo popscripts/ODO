@@ -1,8 +1,11 @@
+import { ApiResponse } from "./response.type"
+
 export type FetchClientType = {
-    get(url: string): Promise<Response>
-    post(url: string, body: object): Promise<Response>
-    postFormData(url: string, body: FormData): Promise<Response>
-    patch(url: string, body: object): Promise<Response>
-    delete(url: string, body: object): Promise<Response>
-    put(url: string, body: object): Promise<Response>
+    fetchWrapper(fetchFunction: Function): Promise<ApiResponse>
+    get(url: string): Promise<ApiResponse>
+    post(url: string, body: object): Promise<ApiResponse>
+    postFormData(url: string, body: FormData): Promise<ApiResponse>
+    patch(url: string, body: object): Promise<ApiResponse>
+    delete(url: string, body: object): Promise<ApiResponse>
+    put(url: string, body: object): Promise<ApiResponse>
 }

@@ -1,17 +1,17 @@
 import React, { useState } from 'react'
 import { Button, Heading, SubHeading, Wrapper } from './MainHeaderStyle'
-import { useUserData } from '../../providers/AuthProvider'
 import ProfilePicture from '../../components/ProfilePicture/ProfilePicture'
 import { Alert, View } from 'react-native'
 import { translateAccountType } from '../../utils/userDataHelper'
 import { MediumTextCenter } from '../../components/commonStyles'
 import CreateGroupModal from '../CreateGroupModal/CreateGroupModal'
-import { useDeleteGroup } from '../../providers/GroupProvider'
+import { useGroupContext } from '../../providers/GroupProvider'
+import { useUserContext } from '../../providers/UserProvider'
 
 function MainHeader() {
-    const userData = useUserData()
+    const { userData } = useUserContext()
     const [formVisible, setFormVisible] = useState(false)
-    const deleteGroup = useDeleteGroup()
+    const { deleteGroup } = useGroupContext()
 
     const handleVisible = () => {
         setFormVisible((prev) => !prev)

@@ -1,7 +1,7 @@
 import React from 'react'
 import { VisitedClassroom } from '../../types/classroom.type'
 import { Heading, MediumText } from '../../components/commonStyles'
-import { useHandleVisited } from '../../providers/ClassroomProvider'
+import { useClassroomContext } from '../../providers/ClassroomProvider'
 import {
     ContentWrapper,
     FillerBottom,
@@ -17,8 +17,9 @@ import { useConjugated } from '../../hooks/useConjugated'
 type Props = {
     classroom: VisitedClassroom
 }
+
 function VisitedClassroomBox({ classroom }: Props) {
-    const handleVisited = useHandleVisited()
+    const { removeFromVisited } = useClassroomContext()
 
     function Delete() {
         Alert.alert(
@@ -33,7 +34,7 @@ function VisitedClassroomBox({ classroom }: Props) {
                 {
                     text: 'Ok',
                     onPress: () => {
-                        handleVisited.removeFromVisited(classroom.classroomId)
+                        removeFromVisited(classroom.classroomId)
                     },
                     style: 'default'
                 }

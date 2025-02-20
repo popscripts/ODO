@@ -12,20 +12,16 @@ import {
 import TimedGradient from '../TimedGradient/TimedGradient'
 import Timer from '../../components/Timer'
 import ClassroomModal from '../ClassroomModal/ClassroomModal'
-import {
-    useParsedClassrooms,
-    useSetStatus
-} from '../../providers/ClassroomProvider'
+import { useClassroomContext } from '../../providers/ClassroomProvider'
 import FreeClassroomIcon from '../../components/icons/FreeClassroomIcon'
 
 type Props = {
     classroom: ShortClassroom
 }
 function ClassroomBox({ classroom }: Props) {
-    const setStatus = useSetStatus()
+    const { classrooms, setStatus } = useClassroomContext()
     const [modalVisible, setModalVisible] = useState<boolean>(false)
 
-    const classrooms = useParsedClassrooms()
     const [fullclassroom, setFullClassroom] = useState<Classroom | undefined>()
 
     const handleModalVisible = () => {

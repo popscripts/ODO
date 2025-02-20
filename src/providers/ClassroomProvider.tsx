@@ -5,72 +5,60 @@ import {
     classroomStatus,
     VisitedClassroom
 } from '../types/classroom.type'
-import { useGetUserData, useLoggedIn, useUserData } from './AuthProvider'
+import { useAuthContext } from './AuthProvider'
 import ClassroomService from '../services/classroomService'
 import { Status } from '../types/status.type'
 import { socket } from './AuthProvider'
+import { useUserContext } from './UserProvider'
 
-type ParsedClassrooms = {
+type GroupedClassrooms = {
     free: Classroom[]
     reserved: Classroom[]
     busy: Classroom[]
     visited: VisitedClassroom[]
 }
 
-const ClassroomContext = createContext<Classroom[]>([])
-const ParsedClassroomContext = createContext<ParsedClassrooms>({
-    free: [],
-    reserved: [],
-    busy: [],
-    visited: []
-})
-const SetStatusContext = createContext(
-    (id: number, prevStatus: Status['name'], status: Status['name']) => {}
-)
-const HandleVisitedClassroomsContext = createContext({
+interface ClassroomContextType {
+    classrooms: GroupedClassrooms
+    setStatus: Function
+    addToVisited: Function
+    removeFromVisited: Function
+}
+
+const ClassroomContext = createContext<ClassroomContextType>({
+    classrooms: {
+        free: [],
+        reserved: [],
+        busy: [],
+        visited: []
+    },
+    setStatus: (
+        id: number,
+        prevStatus: Status['name'],
+        status: Status['name']
+    ) => {},
     addToVisited: (classroomId: number) => {},
     removeFromVisited: (classroomId: number) => {}
 })
 
-export function useClassrooms() {
+export function useClassroomContext() {
     return useContext(ClassroomContext)
 }
 
-export function useParsedClassrooms() {
-    return useContext(ParsedClassroomContext)
-}
-
-export function useSetStatus() {
-    return useContext(SetStatusContext)
-}
-
-export function useHandleVisited() {
-    return useContext(HandleVisitedClassroomsContext)
-}
-
 function ClassroomProvider({ children }: Children) {
-    const getUserData = useGetUserData()
+    const { getUserData, userData } = useUserContext()
+    const { loggedIn } = useAuthContext()
 
-    const [classrooms, setClassrooms] = useState<Classroom[]>([])
-    const loggedIn = useLoggedIn()
-    const userData = useUserData()
-
-    const [parsedClassrooms, setParsedClassrooms] = useState<ParsedClassrooms>({
+    const [classrooms, setClassrooms] = useState<GroupedClassrooms>({
         free: [],
         reserved: [],
         busy: [],
         visited: []
     })
 
-    function getClassrooms() {
-        ClassroomService.getClassrooms().then((response) => {
-            setClassrooms(response.result)
-        })
-    }
-
     function getGroupedClassrooms() {
         ClassroomService.getGroupedClassrooms().then((response) => {
-            setParsedClassrooms(response.result)
+            setClassrooms(response.result as GroupedClassrooms)
         })
     }
 
@@ -95,14 +83,8 @@ function ClassroomProvider({ children }: Children) {
     }
 
     useEffect(() => {
-        if (loggedIn && classrooms.length === 0) {
-            getGroupedClassrooms()
-        }
-    }, [loggedIn])
-
-    useEffect(() => {
         loggedIn && getGroupedClassrooms()
-    }, [userData.Group?.id])
+    }, [userData.Group?.id, loggedIn])
 
     useEffect(() => {
         if (loggedIn) {
@@ -117,20 +99,16 @@ function ClassroomProvider({ children }: Children) {
         }
     }, [loggedIn])
 
+    const contextValue = {
+        classrooms,
+        setStatus,
+        addToVisited,
+        removeFromVisited
+    }
+
     return (
-        <ClassroomContext.Provider value={classrooms}>
-            <ParsedClassroomContext.Provider value={parsedClassrooms}>
-                <SetStatusContext.Provider value={setStatus}>
-                    <HandleVisitedClassroomsContext.Provider
-                        value={{
-                            addToVisited,
-                            removeFromVisited
-                        }}
-                    >
-                        {children}
-                    </HandleVisitedClassroomsContext.Provider>
-                </SetStatusContext.Provider>
-            </ParsedClassroomContext.Provider>
+        <ClassroomContext.Provider value={contextValue}>
+            {children}
         </ClassroomContext.Provider>
     )
 }

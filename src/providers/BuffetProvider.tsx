@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { Children } from '../types/props.type'
 
-import { socket, useLoggedIn } from './AuthProvider'
+import { socket, useAuthContext } from './AuthProvider'
 import { Order, OrderPosition } from '../types/buffet.type'
 import BuffetService from '../services/buffetService'
 import { Alert } from 'react-native'
@@ -60,30 +60,24 @@ function BuffetProvider({ children }: Children) {
                 amount: hValue
             })
         }
-        BuffetService.placeOrder(orderPositions, comment).then((res) => {
-            if (res.error) Alert.alert('Błąd', res.result)
-        })
+        BuffetService.placeOrder(orderPositions, comment)
     }
 
     function getOrders() {
-        BuffetService.getOrders().then((res) => {
-            if (!res?.error) setOrders(res.result)
-        })
+        BuffetService.getOrders()
     }
 
     function changeOrderStatus(id: number, statusId: number) {
-        BuffetService.changeOrderStatus(id, statusId).then((res) => {
-            if (res?.error) Alert.alert('Błąd', res.result)
-        })
+        BuffetService.changeOrderStatus(id, statusId)
     }
 
-    const loggedIn = useLoggedIn()
+    const { loggedIn } = useAuthContext()
 
     useEffect(() => {
         if (loggedIn) {
             getOrders()
 
-            socket.on('orderUpdate', (res) => {
+            socket.on('orderUpdate', () => {
                 getOrders()
             })
         }
