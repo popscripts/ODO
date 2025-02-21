@@ -4,6 +4,8 @@ const API_URL = process.env.EXPO_PUBLIC_API_URL
 const API_VERSION = process.env.EXPO_PUBLIC_API_VERSION
 
 const FetchClient = {
+    setLoggedIn: (loggenIn: boolean) => {},
+
     async fetchWrapper(fetchFunction: Function) {
         try {
             const response = await fetchFunction();
@@ -12,7 +14,16 @@ const FetchClient = {
     
             if (!response.ok && data.error) {
                 console.log("Fetch error:", data)
-                if (!data.param) Toast?.show(data.result, {type: 'danger'})
+                if (!data.param) {
+                    if (data.statusCode === 404) return
+
+                    if (data.statusCode === 401) {
+                        this.setLoggedIn(false)
+                        return
+                    }
+
+                    Toast?.show(data.result, {type: 'danger'})
+                }
                 return data
             }
     

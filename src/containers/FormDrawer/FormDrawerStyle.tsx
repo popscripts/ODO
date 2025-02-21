@@ -33,6 +33,6 @@ type BottomAreaProps = {
 }
 
 export const BottomArea = styled.View<BottomAreaProps>`
-    height: ${(props) => (props.height ? props.height + 'px' : '15%')};
+    height: 15%;
     flex-grow: 2;
 `

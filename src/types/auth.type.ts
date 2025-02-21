@@ -2,14 +2,14 @@ import { ManagedClassroom, ShortClassroom } from './classroom.type'
 
 export type NewUser = {
     openDayId: number
-    username: string
+    email: string
     password: string
 }
 
 export type LoginUser = {
     id: number
     openDayId: number
-    username: string
+    email: string
     password: string
     accountType: object
 }
@@ -17,7 +17,7 @@ export type LoginUser = {
 export type User = {
     id: number
     openDayId: number
-    username: string
+    email: string
     name: string | null
     accountType: AccountType
     pictureName: string | null
@@ -28,7 +28,7 @@ export type User = {
 export type ShortUser = {
     id: number
     name: string
-    username: string
+    email: string
     pictureName: string | null
 }
 
@@ -40,7 +40,7 @@ export type AccountType = {
 export interface Token {
     id: number
     openDayId: number
-    username: string
+    email: string
     accountType: AccountType
     iat: number
     exp: number
@@ -48,7 +48,7 @@ export interface Token {
 
 export type Users = {
     id: number
-    username: string
+    email: string
     openDayId: number
     accountType: AccountType
     active: boolean

@@ -1,11 +1,12 @@
-import React, { createContext, useContext, useState } from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 import { Children } from '../types/props.type'
 import { User } from '../types/auth.type'
 import UserService from '../services/userService'
+import { useAuthContext } from './AuthProvider'
 
 const userDataPlaceholder = {
     id: 0,
-    username: '',
+    email: '',
     openDayId: 1,
     accountType: { id: 0, name: '' },
     pictureName: null,
@@ -34,6 +35,7 @@ export function useUserContext() {
 
 export default function UserProvider({ children }: Children) {
     const [userData, setUserData] = useState<User>(userDataPlaceholder)
+    const {loggedIn} = useAuthContext()
 
     async function getUserData() {
         return await UserService.getUserData().then((response) => {
@@ -64,6 +66,15 @@ export default function UserProvider({ children }: Children) {
         getUserData,
         setPicture
     }
+
+    useEffect(() => {
+        if (loggedIn) {
+            getUserData()
+        } else {
+            setTimeout(() => setUserData(userDataPlaceholder), 300)
+        }
+
+    },[loggedIn])
 
     return (
         <UserContext.Provider value={contextValue}>
