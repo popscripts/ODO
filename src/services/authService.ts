@@ -5,17 +5,17 @@ class AuthService {
     private ENDPOINT = 'api/auth'
     private httpClient: FetchClientType = FetchClient
 
-    async logIn(username: string, password: string) {
+    async logIn(email: string, password: string) {
         return await this.httpClient.post(`${this.ENDPOINT}/login`, {
-            username,
+            email,
             password
         })
     }
 
-    async register(key: number, username: string, password: string) {
+    async register(key: number, email: string, password: string) {
         return await this.httpClient.post(`${this.ENDPOINT}/register`, {
             key,
-            username,
+            email,
             password
         })
     }

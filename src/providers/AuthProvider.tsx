@@ -1,11 +1,9 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import AuthService from '../services/authService'
-import { ApiResponse } from '../types/response.type'
 import { Children } from '../types/props.type'
-import { User } from '../types/auth.type'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import io from 'socket.io-client'
-import { useUserContext } from './UserProvider'
+import FetchClient from '../utils/FetchClient'
 
 export const socket = io(process.env.EXPO_PUBLIC_API_URL || '', {
     path: `/socket.io`,
@@ -31,17 +29,6 @@ const getAccessToken = async () => {
     }
 }
 
-const userDataPlaceholder = {
-    id: 0,
-    username: '',
-    openDayId: 1,
-    accountType: { id: 0, name: '' },
-    pictureName: null,
-    name: null,
-    ManagedClassroom: null,
-    Group: null
-}
-
 interface AuthContextType {
     token: string
     logIn: Function
@@ -64,12 +51,11 @@ export function useAuthContext() {
 
 export default function AuthProvider({ children }: Children) {
     const [token, setToken] = useState<string>('')
-    const [userData, setUserData] = useState<User>(userDataPlaceholder)
     const [loggedIn, setLoggedIn] = useState(false)
-    const { getUserData } = useUserContext()
+    FetchClient.setLoggedIn = setLoggedIn
 
-    async function logIn(username: string, password: string) {
-        const response = await AuthService.logIn(username, password).then(
+    async function logIn(email: string, password: string) {
+        const response = await AuthService.logIn(email.toLowerCase().trim(), password).then(
             (response) => {
                 return response
             }
@@ -81,12 +67,9 @@ export default function AuthProvider({ children }: Children) {
 
         if (response.access_token) {
             storeAccessToken(response.access_token)
-
-            await getUserData().then(() => {
-                setLoggedIn(true)
-                setToken(response.access_token || '')
-            })
         }
+
+        setLoggedIn(true)
 
         return response
     }
@@ -95,28 +78,29 @@ export default function AuthProvider({ children }: Children) {
         return await AuthService.logOut().then((response) => {
             setToken('')
             setLoggedIn(false)
-            setTimeout(() => setUserData(userDataPlaceholder), 300)
             socket.removeAllListeners()
             return response
         })
     }
 
-    async function register(key: number, username: string, password: string) {
+    async function register(key: number, email: string, password: string) {
         const response = await AuthService.register(
             key,
-            username,
+            email,
             password
         ).then((response) => {
             return response
         })
         if (response.error) return response
 
-        return await logIn(username, password)
+        return await logIn(email, password)
     }
 
     async function connectToSocket() {
         const loadedToken = await getAccessToken()
         if (loadedToken && loadedToken.length > 0) {
+            setLoggedIn(true)
+            setToken(loadedToken)
                 // TODO.. connect to socket
         }
     }
