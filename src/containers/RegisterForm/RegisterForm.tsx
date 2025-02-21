@@ -5,7 +5,7 @@ import Button from '../../components/Button/Button'
 import { useAuthContext } from '../../providers/AuthProvider'
 import {
     keyValidation,
-    loginValidation,
+    emailValidation,
     passwordValidation,
     repeatPasswordValidation
 } from '../../utils/inputValidators'
@@ -22,14 +22,14 @@ type Props = {
 function RegisterForm({ setLoading }: Props) {
     const [isSubmitted, setIsSubmitted] = useState<boolean>(false)
     const [key, setKey] = useState<string>('')
-    const [login, setLogin] = useState<string>('')
+    const [email, setEmail] = useState<string>('')
     const [password, setPassword] = useState<string>('')
     const [repeatPassword, setRepeatPassword] = useState<string>('')
     const [keyError, setKeyError] = useState<Error>({
         error: false,
         errorText: ''
     })
-    const [loginError, setLoginError] = useState<Error>({
+    const [emailError, setEmailError] = useState<Error>({
         error: false,
         errorText: ''
     })
@@ -44,8 +44,8 @@ function RegisterForm({ setLoading }: Props) {
 
     const { register } = useAuthContext()
 
-    function ValidateLogin() {
-        setLoginError(loginValidation(login))
+    function ValidateEmail() {
+        setEmailError(emailValidation(email))
     }
 
     function ValidatePassword() {
@@ -65,7 +65,7 @@ function RegisterForm({ setLoading }: Props) {
     function setError(result: string, param: string | undefined) {
         switch (param) {
             case 'username':
-                setLoginError({ error: true, errorText: result })
+                setEmailError({ error: true, errorText: result })
                 break
             case 'password':
                 setPasswordError({ error: true, errorText: result })
@@ -77,8 +77,8 @@ function RegisterForm({ setLoading }: Props) {
     }
 
     useEffect(() => {
-        isSubmitted && ValidateLogin()
-    }, [login, isSubmitted])
+        isSubmitted && ValidateEmail()
+    }, [email, isSubmitted])
 
     useEffect(() => {
         isSubmitted && ValidatePassword()
@@ -95,7 +95,7 @@ function RegisterForm({ setLoading }: Props) {
     function RegisterPress() {
         setIsSubmitted(true)
 
-        if (loginValidation(login).error) {
+        if (emailValidation(email).error) {
             Vibration.vibrate(100)
             return null
         }
@@ -116,7 +116,7 @@ function RegisterForm({ setLoading }: Props) {
         }
 
         setLoading(true)
-        register(parseInt(key), login, password).then(
+        register(parseInt(key), email, password).then(
             (res: ApiResponse) => {
                 if (res.error) {
                     Vibration.vibrate(100)
@@ -130,11 +130,12 @@ function RegisterForm({ setLoading }: Props) {
         <FormWrapper>
             <Heading>Rejestracja</Heading>
             <Input
-                text={login}
-                setText={setLogin}
-                placeholder={'login'}
-                error={loginError.error}
-                errorText={loginError.errorText}
+                text={email}
+                setText={setEmail}
+                placeholder={'email'}
+                error={emailError.error}
+                errorText={emailError.errorText}
+                keyboardType='email-address'
             />
             <Input
                 text={password}

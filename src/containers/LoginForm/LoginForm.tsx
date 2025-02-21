@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { FormWrapper } from './LoginFormStyle'
 import { useAuthContext } from '../../providers/AuthProvider'
 import {
-    loginValidation,
+    emailValidation,
     passwordValidation
 } from '../../utils/inputValidators'
 import { ApiResponse } from '../../types/response.type'
@@ -12,7 +12,6 @@ import Button from '../../components/Button/Button'
 import { colors } from '../../theme/colors'
 import { Vibration } from 'react-native'
 import { Error } from '../../types/response.type'
-import Loading from '../../components/Loading/Loading'
 
 type Props = {
     setLoading: Function
@@ -21,9 +20,9 @@ type Props = {
 function LoginForm({ setLoading }: Props) {
     const [isSubmitted, setIsSubmitted] = useState<boolean>(false)
 
-    const [login, setLogin] = useState<string>('')
+    const [email, setEmail] = useState<string>('')
     const [password, setPassword] = useState<string>('')
-    const [loginError, setLoginError] = useState<Error>({
+    const [emailError, setEmailError] = useState<Error>({
         error: false,
         errorText: ''
     })
@@ -34,8 +33,8 @@ function LoginForm({ setLoading }: Props) {
 
     const { logIn } = useAuthContext()
 
-    function ValidateLogin() {
-        setLoginError(loginValidation(login))
+    function ValidateEmail() {
+        setEmailError(emailValidation(email))
     }
 
     function ValidatePassword() {
@@ -44,8 +43,8 @@ function LoginForm({ setLoading }: Props) {
 
     function setError(result: string, param: string | undefined) {
         switch (param) {
-            case 'username':
-                setLoginError({ error: true, errorText: result })
+            case 'email':
+                setEmailError({ error: true, errorText: result })
                 break
             case 'password':
                 setPasswordError({ error: true, errorText: result })
@@ -54,8 +53,8 @@ function LoginForm({ setLoading }: Props) {
     }
 
     useEffect(() => {
-        isSubmitted && ValidateLogin()
-    }, [login, isSubmitted])
+        isSubmitted && ValidateEmail()
+    }, [email, isSubmitted])
 
     useEffect(() => {
         isSubmitted && ValidatePassword()
@@ -64,7 +63,7 @@ function LoginForm({ setLoading }: Props) {
     function LogInPress() {
         setIsSubmitted(true)
 
-        if (loginValidation(login).error) {
+        if (emailValidation(email).error) {
             Vibration.vibrate(100)
             return null
         }
@@ -75,7 +74,7 @@ function LoginForm({ setLoading }: Props) {
         }
 
         setLoading(true)
-        logIn(login, password).then((res: ApiResponse) => {
+        logIn(email, password).then((res: ApiResponse) => {
             if (res.error) {
                 Vibration.vibrate(100)
                 setError(res?.result as string, res?.param)
@@ -87,11 +86,12 @@ function LoginForm({ setLoading }: Props) {
         <FormWrapper>
             <Heading>Logowanie</Heading>
             <Input
-                text={login}
-                setText={setLogin}
-                placeholder={'login'}
-                error={loginError.error}
-                errorText={loginError.errorText}
+                text={email}
+                setText={setEmail}
+                placeholder={'email'}
+                error={emailError.error}
+                errorText={emailError.errorText}
+                keyboardType='email-address'
             />
             <Input
                 text={password}

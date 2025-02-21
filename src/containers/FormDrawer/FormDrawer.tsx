@@ -24,7 +24,6 @@ if (
 }
 
 function FormDrawer() {
-    const keyboardHeight = useKeyboardHeight()
     const { bottom } = useSafeAreaInsets()
     const [formOpened, setFormOpened] = useState('')
     const [loading, setLoading] = useState<boolean>(false)
@@ -33,6 +32,7 @@ function FormDrawer() {
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
         setFormOpened(formOpened === 'login' ? 'register' : 'login')
     }
+    
     return (
         <>
             <Loading show={loading} />
@@ -79,7 +79,7 @@ function FormDrawer() {
                     )}
                 </Wrapper>
             </SlideFromBottom>
-            {formOpened && <BottomArea height={keyboardHeight} />}
+            {formOpened && <BottomArea />}
         </>
     )
 }
