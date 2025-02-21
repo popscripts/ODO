@@ -9,18 +9,18 @@ class UserService {
         return await this.httpClient.get(`${this.ENDPOINT}/me`)
     }
 
-    async setUserName(userId: number, name: string) {
+    async setUserName(name: string) {
         return await this.httpClient.post(
-            `${this.ENDPOINT}/${userId}/personal-data`,
+            `${this.ENDPOINT}/me/personal-data`,
             {
                 name
             }
         )
     }
 
-    async setPicture(userId: number, formdata: FormData) {
+    async setPicture(formdata: FormData) {
         return await this.httpClient.postFormData(
-            `${this.ENDPOINT}/${userId}/picture`,
+            `${this.ENDPOINT}/me/picture`,
             formdata
         )
     }

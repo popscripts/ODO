@@ -25,7 +25,7 @@ const UserContext = createContext<UserContextType>({
     userData: userDataPlaceholder,
     updateName: (name: string, surname: string) => {},
     getUserData: async () => {},
-    setPicture: (userId: number, formData: FormData) => {}
+    setPicture: (formData: FormData) => {}
 })
 
 export function useUserContext() {
@@ -43,7 +43,7 @@ export default function UserProvider({ children }: Children) {
     }
 
     async function updateName(name: string, surname: string) {
-        const response = await UserService.setUserName(userData.id, `${name} ${surname}`)
+        const response = await UserService.setUserName(`${name} ${surname}`)
         if (response.error) return false
         setTimeout(() => {
             const data = { ...userData, name: `${name} ${surname}` }
@@ -52,8 +52,8 @@ export default function UserProvider({ children }: Children) {
         return true
     }
 
-    function setPicture(userId: number, formData: FormData) {
-        UserService.setPicture(userId, formData).then(() => {
+    function setPicture(formData: FormData) {
+        UserService.setPicture(formData).then(() => {
             getUserData()
         })
     }

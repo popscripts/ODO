@@ -41,7 +41,7 @@ function SettingsHeader() {
                 name: 'test.jpeg'
             })
 
-            setPicture(userData.id, formdata)
+            setPicture(formdata)
         }
     }
 
