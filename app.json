@@ -28,7 +28,8 @@
             },
             "splash": {
                 "backgroundColor": "#303041"
-            }
+            },
+            "softwareKeyboardLayoutMode" : "pan"
         },
         "extra": {
             "eas": {

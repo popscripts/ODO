@@ -12,7 +12,6 @@ import {
     LayoutAnimation
 } from 'react-native'
 import { Link } from '../../components/commonStyles'
-import { useKeyboardHeight } from '../../hooks/useKeyboardHeight'
 import SlideFromBottom from '../../components/SlideFromBottom'
 import Loading from '../../components/Loading/Loading'
 
