@@ -29,7 +29,7 @@ class ClassroomService {
 
     async addToVisitedClassrooms(groupId: number, classroomId: number) {
         return await this.httpClient.post(
-            'api/group/visited-classrooms', // TODO.. Przenieść do grup
+            'api/groups/visited-classrooms', // TODO.. Przenieść do grup
             {
                 id: groupId,
                 classroomId
@@ -39,7 +39,7 @@ class ClassroomService {
 
     async removeFromVisitedClassrooms(groupId: number, classroomId: number) {
         return await this.httpClient.delete(
-            'api/group/visited-classrooms', // TODO.. Przenieść do grup
+            'api/groups/visited-classrooms', // TODO.. Przenieść do grup
             {
                 id: groupId,
                 classroomId
