@@ -21,15 +21,16 @@ const handleError = (data: ApiResponse, setLoggedIn: Function) => {
     return data
 }
 
-const timeoutPromise: Promise<ApiResponse> = new Promise((_, reject) => {
-    setTimeout(() => {
-        reject({
-            error: 1,
-            result: "Przekroczono limit czasu na zapytanie",
-            statusCode: 500
-        } as ApiResponse)
-    }, 10000)
-})
+const timeoutPromise = (timeout = 10000): Promise<ApiResponse> =>
+    new Promise((_, reject) => {
+        setTimeout(() => {
+            reject({
+                error: 1,
+                result: "Przekroczono limit czasu",
+                statusCode: 500
+            })
+        }, timeout)
+    })
 
 
 const FetchClient = {
@@ -37,11 +38,17 @@ const FetchClient = {
 
     async fetchWrapper(fetchFunction: Function) {
         try {
-            const response = await Promise.race([fetchFunction(), timeoutPromise])
+            const response = await Promise.race([fetchFunction(), timeoutPromise()])
 
-            const data = await response.json().catch(() => null)
+            let data: ApiResponse
 
-            if (!response.ok && data.error) {
+            if (response.result) {
+                data = response.result
+            } else {
+                data = await response.json().catch(() => null)
+            }
+
+            if (!response.ok || data.error) {
                 handleError(data, this.setLoggedIn)
             }
 
