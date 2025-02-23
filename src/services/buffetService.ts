@@ -3,7 +3,7 @@ import FetchClient from '../utils/FetchClient'
 import { OrderPosition } from '../types/buffet.type'
 
 class BuffetService {
-    private ENDPOINT = 'api/buffet'
+    private ENDPOINT = 'api/orders'
     private httpClient: FetchClientType = FetchClient
 
     async getOrders() {

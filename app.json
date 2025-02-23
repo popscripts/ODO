@@ -29,7 +29,7 @@
             "splash": {
                 "backgroundColor": "#303041"
             },
-            "softwareKeyboardLayoutMode" : "pan"
+            "softwareKeyboardLayoutMode": "pan"
         },
         "extra": {
             "eas": {

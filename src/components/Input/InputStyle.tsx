@@ -14,7 +14,7 @@ type TextInputProps = {
 }
 
 export const TextInput = styled.TextInput<TextInputProps>`
-    background-color: ${(props) =>
+    background-color: ${(props: TextInputProps) =>
         props.error ? colors.palette.angry100 : colors.palette.overlay22};
     color: ${colors.text};
     font-family: ${typography.primary.medium};
@@ -23,7 +23,7 @@ export const TextInput = styled.TextInput<TextInputProps>`
     padding-left: ${spacing.md};
     border-radius: 10px;
     border: 1px
-        ${(props) =>
+        ${(props: TextInputProps) =>
             props.focused
                 ? colors.palette.primary300
                 : colors.palette.neutral300};

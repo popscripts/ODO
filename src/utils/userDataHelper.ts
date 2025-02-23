@@ -1,9 +1,9 @@
 export function getImageSource(url: string | null) {
     const API_URL = process.env.EXPO_PUBLIC_API_URL
-    const API_VERSION = process.env.EXPO_PUBLIC_API_VERSION
+    const API_VERSION = process.env.EXPO_PUBLIC_API_VERSION || ''
 
     return url
-        ? { uri: `${API_URL}/${API_VERSION}` + 'api/auth/picture/' + url }
+        ? { uri: `${API_URL}/${API_VERSION}` + 'pictures/' + url }
         : require('../../assets/profile-picture.png')
 }
 

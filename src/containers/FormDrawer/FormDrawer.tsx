@@ -31,7 +31,7 @@ function FormDrawer() {
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
         setFormOpened(formOpened === 'login' ? 'register' : 'login')
     }
-    
+
     return (
         <>
             <Loading show={loading} />

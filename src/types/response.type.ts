@@ -1,6 +1,6 @@
 export type ApiResponse = {
-    result: string | object,
-    error: number,
+    result: string | object
+    error: number
     statusCode: number
     param?: string
     access_token?: string

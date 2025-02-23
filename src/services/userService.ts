@@ -10,12 +10,9 @@ class UserService {
     }
 
     async setUserName(name: string) {
-        return await this.httpClient.post(
-            `${this.ENDPOINT}/me/personal-data`,
-            {
-                name
-            }
-        )
+        return await this.httpClient.post(`${this.ENDPOINT}/me/personal-data`, {
+            name
+        })
     }
 
     async setPicture(formdata: FormData) {

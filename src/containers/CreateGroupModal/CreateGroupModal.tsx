@@ -23,9 +23,7 @@ import { useEffect, useState } from 'react'
 import InputMultiline from '../../components/InputMultiline/InputMultiline'
 import Input from '../../components/Input/Input'
 import { Group, GroupMember } from '../../types/auth.type'
-import {
-    useGroupContext,
-} from '../../providers/GroupProvider'
+import { useGroupContext } from '../../providers/GroupProvider'
 import CloseModal from '../../components/CloseModal/CloseModal'
 import { useUserContext } from '../../providers/UserProvider'
 

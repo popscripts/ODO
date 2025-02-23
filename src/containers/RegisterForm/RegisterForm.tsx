@@ -116,15 +116,13 @@ function RegisterForm({ setLoading }: Props) {
         }
 
         setLoading(true)
-        register(parseInt(key), email, password).then(
-            (res: ApiResponse) => {
-                if (res.error) {
-                    Vibration.vibrate(100)
-                    setError(res?.result as string, res?.param)
-                    setTimeout(() => setLoading(false), 200)
-                }
+        register(parseInt(key), email, password).then((res: ApiResponse) => {
+            if (res.error) {
+                Vibration.vibrate(100)
+                setError(res?.result as string, res?.param)
+                setTimeout(() => setLoading(false), 200)
             }
-        )
+        })
     }
     return (
         <FormWrapper>
@@ -135,7 +133,7 @@ function RegisterForm({ setLoading }: Props) {
                 placeholder={'email'}
                 error={emailError.error}
                 errorText={emailError.errorText}
-                keyboardType='email-address'
+                keyboardType="email-address"
             />
             <Input
                 text={password}
