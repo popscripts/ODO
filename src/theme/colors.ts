@@ -33,6 +33,7 @@ const palette = {
     accent100: '#FFDC23',
 
     angry100: '#bd001c22',
+    angry200: '#bd001c88',
     angry500: '#bd001c',
 
     overlay22: '#00000022',

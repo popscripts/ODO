@@ -34,9 +34,9 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType>({
     token: '',
-    logIn: () => {},
-    logOut: () => {},
-    register: () => {},
+    logIn: () => { },
+    logOut: () => { },
+    register: () => { },
     loggedIn: false
 })
 
@@ -52,8 +52,20 @@ export default function AuthProvider({ children }: Children) {
     const [token, setToken] = useState<string | null>(null)
     const [socket, setSocket] = useState<Socket | null>(null)
     const [loggedIn, setLoggedIn] = useState(false)
-    const { getUserData } = useUserContext()
-    FetchClient.setLoggedIn = setLoggedIn
+    const { getUserData, clearUserData } = useUserContext()
+
+    const handleLoggedIn = (loggedIn: boolean) => {
+        if (loggedIn) {
+            setLoggedIn(true),
+                getUserData()
+            return
+        }
+
+        setLoggedIn(false)
+        clearUserData()
+    }
+
+    FetchClient.setLoggedIn = handleLoggedIn
 
     async function logIn(email: string, password: string) {
         const response = await AuthService.logIn(
@@ -69,10 +81,13 @@ export default function AuthProvider({ children }: Children) {
 
         if (response.access_token) {
             storeAccessToken(response.access_token)
+            setToken(response.access_token)
         }
 
         getUserData().then((error: number) => {
-            !error && setLoggedIn(true)
+            if (!error) {
+                setLoggedIn(true)
+            }
         })
 
         return response
@@ -117,14 +132,11 @@ export default function AuthProvider({ children }: Children) {
     useEffect(() => {
         if (!token) {
             if (socket) {
-                console.log('disconnect')
                 socket.disconnect()
                 setSocket(null)
             }
             return
         }
-
-        console.log('Initializing socket with token:', token)
 
         const newSocket = io(process.env.EXPO_PUBLIC_API_URL || '', {
             path: `/${process.env.EXPO_PUBLIC_API_VERSION || ''}socket.io`,
@@ -149,10 +161,11 @@ export default function AuthProvider({ children }: Children) {
         loggedIn
     }
 
-
     return (
-        <AuthContext.Provider value={contextValue}>
-            {children}
-        </AuthContext.Provider>
+        <SocketContext.Provider value={socket}>
+            <AuthContext.Provider value={contextValue}>
+                {children}
+            </AuthContext.Provider>
+        </SocketContext.Provider>
     )
 }

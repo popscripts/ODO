@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { ImageBackground, Keyboard, LayoutAnimation, Pressable } from 'react-native'
+import {
+    ImageBackground,
+    Keyboard,
+    LayoutAnimation,
+    Pressable
+} from 'react-native'
 import CompleteDataForm from '../containers/CompleteDataForm/CompleteDataForm'
 import AlmostReady from '../components/AlmostReady/AlmostReady'
 import { StatusBar } from 'expo-status-bar'

@@ -10,11 +10,7 @@ type Props = {
 function MapVisited({ classrooms }: Props) {
     return (
         <HigherLinearGradient
-            colors={[
-                colors.palette.primary200,
-                colors.palette.tertiary200,
-                colors.palette.secondary200
-            ]}
+            colors={[colors.palette.primary200, colors.palette.tertiary200]}
         >
             {classrooms?.length > 0 &&
                 classrooms.map((classroom) => (

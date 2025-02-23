@@ -28,7 +28,7 @@ function Input({
     keyboardType = 'default',
     autoCapitalize = false,
     onChange,
-    handleFocused,
+    handleFocused
 }: Props) {
     const [focused, setFocused] = useState<boolean>(false)
     const [showPassword, setShowPassword] = useState<boolean>(password)
