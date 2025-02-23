@@ -1,10 +1,9 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { Children } from '../types/props.type'
 
-import { socket, useAuthContext } from './AuthProvider'
+import { useAuthContext, useSocket } from './AuthProvider'
 import { Order, OrderPosition } from '../types/buffet.type'
 import BuffetService from '../services/buffetService'
-import { Alert } from 'react-native'
 
 const OrdersContext = createContext<Order[]>([])
 const PlaceOrderContext = createContext(
@@ -32,7 +31,8 @@ export function useChangeOrderStatus() {
 }
 
 function BuffetProvider({ children }: Children) {
-    const [orders, setOrders] = useState<Order[]>([])
+    const socket = useSocket()
+    const [orders] = useState<Order[]>([])
 
     function placeOrder(
         chValue: number | null,
@@ -77,11 +77,12 @@ function BuffetProvider({ children }: Children) {
         if (loggedIn) {
             getOrders()
 
-            socket.on('orderUpdate', () => {
-                getOrders()
-            })
+            socket &&
+                socket.on('orderUpdate', () => {
+                    getOrders()
+                })
         }
-    }, [loggedIn])
+    }, [loggedIn, socket])
 
     return (
         <OrdersContext.Provider value={orders}>

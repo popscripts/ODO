@@ -9,7 +9,7 @@ type WrapperProps = {
 export const Wrapper = styled.View<WrapperProps>`
     width: 90%;
     padding: ${spacing.md};
-    padding-bottom: ${(props) => props.bottom + 36}px;
+    padding-bottom: ${(props: WrapperProps) => props.bottom + 36}px;
     background-color: ${colors.palette.overlay85};
     border-radius: 20px;
     margin-left: 5%;

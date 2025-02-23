@@ -2,16 +2,9 @@ import React, { createContext, useContext, useEffect, useState } from 'react'
 import AuthService from '../services/authService'
 import { Children } from '../types/props.type'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import io from 'socket.io-client'
 import FetchClient from '../utils/FetchClient'
-
-export const socket = io(process.env.EXPO_PUBLIC_API_URL || '', {
-    path: `/socket.io`,
-    // path: `/${process.env.EXPO_PUBLIC_API_VERSION || ''}/socket.io`,
-    transports: ['websocket'], // Use WebSocket transport explicitly (you can remove if not necessary)
-    forceNew: true, // Ensures a new connection
-    timeout: 5000 // Set a timeout for connection
-})
+import { useUserContext } from './UserProvider'
+import { io, Socket } from 'socket.io-client'
 
 const storeAccessToken = async (access_token: string) => {
     try {
@@ -29,8 +22,10 @@ const getAccessToken = async () => {
     }
 }
 
+const SocketContext = createContext<Socket | null>(null)
+
 interface AuthContextType {
-    token: string
+    token: string | null
     logIn: Function
     logOut: Function
     register: Function
@@ -49,17 +44,24 @@ export function useAuthContext() {
     return useContext(AuthContext)
 }
 
+export function useSocket() {
+    return useContext(SocketContext)
+}
+
 export default function AuthProvider({ children }: Children) {
-    const [token, setToken] = useState<string>('')
+    const [token, setToken] = useState<string | null>(null)
+    const [socket, setSocket] = useState<Socket | null>(null)
     const [loggedIn, setLoggedIn] = useState(false)
+    const { getUserData } = useUserContext()
     FetchClient.setLoggedIn = setLoggedIn
 
     async function logIn(email: string, password: string) {
-        const response = await AuthService.logIn(email.toLowerCase().trim(), password).then(
-            (response) => {
-                return response
-            }
-        )
+        const response = await AuthService.logIn(
+            email.toLowerCase().trim(),
+            password
+        ).then((response) => {
+            return response
+        })
 
         if (response.error) {
             return response
@@ -69,7 +71,9 @@ export default function AuthProvider({ children }: Children) {
             storeAccessToken(response.access_token)
         }
 
-        setLoggedIn(true)
+        getUserData().then((error: number) => {
+            !error && setLoggedIn(true)
+        })
 
         return response
     }
@@ -78,36 +82,64 @@ export default function AuthProvider({ children }: Children) {
         return await AuthService.logOut().then((response) => {
             setToken('')
             setLoggedIn(false)
-            socket.removeAllListeners()
+            socket && socket.removeAllListeners()
             return response
         })
     }
 
     async function register(key: number, email: string, password: string) {
-        const response = await AuthService.register(
-            key,
-            email,
-            password
-        ).then((response) => {
-            return response
-        })
+        const response = await AuthService.register(key, email, password).then(
+            (response) => {
+                return response
+            }
+        )
         if (response.error) return response
 
         return await logIn(email, password)
     }
 
-    async function connectToSocket() {
+    async function loadToken() {
         const loadedToken = await getAccessToken()
         if (loadedToken && loadedToken.length > 0) {
-            setLoggedIn(true)
+            getUserData().then((error: number) => {
+                !error && setLoggedIn(true)
+            })
             setToken(loadedToken)
-                // TODO.. connect to socket
+            return
         }
+        setToken('')
     }
 
     useEffect(() => {
-        connectToSocket()
+        loadToken()
     }, [])
+
+    useEffect(() => {
+        if (!token) {
+            if (socket) {
+                console.log('disconnect')
+                socket.disconnect()
+                setSocket(null)
+            }
+            return
+        }
+
+        console.log('Initializing socket with token:', token)
+
+        const newSocket = io(process.env.EXPO_PUBLIC_API_URL || '', {
+            path: `/${process.env.EXPO_PUBLIC_API_VERSION || ''}socket.io`,
+            transports: ['websocket'],
+            auth: { token },
+            forceNew: true,
+            timeout: 5000
+        })
+
+        setSocket(newSocket)
+
+        return () => {
+            newSocket.disconnect()
+        }
+    }, [token])
 
     const contextValue: AuthContextType = {
         token,
@@ -116,6 +148,7 @@ export default function AuthProvider({ children }: Children) {
         register,
         loggedIn
     }
+
 
     return (
         <AuthContext.Provider value={contextValue}>

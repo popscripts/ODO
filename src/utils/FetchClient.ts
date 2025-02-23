@@ -1,19 +1,19 @@
-import { Toast } from "react-native-toast-notifications";
+import { Toast } from 'react-native-toast-notifications'
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL
-const API_VERSION = process.env.EXPO_PUBLIC_API_VERSION
+const API_VERSION = process.env.EXPO_PUBLIC_API_VERSION || ''
 
 const FetchClient = {
     setLoggedIn: (loggenIn: boolean) => {},
 
     async fetchWrapper(fetchFunction: Function) {
         try {
-            const response = await fetchFunction();
-    
-            const data = await response.json().catch(() => null);
-    
+            const response = await fetchFunction()
+
+            const data = await response.json().catch(() => null)
+
             if (!response.ok && data.error) {
-                console.log("Fetch error:", data)
+                console.log('Fetch error:', data)
                 if (!data.param) {
                     if (data.statusCode === 404) return
 
@@ -22,21 +22,21 @@ const FetchClient = {
                         return
                     }
 
-                    Toast?.show(data.result, {type: 'danger'})
+                    Toast?.show(data.result, { type: 'danger' })
                 }
                 return data
             }
-    
-            return data;
-    
+
+            return data
         } catch (error) {
-            console.log("Fetch error:", error)
-            Toast?.show("Nieznany błąd", {type: 'danger'})
+            console.log('Fetch error:', error)
+            Toast?.show('Wystąpił błąd', { type: 'danger' })
             return {
                 error: 1,
-                result: error instanceof Error ? error.message : "Unknown error",
-                statusCode: 500,
-            };
+                result:
+                    error instanceof Error ? error.message : 'Unknown error',
+                statusCode: 500
+            }
         }
     },
 
@@ -66,7 +66,7 @@ const FetchClient = {
         return await this.fetchWrapper(() =>
             fetch(`${API_URL}/${API_VERSION}` + endpoint, {
                 method: 'POST',
-                body: body,
+                ...(body && { body: JSON.stringify(body) }),
                 credentials: 'include'
             })
         )
@@ -89,7 +89,7 @@ const FetchClient = {
         return await this.fetchWrapper(() =>
             fetch(`${API_URL}/${API_VERSION}` + endpoint, {
                 method: 'DELETE',
-                ...(body && {body: JSON.stringify(body)}),
+                ...(body && { body: JSON.stringify(body) }),
                 credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json'

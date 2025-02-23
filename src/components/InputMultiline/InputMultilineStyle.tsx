@@ -22,7 +22,7 @@ export const TextInput = styled.TextInput<TextInputProps>`
     width: 100%;
     border-radius: 10px;
     border: 1px
-        ${(props) =>
+        ${(props: TextInputProps) =>
             props.focused
                 ? colors.palette.primary300
                 : colors.palette.neutral300};
@@ -30,7 +30,7 @@ export const TextInput = styled.TextInput<TextInputProps>`
     z-index: 3;
 `
 
-export const Wrapper = styled.KeyboardAvoidingView`
+export const Wrapper = styled.View`
     width: 100%;
     height: 120px;
 `

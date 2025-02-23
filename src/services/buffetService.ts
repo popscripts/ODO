@@ -3,11 +3,11 @@ import FetchClient from '../utils/FetchClient'
 import { OrderPosition } from '../types/buffet.type'
 
 class BuffetService {
-    private ENDPOINT = 'api/buffet'
+    private ENDPOINT = 'api/orders'
     private httpClient: FetchClientType = FetchClient
 
     async getOrders() {
-        return await this.httpClient.get('api/users/6/orders') // TODO.. poczekać co Barrtek z tym zrobi
+        return await this.httpClient.get('api/users/me/orders')
     }
 
     async placeOrder(orderPositions: OrderPosition[], comment: string) {

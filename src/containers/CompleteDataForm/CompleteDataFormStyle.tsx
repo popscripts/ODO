@@ -9,11 +9,11 @@ type WrapperProps = {
 }
 export const Wrapper = styled.View<WrapperProps>`
     width: 100%;
-    height: ${(props) => (props.done ? '100%' : 'auto')};
+    height: ${(props: WrapperProps) => (props.done ? '100%' : 'auto')};
     background-color: ${colors.background};
     border-radius: 20px 20px 0 0;
     padding: ${spacing.lg};
-    padding-bottom: ${(props) => props.bottom + 20}px;
+    padding-bottom: ${(props: WrapperProps) => props.bottom + 20}px;
     display: flex;
     justify-content: center;
     align-items: center;

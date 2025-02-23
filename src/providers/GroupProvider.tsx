@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react'
 import { Children } from '../types/props.type'
 import { GroupMember, MembersListMember } from '../types/auth.type'
 import groupService from '../services/groupService'
-import { socket, useAuthContext } from './AuthProvider'
+import { useAuthContext, useSocket } from './AuthProvider'
 import { useUserContext } from './UserProvider'
 
 type membersContextType = {
@@ -43,6 +43,7 @@ export function useGroupContext() {
 }
 
 function GroupProvider({ children }: Children) {
+    const socket = useSocket()
     const [membersList, setMembersList] = useState<MembersListMember[]>([])
     const { userData, getUserData } = useUserContext()
 
@@ -102,12 +103,12 @@ function GroupProvider({ children }: Children) {
     const { loggedIn } = useAuthContext()
 
     useEffect(() => {
-        if (loggedIn) {
+        if (loggedIn && socket) {
             socket.on('groupUpdate', () => {
                 getUserData()
             })
         }
-    }, [loggedIn])
+    }, [loggedIn, socket])
 
     const contextValue: GroupContextType = {
         createGroup,

@@ -2,7 +2,7 @@ import { FetchClientType } from '../types/fetchClient.type'
 import FetchClient from '../utils/FetchClient'
 
 class ClassroomService {
-    private ENDPOINT = 'api/classrooms' 
+    private ENDPOINT = 'api/classrooms'
     private httpClient: FetchClientType = FetchClient
 
     async getClassrooms() {
@@ -18,32 +18,21 @@ class ClassroomService {
         status: string,
         prevStatus: string
     ) {
-        return await this.httpClient.patch(
-            `${this.ENDPOINT}/${id}/status`,
-            {
-                status,
-                prevStatus
-            }
-        )
+        return await this.httpClient.patch(`${this.ENDPOINT}/${id}/status`, {
+            status,
+            prevStatus
+        })
     }
 
     async addToVisitedClassrooms(groupId: number, classroomId: number) {
         return await this.httpClient.post(
-            'api/group/visited-classrooms', // TODO.. Przenieść do grup
-            {
-                id: groupId,
-                classroomId
-            }
+            `api/groups/${groupId}/visited-classrooms/${classroomId}`
         )
     }
 
     async removeFromVisitedClassrooms(groupId: number, classroomId: number) {
         return await this.httpClient.delete(
-            'api/group/visited-classrooms', // TODO.. Przenieść do grup
-            {
-                id: groupId,
-                classroomId
-            }
+            `api/groups/${groupId}/visited-classrooms/${classroomId}`
         )
     }
 }

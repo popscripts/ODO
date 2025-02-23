@@ -13,20 +13,18 @@ import BuffetProvider from './providers/BuffetProvider'
 import { Platform } from 'react-native'
 import UserProvider from './providers/UserProvider'
 import { ToastProvider, ToastOptions } from 'react-native-toast-notifications'
-// import Toast from './components/Toast/Toast'
 
 export default function Index() {
     const [areFontsLoaded] = useFonts(customFontsToLoad)
 
     const toastOptions: ToastOptions = {
         animationType: 'zoom-in' as 'zoom-in',
-        duration: 4000,
-    };
-
+        duration: 4000
+    }
 
     if (Platform.OS === 'android') {
         NavigationBar.setPositionAsync('absolute')
-        NavigationBar.setBackgroundColorAsync('#00000001')
+        NavigationBar.setBackgroundColorAsync('#ffffff01')
     }
 
     if (!areFontsLoaded) return <DefaultBackground />

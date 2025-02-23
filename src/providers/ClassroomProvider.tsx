@@ -5,10 +5,9 @@ import {
     classroomStatus,
     VisitedClassroom
 } from '../types/classroom.type'
-import { useAuthContext } from './AuthProvider'
+import { useAuthContext, useSocket } from './AuthProvider'
 import ClassroomService from '../services/classroomService'
 import { Status } from '../types/status.type'
-import { socket } from './AuthProvider'
 import { useUserContext } from './UserProvider'
 
 type GroupedClassrooms = {
@@ -46,6 +45,7 @@ export function useClassroomContext() {
 }
 
 function ClassroomProvider({ children }: Children) {
+    const socket = useSocket()
     const { getUserData, userData } = useUserContext()
     const { loggedIn } = useAuthContext()
 
@@ -87,7 +87,7 @@ function ClassroomProvider({ children }: Children) {
     }, [userData.Group?.id, loggedIn])
 
     useEffect(() => {
-        if (loggedIn) {
+        if (loggedIn && socket) {
             socket.on('classroomStatus', (data: classroomStatus) => {
                 getUserData()
                 getGroupedClassrooms()
@@ -97,7 +97,7 @@ function ClassroomProvider({ children }: Children) {
                 getGroupedClassrooms()
             })
         }
-    }, [loggedIn])
+    }, [loggedIn, socket])
 
     const contextValue = {
         classrooms,

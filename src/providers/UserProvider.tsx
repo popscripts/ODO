@@ -2,7 +2,6 @@ import React, { createContext, useContext, useEffect, useState } from 'react'
 import { Children } from '../types/props.type'
 import { User } from '../types/auth.type'
 import UserService from '../services/userService'
-import { useAuthContext } from './AuthProvider'
 
 const userDataPlaceholder = {
     id: 0,
@@ -26,7 +25,7 @@ const UserContext = createContext<UserContextType>({
     userData: userDataPlaceholder,
     updateName: (name: string, surname: string) => {},
     getUserData: async () => {},
-    setPicture: (userId: number, formData: FormData) => {}
+    setPicture: (formData: FormData) => {}
 })
 
 export function useUserContext() {
@@ -35,27 +34,26 @@ export function useUserContext() {
 
 export default function UserProvider({ children }: Children) {
     const [userData, setUserData] = useState<User>(userDataPlaceholder)
-    const {loggedIn} = useAuthContext()
 
     async function getUserData() {
         return await UserService.getUserData().then((response) => {
             setUserData(response.result as User)
-            return response
+            return response.error
         })
     }
 
     async function updateName(name: string, surname: string) {
-        const response = await UserService.setUserName(userData.id, `${name} ${surname}`)
-        if (response.error) return false
-        setTimeout(() => {
-            const data = { ...userData, name: `${name} ${surname}` }
-            setUserData(data)
-        }, 1500)
-        return true
+        const response = await UserService.setUserName(
+            `${name} ${surname}`
+        ).then(() => {
+            setTimeout(() => {
+                getUserData()
+            }, 1500)
+        })
     }
 
-    function setPicture(userId: number, formData: FormData) {
-        UserService.setPicture(userId, formData).then(() => {
+    function setPicture(formData: FormData) {
+        UserService.setPicture(formData).then(() => {
             getUserData()
         })
     }
@@ -66,15 +64,6 @@ export default function UserProvider({ children }: Children) {
         getUserData,
         setPicture
     }
-
-    useEffect(() => {
-        if (loggedIn) {
-            getUserData()
-        } else {
-            setTimeout(() => setUserData(userDataPlaceholder), 300)
-        }
-
-    },[loggedIn])
 
     return (
         <UserContext.Provider value={contextValue}>

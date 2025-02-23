@@ -91,7 +91,7 @@ function LoginForm({ setLoading }: Props) {
                 placeholder={'email'}
                 error={emailError.error}
                 errorText={emailError.errorText}
-                keyboardType='email-address'
+                keyboardType="email-address"
             />
             <Input
                 text={password}

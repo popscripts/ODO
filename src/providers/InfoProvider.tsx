@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { Children } from '../types/props.type'
 import InfoService from '../services/InfoService'
-import { socket, useAuthContext } from './AuthProvider'
+import { useAuthContext, useSocket } from './AuthProvider'
 
 const InfoContext = createContext<string>('')
 
@@ -10,22 +10,24 @@ export function useInfo() {
 }
 
 function InfoProvider({ children }: Children) {
+    const socket = useSocket()
     const [info, setInfo] = useState('')
     const { loggedIn } = useAuthContext()
 
     useEffect(() => {
         if (loggedIn) {
             InfoService.getInfo().then((res) => {
-                const result = res.result as {content: string}
+                const result = res.result as { content: string }
                 setInfo(result.content)
             })
 
-            socket.on('infoUpdate', (res) => {
-                const result = res.result as {content: string}
-                setInfo(result.content)
-            })
+            socket &&
+                socket.on('infoUpdate', (res) => {
+                    const result = res.result as { content: string }
+                    setInfo(result.content)
+                })
         }
-    }, [loggedIn])
+    }, [loggedIn, socket])
 
     return <InfoContext.Provider value={info}>{children}</InfoContext.Provider>
 }
