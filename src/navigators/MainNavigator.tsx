@@ -14,6 +14,7 @@ import VisitedScreen from '../screens/VisitedScreen'
 import SettingsScreen from '../screens/SettingsScreen'
 import InfoScreen from '../screens/InfoScreen'
 import OrderScreen from '../screens/OrderScreen'
+import { ClassroomModalProvider } from '../providers/ClassroomModalProvider'
 
 const Tab = createMaterialTopTabNavigator()
 
@@ -22,97 +23,99 @@ function MainNavigator() {
     const tabWidth = (Dimensions.get('screen').width * 0.9) / 5
 
     return (
-        <DefaultBackground>
-            <Tab.Navigator
-                tabBarPosition="bottom"
-                initialRouteName="home"
-                screenOptions={{
-                    tabBarShowLabel: false,
-                    tabBarStyle: [$tabBar, { bottom: bottom + 8 }],
-                    tabBarIndicatorStyle: [
-                        $tabBarIndicator,
-                        { marginLeft: (tabWidth - 50) / 2 }
-                    ],
-                    tabBarItemStyle: $tabBarIcon
-                }}
-            >
-                <Tab.Screen
-                    name="settings"
-                    component={SettingsScreen}
-                    options={{
-                        tabBarIcon: ({ focused }) => (
-                            <UserIcon
-                                color={
-                                    focused
-                                        ? colors.palette.neutral200
-                                        : colors.palette.neutral800
-                                }
-                            />
-                        )
+        <ClassroomModalProvider >
+            <DefaultBackground>
+                <Tab.Navigator
+                    tabBarPosition="bottom"
+                    initialRouteName="home"
+                    screenOptions={{
+                        tabBarShowLabel: false,
+                        tabBarStyle: [$tabBar, { bottom: bottom + 8 }],
+                        tabBarIndicatorStyle: [
+                            $tabBarIndicator,
+                            { marginLeft: (tabWidth - 50) / 2 }
+                        ],
+                        tabBarItemStyle: $tabBarIcon
                     }}
-                ></Tab.Screen>
-                <Tab.Screen
-                    name="info"
-                    component={InfoScreen}
-                    options={{
-                        tabBarIcon: ({ focused }) => (
-                            <InfoIcon
-                                color={
-                                    focused
-                                        ? colors.palette.neutral200
-                                        : colors.palette.neutral800
-                                }
-                            />
-                        )
-                    }}
-                ></Tab.Screen>
-                <Tab.Screen
-                    name="home"
-                    component={MainScreen}
-                    options={{
-                        tabBarIcon: ({ focused }) => (
-                            <HomeIcon
-                                color={
-                                    focused
-                                        ? colors.palette.neutral200
-                                        : colors.palette.neutral800
-                                }
-                            />
-                        )
-                    }}
-                ></Tab.Screen>
-                <Tab.Screen
-                    name="list"
-                    component={VisitedScreen}
-                    options={{
-                        tabBarIcon: ({ focused }) => (
-                            <ListIcon
-                                color={
-                                    focused
-                                        ? colors.palette.neutral200
-                                        : colors.palette.neutral800
-                                }
-                            />
-                        )
-                    }}
-                ></Tab.Screen>
-                <Tab.Screen
-                    name="buffet"
-                    component={OrderScreen}
-                    options={{
-                        tabBarIcon: ({ focused }) => (
-                            <CutleryIcon
-                                color={
-                                    focused
-                                        ? colors.palette.neutral200
-                                        : colors.palette.neutral800
-                                }
-                            />
-                        )
-                    }}
-                ></Tab.Screen>
-            </Tab.Navigator>
-        </DefaultBackground>
+                >
+                    <Tab.Screen
+                        name="settings"
+                        component={SettingsScreen}
+                        options={{
+                            tabBarIcon: ({ focused }) => (
+                                <UserIcon
+                                    color={
+                                        focused
+                                            ? colors.palette.neutral200
+                                            : colors.palette.neutral800
+                                    }
+                                />
+                            )
+                        }}
+                    ></Tab.Screen>
+                    <Tab.Screen
+                        name="info"
+                        component={InfoScreen}
+                        options={{
+                            tabBarIcon: ({ focused }) => (
+                                <InfoIcon
+                                    color={
+                                        focused
+                                            ? colors.palette.neutral200
+                                            : colors.palette.neutral800
+                                    }
+                                />
+                            )
+                        }}
+                    ></Tab.Screen>
+                    <Tab.Screen
+                        name="home"
+                        component={MainScreen}
+                        options={{
+                            tabBarIcon: ({ focused }) => (
+                                <HomeIcon
+                                    color={
+                                        focused
+                                            ? colors.palette.neutral200
+                                            : colors.palette.neutral800
+                                    }
+                                />
+                            )
+                        }}
+                    ></Tab.Screen>
+                    <Tab.Screen
+                        name="list"
+                        component={VisitedScreen}
+                        options={{
+                            tabBarIcon: ({ focused }) => (
+                                <ListIcon
+                                    color={
+                                        focused
+                                            ? colors.palette.neutral200
+                                            : colors.palette.neutral800
+                                    }
+                                />
+                            )
+                        }}
+                    ></Tab.Screen>
+                    <Tab.Screen
+                        name="buffet"
+                        component={OrderScreen}
+                        options={{
+                            tabBarIcon: ({ focused }) => (
+                                <CutleryIcon
+                                    color={
+                                        focused
+                                            ? colors.palette.neutral200
+                                            : colors.palette.neutral800
+                                    }
+                                />
+                            )
+                        }}
+                    ></Tab.Screen>
+                </Tab.Navigator>
+            </DefaultBackground>
+        </ClassroomModalProvider>
     )
 }
 

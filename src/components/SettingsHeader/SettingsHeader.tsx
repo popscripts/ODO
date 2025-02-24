@@ -33,15 +33,20 @@ function SettingsHeader() {
         })
 
         if (!result.canceled && result.assets[0]) {
-            const formdata = new FormData()
-            //@ts-ignore
-            formdata.append('picture', {
-                uri: result?.assets[0]?.uri,
-                type: result?.assets[0]?.mimeType,
-                name: 'test.jpeg'
-            })
+            if (result?.assets?.[0]?.uri && result?.assets?.[0]?.mimeType) {
+                const file: { uri: string; type: string; name: string } = {
+                    uri: result.assets[0].uri,
+                    type: result.assets[0].mimeType,
+                    name: 'test.jpeg'
+                };
 
-            setPicture(formdata)
+                console.log(file)
+
+                const formdata = new FormData();
+                formdata.append('picture', file as any);
+
+                setPicture(formdata)
+            }
         }
     }
 

@@ -21,22 +21,18 @@ function MapClassrooms({ status, classrooms }: Props) {
         status === 'free'
             ? [colors.palette.tertiary200, colors.palette.tertiary300]
             : status === 'busy'
-              ? [
+                ? [
                     colors.palette.quaternary100,
                     colors.palette.quaternary100,
                     colors.palette.quaternary200,
                     colors.palette.quaternary300
                 ]
-              : [
+                : [
                     colors.palette.quinary100,
                     colors.palette.quinary100,
                     colors.palette.quinary200,
                     colors.palette.quinary300
                 ]
-
-    // useEffect(() => {
-    //     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
-    // }, [filter])
 
     const { userData } = useUserContext()
 

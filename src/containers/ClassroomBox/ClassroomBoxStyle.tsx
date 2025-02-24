@@ -5,7 +5,8 @@ import { colors } from '../../theme/colors'
 
 export const Wrapper = styled(LinearGradient)`
     width: 100%;
-    max-width: 170px;
+    max-width: 200px;
+    min-height: 110px;
     border-radius: 20px;
     elevation: 6;
     overflow: hidden;
@@ -34,8 +35,9 @@ export const Highlight = styled(LinearGradient)`
 
 export const Press = styled.TouchableHighlight`
     border-radius: 20px;
-    width: 45%;
-    max-width: 170px;
+    width: 48%;
+    max-width: 200px;
+    margin-bottom: 10px;
 `
 
 export const ReservedCorner = styled.View`

@@ -2,6 +2,7 @@ import styled from 'styled-components/native'
 import { colors } from '../../theme/colors'
 import { typography } from '../../theme/typography'
 import { spacing } from '../../theme/spacing'
+import { Platform } from 'react-native'
 
 type TextInputProps = {
     placeholder: string
@@ -24,9 +25,9 @@ export const TextInput = styled.TextInput<TextInputProps>`
     border-radius: 10px;
     border: 1px
         ${(props: TextInputProps) =>
-            props.focused
-                ? colors.palette.primary300
-                : colors.palette.neutral300};
+        props.focused
+            ? colors.palette.primary300
+            : colors.palette.neutral300};
 `
 
 export const Wrapper = styled.View`
@@ -38,7 +39,7 @@ export const InputIconWrapper = styled.TouchableOpacity`
     position: absolute;
     z-index: 3;
     right: 0;
-    height: ${spacing.xxxl};
+    height: ${Platform.OS === 'android' ? '42px' : '38px'};
     width: ${spacing.xxxl};
     display: flex;
     justify-content: center;

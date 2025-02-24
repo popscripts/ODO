@@ -7,7 +7,7 @@ export const Gradient = styled(LinearGradient)`
     height: 100%;
 `
 
-export const AnimatedStyle: ViewStyle = {
+export const WrapperStyle: ViewStyle = {
     position: 'absolute',
     width: '200%',
     height: 150,

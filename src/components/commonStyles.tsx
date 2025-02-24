@@ -22,7 +22,7 @@ export const HeadingCenter = styled.Text`
     font-size: ${spacing.lg};
     color: ${colors.text};
     margin: ${spacing.lg};
-    width: 100%;
+    width: 90%;
     text-align: center;
 `
 
@@ -70,6 +70,7 @@ export const Link = styled.Text`
     font-size: ${spacing.md};
     color: ${colors.text};
     text-decoration: underline;
+    text-decoration-color: ${colors.text};
 `
 
 export const StretchWrapper = styled.View`

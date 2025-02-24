@@ -10,13 +10,16 @@ import MyTakenClassroomBox from '../containers/MyTakenClassroomBox/MyTakenClassr
 import MyReservedClassroomBox from '../containers/MyReservedClassroomBox/MyReservedClassroomBox'
 import { ClassroomSectionWrapper } from '../components/ClassroomSection/ClassroomSectionStyle'
 import { useUserContext } from '../providers/UserProvider'
+import ClassroomModal from '../containers/ClassroomModal/ClassroomModal'
+import Animated, { CurvedTransition } from 'react-native-reanimated'
 
 function MainScreen() {
     const { classrooms } = useClassroomContext()
     const { userData } = useUserContext()
+
     return (
         <ScreenWrapper>
-            <Width100>
+            <Animated.View layout={CurvedTransition}>
                 <MainHeader />
                 <ClassroomSectionWrapper>
                     {userData.Group?.Taken && (
@@ -49,7 +52,7 @@ function MainScreen() {
                     />
                 </ClassroomSection>
                 <Footer />
-            </Width100>
+            </Animated.View>
         </ScreenWrapper>
     )
 }

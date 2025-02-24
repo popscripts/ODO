@@ -22,9 +22,9 @@ const handleError = (data: ApiResponse, setLoggedIn: Function) => {
 }
 
 const timeoutPromise = (timeout = 10000): Promise<ApiResponse> =>
-    new Promise((_, reject) => {
+    new Promise((resolve, reject) => {
         setTimeout(() => {
-            reject({
+            resolve({
                 error: 1,
                 result: "Przekroczono limit czasu",
                 statusCode: 500
@@ -91,7 +91,7 @@ const FetchClient = {
         return await this.fetchWrapper(() =>
             fetch(`${API_URL}/${API_VERSION}` + endpoint, {
                 method: 'POST',
-                ...(body && { body: JSON.stringify(body) }),
+                body,
                 credentials: 'include'
             })
         )

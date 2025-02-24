@@ -12,10 +12,10 @@ const PlaceOrderContext = createContext(
         cValue: number | null,
         hValue: number | null,
         comment: string
-    ) => {}
+    ) => { }
 )
 const ChangeOrderStatusContext = createContext(
-    (id: number, statusId: number) => {}
+    (id: number, statusId: number) => { }
 )
 
 export function useOrders() {
@@ -32,7 +32,7 @@ export function useChangeOrderStatus() {
 
 function BuffetProvider({ children }: Children) {
     const socket = useSocket()
-    const [orders] = useState<Order[]>([])
+    const [orders, setOrders] = useState<Order[]>([])
 
     function placeOrder(
         chValue: number | null,
@@ -63,8 +63,9 @@ function BuffetProvider({ children }: Children) {
         BuffetService.placeOrder(orderPositions, comment)
     }
 
-    function getOrders() {
-        BuffetService.getOrders()
+    async function getOrders() {
+        const orders = await BuffetService.getOrders()
+        setOrders(orders.result as Order[])
     }
 
     function changeOrderStatus(id: number, statusId: number) {

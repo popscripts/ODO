@@ -1,6 +1,6 @@
-import React, { useRef } from 'react'
-import { Animated, Easing } from 'react-native'
-import { AnimatedStyle, Gradient } from './TimedGradientStyle'
+import React, { useEffect, useRef } from 'react'
+import { Gradient, WrapperStyle } from './TimedGradientStyle'
+import Animated, { Easing, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 
 type Props = {
     changedAt: string
@@ -17,23 +17,21 @@ function TimedGradient({ changedAt, colors }: Props) {
 
     const startAnimation = 1 - timePassed / MAX_TIME
     const timeLeft = MAX_TIME - timePassed
+    const scale = useSharedValue(startAnimation)
 
-    const scale = useRef(new Animated.Value(startAnimation)).current
+    useEffect(() => {
+        scale.value = withTiming(0, { duration: timeLeft, easing: Easing.linear })
+    }, [])
 
-    Animated.timing(scale, {
-        toValue: 0,
-        duration: timeLeft,
-        easing: Easing.linear,
-        useNativeDriver: true
-    }).start()
+    const animatedStyle = useAnimatedStyle(() => ({
+        transform: [{ scaleX: scale.value }]
+    }))
 
     return (
         <Animated.View
             style={[
-                {
-                    transform: [{ scaleX: scale }]
-                },
-                AnimatedStyle
+                animatedStyle,
+                WrapperStyle
             ]}
         >
             <Gradient colors={colors} />

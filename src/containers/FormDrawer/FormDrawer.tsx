@@ -7,20 +7,11 @@ import LoginForm from '../LoginForm/LoginForm'
 import RegisterForm from '../RegisterForm/RegisterForm'
 import {
     TouchableOpacity,
-    UIManager,
     Platform,
-    LayoutAnimation
 } from 'react-native'
 import { Link } from '../../components/commonStyles'
 import SlideFromBottom from '../../components/SlideFromBottom'
 import Loading from '../../components/Loading/Loading'
-
-if (
-    Platform.OS === 'android' &&
-    UIManager.setLayoutAnimationEnabledExperimental
-) {
-    UIManager.setLayoutAnimationEnabledExperimental(true)
-}
 
 function FormDrawer() {
     const { bottom } = useSafeAreaInsets()
@@ -28,7 +19,6 @@ function FormDrawer() {
     const [loading, setLoading] = useState<boolean>(false)
 
     function changeForm() {
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
         setFormOpened(formOpened === 'login' ? 'register' : 'login')
     }
 
@@ -49,9 +39,6 @@ function FormDrawer() {
                             <Button
                                 content={'Zaloguj się'}
                                 onPress={() => {
-                                    LayoutAnimation.configureNext(
-                                        LayoutAnimation.Presets.easeInEaseOut
-                                    )
                                     setFormOpened('login')
                                 }}
                                 color={colors.palette.secondary300}
@@ -59,9 +46,6 @@ function FormDrawer() {
                             <Button
                                 content={'Zarejestruj się'}
                                 onPress={() => {
-                                    LayoutAnimation.configureNext(
-                                        LayoutAnimation.Presets.easeInEaseOut
-                                    )
                                     setFormOpened('register')
                                 }}
                                 color={colors.palette.tertiary300}

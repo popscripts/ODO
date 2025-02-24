@@ -11,21 +11,22 @@ import {
 } from './MyTakenClassroomBoxStyle'
 import TimedGradient from '../TimedGradient/TimedGradient'
 import Timer from '../../components/Timer'
-import ClassroomModal from '../ClassroomModal/ClassroomModal'
 import { useClassroomContext } from '../../providers/ClassroomProvider'
 import FreeClassroomIcon from '../../components/icons/FreeClassroomIcon'
+import { useClassroomModal } from '../../providers/ClassroomModalProvider'
+
 
 type Props = {
     classroom: ShortClassroom
 }
 function ClassroomBox({ classroom }: Props) {
     const { classrooms, setStatus } = useClassroomContext()
-    const [modalVisible, setModalVisible] = useState<boolean>(false)
+    const { showModal } = useClassroomModal()
 
     const [fullclassroom, setFullClassroom] = useState<Classroom | undefined>()
 
     const handleModalVisible = () => {
-        setModalVisible((prev) => !prev)
+        fullclassroom && showModal(fullclassroom, colorPalette[0])
     }
 
     const colorPaletteBg = [
@@ -43,14 +44,6 @@ function ClassroomBox({ classroom }: Props) {
     return (
         <Press underlayColor={'#ffffff'} onPress={handleModalVisible}>
             <Wrapper colors={colorPaletteBg}>
-                {fullclassroom && (
-                    <ClassroomModal
-                        visible={modalVisible}
-                        handleVisible={handleModalVisible}
-                        classroom={fullclassroom}
-                        color={colorPalette[0]}
-                    />
-                )}
                 {classroom.takenAt && (
                     <TimedGradient
                         changedAt={classroom.takenAt}

@@ -30,8 +30,8 @@ export const Wrapper = styled.View`
 `
 
 export const Image = styled.ImageBackground<WrapperProps>`
-    padding-top: ${(props) => props.top}px;
-    margin-top: ${(props) => -props.top}px;
+    padding-top: ${(props: WrapperProps) => props.top}px;
+    margin-top: ${(props: WrapperProps) => -props.top}px;
 `
 
 export const InsideWrapper = styled.View`

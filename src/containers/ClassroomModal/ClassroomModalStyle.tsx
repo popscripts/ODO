@@ -1,4 +1,4 @@
-import { styled } from 'styled-components/native'
+import styled from 'styled-components/native'
 import { colors } from '../../theme/colors'
 import { spacing } from '../../theme/spacing'
 import { typography } from '../../theme/typography'
@@ -13,11 +13,20 @@ export const Background = styled.View`
     justify-content: center;
     padding: ${spacing.xxl};
     gap: ${spacing.md};
+    position: relative;
+    z-index: 1000;
 `
 
+type BackdropProps = {
+    size: {
+        height: number,
+        width: number
+    }
+}
+
 export const Backdrop = styled.View`
-    width: 100%;
-    height: 100%;
+    width: ${(props: BackdropProps) => props.size.width}px;
+    height: ${(props: BackdropProps) => props.size.height}px;
     background-color: ${colors.palette.blackoverlay80};
     display: flex;
     align-items: center;

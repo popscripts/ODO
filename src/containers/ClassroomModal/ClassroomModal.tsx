@@ -1,4 +1,4 @@
-import { Modal } from 'react-native'
+import { Dimensions, Modal, useWindowDimensions } from 'react-native'
 import {
     Backdrop,
     Background,
@@ -18,7 +18,7 @@ import { useUserContext } from '../../providers/UserProvider'
 type Props = {
     visible: boolean
     handleVisible: () => void
-    classroom: Classroom
+    classroom: Classroom | null
     color: string
 }
 
@@ -36,10 +36,14 @@ const ClassroomModal = ({
 
     const { userData } = useUserContext()
 
+    const size = Dimensions.get('screen')
+
     useEffect(() => {
-        const temp = useClassModalSettings(classroom, userData)
-        setSettings(temp)
+        if (!classroom) return
+        setSettings(useClassModalSettings(classroom, userData))
     }, [userData, classroom])
+
+    if (!classroom) return <></>
 
     return (
         <Modal
@@ -47,10 +51,11 @@ const ClassroomModal = ({
             onRequestClose={handleVisible}
             transparent={true}
             animationType="fade"
-            presentationStyle="overFullScreen"
+            //presentationStyle="overFullScreen"
             statusBarTranslucent={true}
+            style={{ height: '100%', width: '100%' }}
         >
-            <Backdrop>
+            <Backdrop size={size}>
                 <Background>
                     <CloseModal handleVisible={handleVisible} />
                     <ClassroomNumber color={color}>

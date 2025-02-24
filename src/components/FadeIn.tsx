@@ -1,20 +1,18 @@
 import React, { useEffect, useRef } from 'react'
-import { Animated } from 'react-native'
 import { Children } from '../types/props.type'
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 
 function FadeIn({ children }: Children) {
-    const animation = useRef(new Animated.Value(0)).current
+    const animation = useSharedValue(0)
 
     useEffect(() => {
-        Animated.timing(animation, {
-            toValue: 1,
-            duration: 1000,
-            useNativeDriver: true
-        }).start()
+        animation.value = withTiming(1, { duration: 1000 })
     }, [])
 
+    const animatedStyle = useAnimatedStyle(() => ({ opacity: animation.value }))
+
     return (
-        <Animated.View style={{ opacity: animation }}>{children}</Animated.View>
+        <Animated.View style={animatedStyle}>{children}</Animated.View>
     )
 }
 

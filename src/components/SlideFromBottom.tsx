@@ -1,23 +1,24 @@
 import React, { useEffect, useRef } from 'react'
-import { Animated, Dimensions } from 'react-native'
+import { Dimensions } from 'react-native'
 import { Children } from '../types/props.type'
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 
 function SlideFromBottom({ children }: Children) {
     const height = Dimensions.get('screen').height
-    const animation = useRef(new Animated.Value(height)).current
+    const animation = useSharedValue(height)
 
     useEffect(() => {
-        Animated.timing(animation, {
-            toValue: 0,
-            duration: 800,
-            useNativeDriver: true
-        }).start()
+        animation.value = withTiming(0, { duration: 800 })
     }, [])
 
+    const animatedStyle = useAnimatedStyle(() => ({
+        transform: [{ translateY: animation.value }]
+    }))
+
     return (
-        <Animated.View style={{ transform: [{ translateY: animation }] }}>
+        <Animated.View style={animatedStyle}>
             {children}
-        </Animated.View>
+        </Animated.View >
     )
 }
 

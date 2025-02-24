@@ -20,8 +20,7 @@ class BuffetService {
     }
 
     async changeOrderStatus(id: number, statusId: number) {
-        return await this.httpClient.patch(this.ENDPOINT, {
-            id,
+        return await this.httpClient.patch(`${this.ENDPOINT}/${id}`, {
             statusId
         })
     }

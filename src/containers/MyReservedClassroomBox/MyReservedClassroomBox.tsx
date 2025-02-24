@@ -11,19 +11,18 @@ import {
 import TimedGradient from '../TimedGradient/TimedGradient'
 import Timer from '../../components/Timer'
 import { useClassroomContext } from '../../providers/ClassroomProvider'
-import ClassroomModal from '../ClassroomModal/ClassroomModal'
+import { useClassroomModal } from '../../providers/ClassroomModalProvider'
 
 type Props = {
     classroom: ShortClassroom
 }
 function ClassroomBox({ classroom }: Props) {
-    const [modalVisible, setModalVisible] = useState<boolean>(false)
-
+    const { showModal } = useClassroomModal()
     const { classrooms } = useClassroomContext()
     const [fullclassroom, setFullClassroom] = useState<Classroom | undefined>()
 
     const handleModalVisible = () => {
-        setModalVisible((prev) => !prev)
+        fullclassroom && showModal(fullclassroom, colorPalette[0])
     }
 
     const colorPaletteBg = [
@@ -39,43 +38,37 @@ function ClassroomBox({ classroom }: Props) {
         setFullClassroom(
             classroom.status.name === 'reserved'
                 ? classrooms?.reserved?.find(
-                      (item) => item?.id === classroom.id
-                  )
+                    (item) => item?.id === classroom.id
+                )
                 : classrooms?.busy?.find((item) => item?.id === classroom.id)
         )
     }, [classrooms])
 
     return (
-        <Press underlayColor={'#ffffff'} onPress={handleModalVisible}>
-            <Wrapper colors={colorPaletteBg}>
-                {fullclassroom && (
-                    <ClassroomModal
-                        visible={modalVisible}
-                        handleVisible={handleModalVisible}
-                        classroom={fullclassroom}
-                        color={colorPalette[0]}
-                    />
-                )}
-                {classroom.reservedAt && (
-                    <TimedGradient
-                        changedAt={classroom.reservedAt}
-                        colors={colorPalette}
-                    />
-                )}
-                <ContentWrapper>
-                    <MediumText>
-                        <Heading>{classroom.classroom}</Heading>{' '}
-                        {classroom.title}
-                    </MediumText>
+        <>
+            <Press underlayColor={'#ffffff'} onPress={handleModalVisible}>
+                <Wrapper colors={colorPaletteBg}>
+                    {classroom.reservedAt && (
+                        <TimedGradient
+                            changedAt={classroom.reservedAt}
+                            colors={colorPalette}
+                        />
+                    )}
+                    <ContentWrapper>
+                        <MediumText>
+                            <Heading>{classroom.classroom}</Heading>{' '}
+                            {classroom.title}
+                        </MediumText>
 
-                    <MediumText>
-                        Do końca rezerwacji:{' '}
-                        <Timer changedAt={classroom.reservedAt} />
-                    </MediumText>
-                </ContentWrapper>
-                {classroom.status.name === 'busy' && <TakenCorner />}
-            </Wrapper>
-        </Press>
+                        <MediumText>
+                            Do końca rezerwacji:{' '}
+                            <Timer changedAt={classroom.reservedAt} />
+                        </MediumText>
+                    </ContentWrapper>
+                    {classroom.status.name === 'busy' && <TakenCorner />}
+                </Wrapper>
+            </Press>
+        </>
     )
 }
 
