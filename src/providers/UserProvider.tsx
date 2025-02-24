@@ -18,14 +18,16 @@ interface UserContextType {
     userData: User
     updateName: Function
     getUserData: Function
+    clearUserData: Function,
     setPicture: Function
 }
 
 const UserContext = createContext<UserContextType>({
     userData: userDataPlaceholder,
-    updateName: (name: string, surname: string) => {},
-    getUserData: async () => {},
-    setPicture: (formData: FormData) => {}
+    updateName: (name: string, surname: string) => { },
+    getUserData: async () => { },
+    clearUserData: () => { },
+    setPicture: (formData: FormData) => { }
 })
 
 export function useUserContext() {
@@ -58,10 +60,15 @@ export default function UserProvider({ children }: Children) {
         })
     }
 
+    function clearUserData() {
+        setUserData(userDataPlaceholder)
+    }
+
     const contextValue: UserContextType = {
         userData,
         updateName,
         getUserData,
+        clearUserData,
         setPicture
     }
 

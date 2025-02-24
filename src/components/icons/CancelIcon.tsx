@@ -1,9 +1,13 @@
 import * as React from 'react'
 import Svg, { Path, Circle } from 'react-native-svg'
 
-function CancelIcon() {
+type CancelIconProps = {
+    size?: number
+}
+
+function CancelIcon({ size = 30 }: CancelIconProps) {
     return (
-        <Svg width={30} height={30} viewBox="0 0 100 100" fill="none">
+        <Svg width={size} height={size} viewBox="0 0 100 100" fill="none">
             <Path
                 d="M23.398 24.898l50.204 50.204"
                 stroke="#f6f6f6"

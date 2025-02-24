@@ -9,7 +9,6 @@ import ListIcon from '../components/icons/ListIcon'
 import InfoIcon from '../components/icons/InfoIcon'
 import HomeIcon from '../components/icons/HomeIcon'
 import CutleryIcon from '../components/icons/CutleryIcon'
-import PlaceholderScreen from '../screens/PlaceholderScreen'
 import { DefaultBackground } from '../components/commonStyles'
 import VisitedScreen from '../screens/VisitedScreen'
 import SettingsScreen from '../screens/SettingsScreen'
@@ -29,12 +28,12 @@ function MainNavigator() {
                 initialRouteName="home"
                 screenOptions={{
                     tabBarShowLabel: false,
-                    tabBarStyle: [$tabBar, { bottom: bottom + 10 }],
+                    tabBarStyle: [$tabBar, { bottom: bottom + 8 }],
                     tabBarIndicatorStyle: [
                         $tabBarIndicator,
                         { marginLeft: (tabWidth - 50) / 2 }
                     ],
-                    tabBarIconStyle: $tabBarIcon
+                    tabBarItemStyle: $tabBarIcon
                 }}
             >
                 <Tab.Screen
@@ -139,7 +138,5 @@ const $tabBarIndicator: ViewStyle = {
 }
 
 const $tabBarIcon: ViewStyle = {
-    position: 'absolute',
-    left: -15,
-    bottom: -15
+    marginTop: 3
 }

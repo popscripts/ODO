@@ -1,30 +1,55 @@
 import { Toast } from 'react-native-toast-notifications'
+import { ApiResponse } from '../types/response.type'
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL
 const API_VERSION = process.env.EXPO_PUBLIC_API_VERSION || ''
 
+const handleError = (data: ApiResponse, setLoggedIn: Function) => {
+    console.log('Fetch error:', data)
+    if (!data.param || !['email', 'key'].includes(data.param)) {
+        if (data.statusCode === 404) return
+
+        if (data.statusCode === 401) {
+            setLoggedIn(false)
+            return
+        }
+
+        if (typeof data.result === 'string') {
+            Toast?.show(data.result, { type: 'danger' })
+        }
+    }
+    return data
+}
+
+const timeoutPromise = (timeout = 10000): Promise<ApiResponse> =>
+    new Promise((_, reject) => {
+        setTimeout(() => {
+            reject({
+                error: 1,
+                result: "Przekroczono limit czasu",
+                statusCode: 500
+            })
+        }, timeout)
+    })
+
+
 const FetchClient = {
-    setLoggedIn: (loggenIn: boolean) => {},
+    setLoggedIn: (loggenIn: boolean) => { },
 
     async fetchWrapper(fetchFunction: Function) {
         try {
-            const response = await fetchFunction()
+            const response = await Promise.race([fetchFunction(), timeoutPromise()])
 
-            const data = await response.json().catch(() => null)
+            let data: ApiResponse
 
-            if (!response.ok && data.error) {
-                console.log('Fetch error:', data)
-                if (!data.param) {
-                    if (data.statusCode === 404) return
+            if (response.result) {
+                data = response.result
+            } else {
+                data = await response.json().catch(() => null)
+            }
 
-                    if (data.statusCode === 401) {
-                        this.setLoggedIn(false)
-                        return
-                    }
-
-                    Toast?.show(data.result, { type: 'danger' })
-                }
-                return data
+            if (!response.ok || data.error) {
+                handleError(data, this.setLoggedIn)
             }
 
             return data

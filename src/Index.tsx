@@ -13,12 +13,13 @@ import BuffetProvider from './providers/BuffetProvider'
 import { Platform } from 'react-native'
 import UserProvider from './providers/UserProvider'
 import { ToastProvider, ToastOptions } from 'react-native-toast-notifications'
+import Toast from './components/Toast/Toast'
 
 export default function Index() {
     const [areFontsLoaded] = useFonts(customFontsToLoad)
 
     const toastOptions: ToastOptions = {
-        animationType: 'zoom-in' as 'zoom-in',
+        animationType: 'slide-in',
         duration: 4000
     }
 
@@ -32,7 +33,7 @@ export default function Index() {
     return (
         <DefaultBackground>
             <SafeAreaProvider>
-                <ToastProvider {...toastOptions}>
+                <ToastProvider {...toastOptions} renderToast={(props) => <Toast {...props} />}>
                     <UserProvider>
                         <AuthProvider>
                             <ClassroomProvider>
